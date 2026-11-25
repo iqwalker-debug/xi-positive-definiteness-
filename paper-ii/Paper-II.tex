@@ -11,7 +11,7 @@
 \newcommand{\ee}{\mathrm{e}}
 \title{Positive-Definiteness Endpoints of\\ Heat-Deformed Riemann Xi Kernels}
 \author{Ian Walker}
-\date{Working draft, November 25, 2026. Revised after one AI referee report. No human review.}
+\date{Working draft, November 25, 2026. Revised after two rounds of AI review. Awaiting human review.}
 \begin{document}
 \maketitle
 
@@ -21,9 +21,9 @@ Euclidean dimensions the resulting radial kernel is positive semidefinite. In di
 admissible parameters are exactly $\lambda\le-\Phi''(0)/(2\Phi(0))$; this is a short corollary of
 the Csordas--Varga log-concavity theorem. In each odd dimension from five to twenty-seven we prove
 an explicit upper bound for the admissible set: the smallest real root of a polynomial built from
-the even derivatives of the density at the origin. The bounds are certified in ball arithmetic.
-In dimensions five to thirteen the bound is attained, by a computer-assisted proof, so the
-admissible set is determined exactly. For dimensions fifteen and above this is a conjecture.
+the even derivatives of the density at the origin. A computer-assisted proof shows that every one of these bounds is attained.
+The admissible set in each such dimension is the closed half-line ending at that root.
+The corresponding assertion in odd dimensions starting at twenty-nine remains conjectural.
 \end{abstract}
 
 \section{Setting}
@@ -85,8 +85,8 @@ kept as a cross-check; it is not needed for the proof.
 \section{Upper bounds in odd dimensions five to twenty-seven}
 \begin{theorem}\label{thm:upper}
 For $1\le m\le13$ the polynomial $P_m$ has a smallest real root $\lambda_m$, given in
-Table~\ref{tab:roots}; these satisfy $\lambda_m<\lambda_{m-1}$, and $P_m<0$ on
-$(\lambda_m,\lambda_{m-1}]$ for $m\ge2$. Consequently
+Table~\ref{tab:roots}. For $2\le m\le13$, we have $\lambda_m<\lambda_{m-1}$ and $P_m<0$ on
+$(\lambda_m,\lambda_{m-1}]$. Consequently
 \[
  A_{2m+1}\subseteq(-\infty,\lambda_m]\qquad\text{and}\qquad A_{2m+2}\subseteq(-\infty,\lambda_m]
  \qquad(1\le m\le13).
@@ -96,11 +96,11 @@ $(\lambda_m,\lambda_{m-1}]$ for $m\ge2$. Consequently
 The numerical statements are certified in ball arithmetic (Section~\ref{sec:repro}). The
 certificate gives, for each $m$, a bracket $[\mathrm{lo}_m,\mathrm{hi}_m]$ of width $2\cdot10^{-12}$
 with $P_m(\mathrm{lo}_m)>0>P_m(\mathrm{hi}_m)$; positivity of $P_m$ to the left of the bracket;
-$P_m'<0$ on the whole bracket; and $P_m<0$ on $[\mathrm{hi}_m,\mathrm{hi}_{m-1}]$. The derivative
+and $P_m'<0$ on the whole bracket. For $m\ge2$ it also gives $P_m<0$ on $[\mathrm{hi}_m,\mathrm{hi}_{m-1}]$. The derivative
 bound shows that the bracket holds exactly one root, which is therefore the smallest real root
-$\lambda_m$, and that $P_m<0$ on $(\lambda_m,\mathrm{hi}_m]$. (It is also explained by the identity
-$P_m'=-P_{m-1}$ together with $\mathrm{hi}_m<\mathrm{lo}_{m-1}$.) Since
-$\lambda_{m-1}\le\mathrm{hi}_{m-1}$, this gives $P_m<0$ on $(\lambda_m,\lambda_{m-1}]$.
+$\lambda_m$, and that $P_m<0$ on $(\lambda_m,\mathrm{hi}_m]$. The identity $P_m'=-P_{m-1}$ holds for $m\ge1$. For $m\ge2$ the brackets satisfy
+$\mathrm{hi}_m<\mathrm{lo}_{m-1}$ and $\lambda_{m-1}\le\mathrm{hi}_{m-1}$, so
+$P_m<0$ on $(\lambda_m,\lambda_{m-1}]$.
 For the inclusion, argue by induction on $m$; the case $m=1$ is Theorem~\ref{thm:d3}. Let
 $\lambda\in A_{2m+1}$. Then $\lambda\in A_{2m-1}\subseteq(-\infty,\lambda_{m-1}]$. By
 Lemma~\ref{lem:crit} and continuity at $x=0$, $m!\,P_m(\lambda)=Q_m(0;\lambda)\ge0$, which
@@ -130,13 +130,13 @@ At $\lambda=0$ the table reads $\lambda_4>0>\lambda_5$. The second inequality re
 undeformed Xi kernel is not positive semidefinite in dimension eleven. It says nothing about
 dimension ten, which Paper~I settles by a separate witness.
 
-\section{Exact endpoints in dimensions five to thirteen}
+\section{Exact endpoints in odd dimensions three to twenty-seven}
 \begin{theorem}\label{thm:sharp}
-$A_{2m+1}=(-\infty,\lambda_m]$ for $1\le m\le6$, that is, in dimensions $3,5,7,9,11,13$.
-Consequently $\lambda_m\le\sup A_{2m}\le\lambda_{m-1}$ for $2\le m\le6$.
+$A_{2m+1}=(-\infty,\lambda_m]$ for $1\le m\le13$.
+Consequently $\lambda_m\le\sup A_{2m}\le\lambda_{m-1}$ for $2\le m\le13$.
 \end{theorem}
 \begin{proof}
-The case $m=1$ is Theorem~\ref{thm:d3}. For $2\le m\le6$, Theorem~\ref{thm:upper} gives one
+The case $m=1$ is Theorem~\ref{thm:d3}. For $2\le m\le13$, Theorem~\ref{thm:upper} gives one
 inclusion, and by Lemmas~\ref{lem:crit} and~\ref{lem:down} the other follows from
 $Q_m(x;\lambda_m)\ge0$ for all $x>0$. We prove this in three regions of $x=r^2$. Write
 $I_m=[\mathrm{lo}_m,\mathrm{hi}_m]$ for the bracket of Theorem~\ref{thm:upper}.
@@ -167,12 +167,10 @@ $X_n(r)\ge\pi\ee\,\ee^{2z}\ge\tfrac{8539}{1000}(1+2z+2z^2)$, every summand is po
 \end{proof}
 
 \begin{conjecture}\label{conj}
-$A_{2m+1}=(-\infty,\lambda_m]$ for every $m\ge1$.
+For every $m\ge14$, the polynomial $P_m$ has a smallest real root $\lambda_m$, and
+$A_{2m+1}=(-\infty,\lambda_m]$.
 \end{conjecture}
-For $7\le m\le13$ the conjecture is equivalent to $Q_m(x;\lambda_m)\ge0$ for all $x>0$, which has
-not been tested here. The computation that first produced these endpoints recorded that a
-uniform version of the root law has limitations, so the statement stays a conjecture. The exact
-even-dimensional endpoints are open in every case.
+The first case is dimension twenty-nine. The exact even-dimensional endpoints remain open here.
 
 \begin{remark}[Prior work and novelty]
 Theorem~\ref{thm:d3} is a corollary of known log-concavity. At $\lambda=0$, membership in $A_5$ is
@@ -200,25 +198,30 @@ definiteness in the other.
 \end{remark}
 
 \section{Reproducibility}\label{sec:repro}
-\texttt{certify\_bounds.py} (python-flint 0.9.0) encloses $\Phi^{(2j)}(0)$ for $j\le13$ from the
-theta series with an explicit tail bound, and then proves for each $m$: a sign change of $P_m$
-across a bracket of width $2\cdot10^{-12}$; $P_m>0$ from a Cauchy root bound, itself checked in
-ball arithmetic, up to that bracket; $P_m'<0$ on the bracket; and $P_m<0$ from the bracket up to
-the upper end of the bracket for $\lambda_{m-1}$.
-Runs at 256 and 384 bits produce the same intervals; \texttt{heat-upper-bounds.json} records them.
-\texttt{certify\_sharp.py} carries out the three-region certificate of Theorem~\ref{thm:sharp}
-at 512 and 768 bits, with identical cell counts; \texttt{heat-sharpness.json} records them. An
-independent floating-point comparison of the Taylor form and the summand form of $Q_m$ agrees.
-The dimension-three replay is \texttt{check\_d3.py}. An AI referee replayed both scripts byte-for-byte and
-re-derived the Taylor remainder bound independently. No part of this draft has been formalized
-in Lean or reviewed by a person, and every certificate relies on the Arb library.
+The \href{https://github.com/iqwalker-debug/xi-positive-definiteness-/tree/f3e8864e02d2257e1d01714c6446548c585dff5b/paper-ii}{versioned verification supplement} contains the programs, pinned dependencies,
+inputs and replay commands. The \href{https://github.com/iqwalker-debug/xi-positive-definiteness-/actions/runs/45672731858}{GitHub Actions run} records the certificate replay.
+At 256 and 384 bits, \texttt{certify\_bounds.py} encloses the theta coefficients for $0\le j\le13$
+and proves the bracket signs, positivity to the left of each bracket, and negativity of $P_m'$ on it.
+For $m\ge2$ it also certifies negativity up to the upper end of the preceding bracket.
+Each derivative upper endpoint is stored as an exact dyadic rational.
+A separate 768-bit evaluation of the theta series checks all 26 exported upper bounds.
+
+At 512 and 768 bits, \texttt{certify\_sharp.py} verifies the three regions for every odd dimension
+from five to twenty-seven. The files \texttt{heat-upper-bounds.json} and \texttt{heat-sharpness.json}
+record the results. The dimension-three cross-check is \texttt{check\_d3.py}.
+A second implementation, using directed integer arithmetic, recomputes the brackets and sharpness
+checks from the same analytic reduction. Five Lean modules check polynomial and heat-derivative
+identities, finite arithmetic on supplied coefficient enclosures, and implications used in the
+endpoint and remainder arguments. The theta enclosures, Fourier criterion for this kernel, and
+full regional inequalities remain external to Lean.
 
 \section*{Acknowledgments}
 The endpoints were first observed in computations carried out with ChatGPT (OpenAI). The
 lemmas, the statements and proofs of Theorems~\ref{thm:upper} and~\ref{thm:sharp} and both
 certificate scripts were drafted by Claude (Anthropic) in a single session. ChatGPT then acted as
 an AI referee; its report led to a completed certificate for Theorem~\ref{thm:upper}, a corrected
-proof of Theorem~\ref{thm:sharp} and a corrected entry in Table~\ref{tab:roots}. No human
+proof of Theorem~\ref{thm:sharp} and a corrected entry in Table~\ref{tab:roots}. A second review identified a rounding error in the
+exported derivative bounds and checked the extension through dimension twenty-seven. No human
 mathematician has yet reviewed this draft.
 
 \begin{thebibliography}{9}
