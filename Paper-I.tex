@@ -1,0 +1,327 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.94in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdfauthor={Ian Walker},pdftitle={The Exact Positive-Definiteness Dimension of the Riemann Xi Function}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ee}{\mathrm e}
+\title{The Exact Positive-Definiteness Dimension\\of the Riemann Xi Function}
+\author{Ian Walker}
+\date{Referee draft, November 25, 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+The classical radial Fourier dimension walk reduces the Euclidean
+positive-definiteness problem for the normalized Riemann Xi function to signs
+of derivatives of its theta density. Monotonicity due to Wintner and
+strict convexity due to Csordas give positivity through dimension five.
+We prove that the nine-dimensional density is positive at every nonzero
+radius, giving strict positive definiteness through dimension nine.
+In dimension ten an explicit finite Gram form has a negative value,
+certified by grouping its terms into 739 distance shells. Thus nine is
+the exact maximal dimension. Lean verifies the analytic lower bound and
+the finite-witness algebra. Arb encloses the transcendental evaluations
+for the upper bound.
+\end{abstract}
+
+\section{Statement and context}
+Write
+\[
+\xi(s)=\tfrac12s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s),
+\qquad \Xi(t)=\xi(\tfrac12+it),
+\qquad F(t)=\Xi(t)/\Xi(0),
+\]
+with the removable singularities filled in. The functional equation and
+conjugation make $F$ real and even on $\R$. A kernel is positive
+semidefinite if every finite Gram form is nonnegative. Strict positive
+definiteness requires the form to be positive whenever the points are
+distinct and the coefficient vector is nonzero.
+
+Schoenberg's radial classes are nested under restriction to Euclidean
+subspaces \cite{Schoenberg}. To determine where $F$ leaves this hierarchy,
+let $f_d(r)$ denote its radial Fourier density in dimension $d$, and set
+$q(s)=f_1(\sqrt{s})$. With the angular-frequency convention of Section~2,
+the classical dimension walk \cite{GT} gives, for $s>0$,
+\[
+ f_{2j+1}(\sqrt{s})=(-1/\pi)^j q^{(j)}(s).
+\]
+Thus each odd-dimensional test asks for one derivative sign. The
+one-dimensional density is the positive classical theta kernel up to
+normalization \cite{BPY,Nakamura}. In the notation of Csordas
+\cite[(2.1)--(2.2)]{Csordas98}, it gives
+$q(s)=\Phi_{\rm C}(\sqrt{s}/2)/Z$, with $Z>0$ as in Section~2.
+Wintner's monotonicity \cite{Wintner} gives $q'<0$, and strict convexity
+\cite[Theorem 2.12]{Csordas98} gives $q''>0$. Hence $f_3$ and $f_5$
+are positive away from zero. The strict Gram argument in Section~3
+and restriction already yield strict positive definiteness through
+dimension five.
+
+The step proved here is $q^{(4)}(s)>0$ for every $s>0$. It gives
+$f_9>0$ away from zero. Its two-coordinate marginal gives $f_7>0$,
+and restriction supplies dimensions six and eight. In dimension ten
+a single explicit negative Gram form gives the matching upper bound.
+
+\begin{theorem}\label{thm:main}
+For an integer $d\ge1$, the kernel $K_d(x,y)=F(\lVert x-y\rVert)$
+on $\R^d$ is positive semidefinite if and only if $d\le9$.
+For $d\le9$ it is strictly positive definite. For $d=10$ the explicit
+witness in Section~\ref{sec:witness} has normalized Gram form
+strictly less than $-0.01259636712$.
+\end{theorem}
+
+Sra proves that for each $\alpha>0$ the real-axis reciprocal profile
+$[\xi(1/2)/\xi(1/2+\lVert u\rVert)]^\alpha$ is strictly positive definite
+in every Euclidean dimension \cite[Theorem 1.1, (1.4)]{Sra}. Our profile
+$F(\lVert u\rVert)=\xi(1/2+i\lVert u\rVert)/\xi(1/2)$ evaluates $\xi$
+on the critical line. Its positive-radius zeros already rule out
+positive definiteness in all dimensions simultaneously: Schoenberg's
+all-dimensional representation would express $F(r)$ as a probability
+mixture of $\exp(-tr^2)$, strictly positive at every finite $r$.
+Determining the last admissible dimension requires the two sign results
+above.
+
+Other related work includes Romik's three-dimensional self-transform of
+an auxiliary function \cite{Romik}, the van Dantzig pair studied in
+\cite{KPS}, the reciprocal transforms in \cite{Grochenig}, and the
+smoothed zero sums in \cite{SraSmooth}.
+
+\section{Theta normalization and radial lifting}
+For $r\in\R$ set
+\[
+ X_n(r)=\pi n^2\ee^{2r},\quad
+ g(r)=\sum_{n\ge1}\ee^{r/2-X_n(r)},\quad
+ \Phi(r)=\sum_{n\ge1}\ee^{r/2-X_n(r)}X_n(r)(2X_n(r)-3).
+\]
+The series and their derivatives converge locally uniformly by Gaussian
+majorants. Each derivative is a sum with the same exponential factor
+times a polynomial in $X_n$. These sums decay faster than any exponential
+as $r\to+\infty$. For example, after absorbing the polynomial into
+$\ee^{X_n/2}$, split $\ee^{-X_n/2}$ into two factors, one bounded by
+$\ee^{-\pi n^2/4}$ on $r\ge0$ and the other by
+$\ee^{-\pi\ee^{2r}/4}$.
+Jacobi inversion makes $H(r)=\ee^{r/2}+2g(r)$ even. Thus
+$g'(0)=-1/4$. Termwise differentiation gives
+$g''-g/4=2\Phi$ and $H''-H/4=4\Phi$, so $\Phi$ is smooth, even and
+Schwartz. It is strictly positive on $[0,\infty)$ since $X_n(r)\ge\pi$.
+
+Splitting the theta Mellin integral at one and applying inversion to its
+lower half gives, for $s=1/2+it$,
+\[
+ \Xi(t)=\tfrac12-2(t^2+\tfrac14)\int_0^\infty g(r)\cos(tr)\,dr.
+\]
+Indeed, for $\psi(x)=\sum_{n\ge1}\ee^{-\pi n^2x}$ the pole-subtracted
+completed zeta is the integral on $[1,\infty)$ of
+$\psi(x)(x^{s/2}+x^{(1-s)/2})\,dx/x$. The substitution $x=\ee^{2r}$
+gives $4g(r)\cos(tr)\,dr$, and the pole terms contribute $1/2$ to $\xi$.
+Two integrations by parts using $g'(0)=-1/4$ therefore yield
+\[
+ \Xi(t)=4\int_0^\infty \Phi(r)\cos(tr)\,dr,
+ \qquad
+ F(t)=\int_{\R}\ee^{itr}\frac{\Phi(r)}{Z}\,dr,
+ \qquad Z=\int_{\R}\Phi(r)\,dr>0.
+\]
+
+We use angular frequencies, so a spectral density $f_d$ is normalized
+by $F(|x|)=\int_{\R^d}\ee^{ik\cdot x}f_d(k)\,dk$.
+The even Schwartz profile $F$ gives a Schwartz radial function in each
+dimension. Let $f_d(r)$ denote its real radial Fourier density. Fourier
+uniqueness, restriction to $\R^d$, and polar integration in the last two
+coordinates give
+\[
+ f_d(r)=2\pi\int_r^\infty s f_{d+2}(s)\,ds,
+ \qquad f_{d+2}(r)=-\frac{f_d'(r)}{2\pi r}\quad(r>0).
+\]
+Starting with $f_1(r)=\Phi(r)/Z$ and iterating four times yields
+\begin{equation}\label{eq:d9}
+ f_9(r)=\frac{N(r)}{(2\pi)^4Zr^7},\qquad
+ N(r)=r^3\Phi^{(4)}(r)-6r^2\Phi^{(3)}(r)+15r\Phi''(r)-15\Phi'(r).
+\end{equation}
+Only $r>0$ is needed for positivity almost everywhere. The Lean proof
+implements the marginal identity directly and propagates integrability
+by positivity and Fubini.
+
+\section{An analytic sign certificate in dimension nine}
+Let $P_0(x)=2x^2-3x$ and define
+\begin{equation}\label{eq:recurrence}
+ P_{j+1}(x)=(\tfrac12-2x)P_j(x)+2xP_j'(x).
+\end{equation}
+Then $\Phi^{(j)}(r)=\sum_{n\ge1}\ee^{r/2-X_n(r)}P_j(X_n(r))$.
+
+\paragraph{Near the origin.}
+For $0\le r\le1/5$, put $x=X_1(r)$. Elementary bounds give
+$3\le x\le47/10$. In fact $3.1415<\pi<3.1416$, and the exponential
+series bounds $\ee^{2/5}$ above by $1.492$ and below by its degree-five
+Taylor sum. The upper bound follows by bounding the terms beyond
+degree five by a geometric series of ratio at most $(2/5)/7$.
+Define
+\[
+ L(x)=8000\bigl(1+3(x-3)+\tfrac12(3(x-3))^2\bigr).
+\]
+On $x\ge3$, $L(x)\le\ee^{3x}$ by the Taylor lower bounds
+$\sum_{k=0}^{19}9^k/k!>8000$ and $\ee^y\ge1+y+y^2/2$ for $y\ge0$.
+The first two terms of $\Phi^{(8)}$ have positive sum since
+$P_8(x)>0$ and $L(x)P_8(x)+P_8(4x)>0$ on this interval.
+For $n\ge3$, $X_n(r)\ge27$, so $u=X_n(r)-19\ge8$.
+Every coefficient of $P_8(19+u)$ is positive, hence so are the remaining terms.
+The exact polynomial checks are given below.
+
+Put $p_j=\Phi^{(j)}$ and define
+\[
+ A(r)=rp_6(r)-p_5(r),\qquad
+ B(r)=r^2p_5(r)-3rp_4(r)+3p_3(r).
+\]
+Evenness gives $p_7(0)=A(0)=B(0)=N(0)=0$. The identities
+$p_7'=p_8$, $A'=rp_7$, $B'=rA$, and $N'=rB$ show successively
+that each of $p_7,A,B,N$ is positive on $(0,1/5]$.
+
+\paragraph{All larger radii.}
+Write $r=1/5+z$, with $z\ge0$, and
+$b(z)=(937/200)(1+2z+2z^2)$.
+The degree-five Taylor lower bound for $\ee^{2/5}$ and the lower
+bound $\pi>3.1415$ give $\pi\ee^{2/5}\ge937/200$.
+Thus $X_n(r)\ge b(z)$ for every $n\ge1$. The polynomial
+\[
+ T(r,x)=r^3P_4(x)-6r^2P_3(x)+15rP_2(x)-15P_1(x)
+\]
+has positive constant coefficient and nonnegative coefficients after
+the substitutions $r=1/5+z$ and $x=b(z)+u$. Hence every summand
+of $N(r)$ is strictly positive for $r\ge1/5$.
+
+\paragraph{Exact arithmetic checks.}
+For a polynomial $q$ on $[3,47/10]$, let
+$q(3+17t/10)=\sum_{j=0}^d a_j t^j$. Its degree-$d$ Bernstein
+coefficients are $\beta_i=\sum_{j=0}^i a_j\binom{i}{j}/\binom{d}{j}$.
+The basis functions are nonnegative and sum to one on $[0,1]$.
+The following minima follow by exact rational arithmetic from
+\eqref{eq:recurrence}. The supplement includes a short independent
+checker for these values.
+
+\smallskip
+\begin{center}
+\small
+\begin{tabular}{lll}
+\toprule
+Polynomial & Basis & Minimum coefficient \\
+\midrule
+$P_8(x)$ & Bernstein, degree 10 & $5029330761/256$ \\
+$L(x)P_8(x)+P_8(4x)$ & Bernstein, degree 12 & $10192605107247/64$ \\
+$P_8(19+u)$ & Monomials in $u$ & $512$ \\
+$T(1/5+z,b(z)+u)$ & Nonzero monomials in $z,u$ & $32/125$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The constant coefficient of the last polynomial is
+$1328632816292109/250000000000000>0$.
+
+\paragraph{Strictness.}
+Equation \eqref{eq:d9} gives $f_9>0$ almost everywhere. For
+distinct $x_i$ and a nonzero coefficient vector $c$, the Gram form is
+\[
+ \int_{\R^9} f_9(k)
+ \left|\sum_i c_i\ee^{ik\cdot x_i}\right|^2\,dk.
+\]
+The exponential sum is continuous and cannot vanish identically.
+For example, choose a line direction outside the finitely many
+hyperplanes perpendicular to pairwise differences of the $x_i$.
+The resulting frequencies are distinct, and successive derivatives
+at zero give an invertible Vandermonde system. The integral is
+strictly positive. Restriction along isometric embeddings proves the
+claim in all lower dimensions. Lean uses linear independence of
+characters for the same strictness step.
+
+
+\section{A finite witness in dimension ten}\label{sec:witness}
+For $a\in\{0,\ldots,9\}^{10}$ use the point $x_a=7a$ and coefficient
+$c_a=\prod_{\ell=1}^{10} w_{a_\ell}$, with
+\[
+ (w_0,\ldots,w_9)=(282,541,756,910,990,990,910,756,541,282).
+\]
+Define $P(z)=\sum_{i,j=0}^9 w_iw_j z^{(i-j)^2}$, $C_k=[z^k]P(z)^{10}$,
+and $D=C_0=(\sum_iw_i^2)^{10}$. The normalized quadratic form is
+\[
+ \frac1D\sum_{a,b}c_ac_bK_{10}(x_a,x_b)
+ =\sum_{k=0}^{810}\frac{C_k}{D}\,F(7\sqrt{k}).
+\]
+This follows by multiplying the ten ordered-pair histograms. Exactly
+739 coefficients are nonzero, including the diagonal. The normalization
+$D$ is a positive integer.
+
+Arb/Acb \cite{Johansson} encloses the factors in the defining expression
+for $\xi$ and verifies $\xi(1/2)>0$. Each normalized shell contribution
+is rounded outwards to integer multiples of $10^{-18}$. Both the
+192-bit and 256-bit runs give the following enclosure for the sum
+of these rounded intervals:
+\[
+ \frac{-12596367123836528}{10^{18}}
+ \ \le\ \frac1D\sum_{a,b}c_ac_bK_{10}(x_a,x_b)
+ \ \le\ \frac{-12596367123835788}{10^{18}}.
+\]
+The upper endpoint is strictly below $-0.01259636712$.
+All nonzero shells are evaluated. The cutoff $293$ used to store
+the rows in two lists only partitions the finite computation.
+Embedding the grid into any higher Euclidean space preserves the Gram
+form. This completes the proof of Theorem~\ref{thm:main}.
+
+\section{Verification and reproducibility}
+The supplementary sources are available at
+\url{https://github.com/iqwalker-debug/xi-positive-definiteness-}.
+The public snapshot is pinned to
+\href{https://github.com/iqwalker-debug/xi-positive-definiteness-/commit/b85224897e27d51141b85c98bad5173c78211dce}{commit \texttt{b852248}},
+with \href{https://github.com/iqwalker-debug/xi-positive-definiteness-/actions/runs/45646086586}{verification run \texttt{45646086586}}.
+The Lean declarations \texttt{strict\_d9} and
+\texttt{strict\_cutoff\_of\_arb} are in \texttt{XiStrict.lean}.
+The D9 proof has no numerical assumptions. For D10, Lean proves the
+obstruction from the row enclosures. Arb supplies those enclosures
+externally. The supplement contains the full shell table, a second
+aggregate finite-sum replay, the D9 interval cross-check, and exact
+commands. Neither the analytic argument nor the witness uses
+information about the zeros of zeta.
+
+
+\section*{Acknowledgments}
+I used Claude (Anthropic) and ChatGPT (OpenAI) in preparing this work.
+
+\begin{thebibliography}{10}
+\bibitem{Schoenberg} I.~J. Schoenberg, \emph{Metric spaces and positive
+definite functions}, Trans. Amer. Math. Soc. 44 (1938), 522--536.
+\href{https://doi.org/10.1090/S0002-9947-1938-1501980-0}{doi:10.1090/S0002-9947-1938-1501980-0}.
+\bibitem{Wintner} A. Wintner, \emph{A note on the Riemann $\xi$-function},
+J. London Math. Soc. 10 (1935), 82--83. See also \cite[Theorem 2.1(v)]{Csordas98}.
+\bibitem{Csordas98} G. Csordas, \emph{Convexity and the Riemann
+$\zeta$-function}, Glas. Mat. Ser. III 33 (1998), 37--50.
+\href{https://web.math.pmf.unizg.hr/glasnik/33.1/33105.pdf}{Full text}.
+\bibitem{BPY} P. Biane, J. Pitman and M. Yor, \emph{Probability laws
+related to the Jacobi theta and Riemann zeta functions, and Brownian
+excursions}, Bull. Amer. Math. Soc. 38 (2001), 435--465.
+\href{https://doi.org/10.1090/S0273-0979-01-00912-0}{doi:10.1090/S0273-0979-01-00912-0}.
+\bibitem{Nakamura} T. Nakamura, \emph{A complete Riemann zeta
+distribution and the Riemann hypothesis}, Bernoulli 21 (2015), 604--617.
+\href{https://doi.org/10.3150/13-BEJ581}{doi:10.3150/13-BEJ581}.
+\bibitem{KPS} T. Konstantopoulos, P. Patie and R. Sarkar,
+\emph{A new class of solutions to the van Dantzig problem, the Lee--Yang
+property, and the Riemann hypothesis}, Ann. Inst. Fourier 74 (2024), 377--421.
+\href{https://aif.centre-mersenne.org/item/?id=AIF_2024__74_1_377_0}{Article}.
+\bibitem{GT} L. Grafakos and G. Teschl, \emph{On Fourier transforms of
+radial functions and distributions}, J. Fourier Anal. Appl. 19 (2013),
+167--179. \href{https://doi.org/10.1007/s00041-012-9242-5}{doi:10.1007/s00041-012-9242-5}.
+\bibitem{Romik} D. Romik, \emph{Orthogonal polynomial expansions for the
+Riemann xi function in the Hermite, Meixner--Pollaczek, and continuous Hahn
+bases}, Acta Arith. 200 (2021), 259--329.
+\href{https://arxiv.org/abs/1902.06330}{arXiv:1902.06330}.
+\bibitem{Grochenig} K. Gr\"ochenig, \emph{Schoenberg's theory of
+totally positive functions and the Riemann zeta function}.
+\href{https://arxiv.org/abs/2007.12889}{arXiv:2007.12889}.
+\bibitem{Sra} S. Sra, \emph{On some positivity properties of the Riemann
+$\Xi$ function}, preprint (2026).
+\href{https://arxiv.org/abs/2611.02944}{arXiv:2611.02944}.
+\bibitem{SraSmooth} S. Sra, \emph{Some positivity properties of Riemann
+$\Xi$ under smoothing}, unpublished preprint (2026).
+\href{https://suvrit.github.io/papers/riem-xi-smoothing/}{Author's preprint page}.
+\bibitem{Johansson} F. Johansson, \emph{Arb: Efficient arbitrary-precision
+midpoint-radius interval arithmetic}, IEEE Trans. Comput. 66 (2017),
+1281--1292. \href{https://doi.org/10.1109/TC.2017.2690633}{doi:10.1109/TC.2017.2690633}.
+\end{thebibliography}
+\end{document}
