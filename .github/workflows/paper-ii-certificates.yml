@@ -2,7 +2,7 @@ name: Paper II certificates
 
 on:
   push:
-    branches: [paper-ii-draft]
+    branches: [main, paper-ii-draft]
     paths: ['paper-ii/**', '.github/workflows/paper-ii-certificates.yml']
   workflow_dispatch:
 

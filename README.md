@@ -16,3 +16,9 @@ python -I verify.py --mesh 192 --reference reference --output rerun-192.json
 ```
 
 Both meshes reproduce a strictly negative normalized Gram sum of approximately −0.012596367123836187. Each of the 739 computed contributions lies inside its archived interval. This calculation uses the theta integral and integer interval arithmetic with decimal exponentials. The [original certificate](https://github.com/iqwalker-debug/xi-positive-definiteness-/tree/b85224897e27d51141b85c98bad5173c78211dce/verification) uses Arb/Acb. The two calculations share the witness and its normalization.
+
+## Paper II
+
+[Positive-Definiteness Endpoints of Heat-Deformed Riemann Xi Kernels](paper-ii/Paper-II.pdf) by Ian Walker. This preprint gives the exact heat-parameter endpoints for positive semidefiniteness in odd Euclidean dimensions from 3 through 27. It awaits independent human review.
+
+[LaTeX source](paper-ii/Paper-II.tex) · [Certificates, Lean checks, and reproduction instructions](paper-ii/README.md)
