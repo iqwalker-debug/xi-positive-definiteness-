@@ -11,7 +11,7 @@
 \newcommand{\ee}{\mathrm{e}}
 \title{Positive-Definiteness Endpoints of\\ Heat-Deformed Riemann Xi Kernels}
 \author{Ian Walker}
-\date{Working draft, November 25, 2026. Not yet reviewed.}
+\date{Working draft, November 25, 2026. Revised after one AI referee report. No human review.}
 \begin{document}
 \maketitle
 
@@ -93,7 +93,14 @@ $(\lambda_m,\lambda_{m-1}]$ for $m\ge2$. Consequently
 \]
 \end{theorem}
 \begin{proof}
-The three numerical statements are certified in ball arithmetic (Section~\ref{sec:repro}).
+The numerical statements are certified in ball arithmetic (Section~\ref{sec:repro}). The
+certificate gives, for each $m$, a bracket $[\mathrm{lo}_m,\mathrm{hi}_m]$ of width $2\cdot10^{-12}$
+with $P_m(\mathrm{lo}_m)>0>P_m(\mathrm{hi}_m)$; positivity of $P_m$ to the left of the bracket;
+$P_m'<0$ on the whole bracket; and $P_m<0$ on $[\mathrm{hi}_m,\mathrm{hi}_{m-1}]$. The derivative
+bound shows that the bracket holds exactly one root, which is therefore the smallest real root
+$\lambda_m$, and that $P_m<0$ on $(\lambda_m,\mathrm{hi}_m]$. (It is also explained by the identity
+$P_m'=-P_{m-1}$ together with $\mathrm{hi}_m<\mathrm{lo}_{m-1}$.) Since
+$\lambda_{m-1}\le\mathrm{hi}_{m-1}$, this gives $P_m<0$ on $(\lambda_m,\lambda_{m-1}]$.
 For the inclusion, argue by induction on $m$; the case $m=1$ is Theorem~\ref{thm:d3}. Let
 $\lambda\in A_{2m+1}$. Then $\lambda\in A_{2m-1}\subseteq(-\infty,\lambda_{m-1}]$. By
 Lemma~\ref{lem:crit} and continuity at $x=0$, $m!\,P_m(\lambda)=Q_m(0;\lambda)\ge0$, which
@@ -107,7 +114,7 @@ $A_{2m+2}\subseteq A_{2m+1}$.
 $d$ & $\lambda_m$ & $d$ & $\lambda_m$\\
 \midrule
 3 & $9.36345246475$ & 17 & $-8.59180627882$\\
-5 & $5.91121963944$ & 19 & $-10.97357707942$\\
+5 & $5.91121963944$ & 19 & $-10.97357707941$\\
 7 & $3.21109506834$ & 21 & $-13.37326201186$\\
 9 & $0.77794382588$ & 23 & $-15.78747290450$\\
 11 & $-1.56452213126$ & 25 & $-18.21317232236$\\
@@ -131,13 +138,15 @@ Consequently $\lambda_m\le\sup A_{2m}\le\lambda_{m-1}$ for $2\le m\le6$.
 \begin{proof}
 The case $m=1$ is Theorem~\ref{thm:d3}. For $2\le m\le6$, Theorem~\ref{thm:upper} gives one
 inclusion, and by Lemmas~\ref{lem:crit} and~\ref{lem:down} the other follows from
-$Q_m(x;\lambda_m)\ge0$ for all $x>0$. This is certified in three regions of $x=r^2$, for every
-$\lambda$ in the enclosure of $\lambda_m$.
+$Q_m(x;\lambda_m)\ge0$ for all $x>0$. We prove this in three regions of $x=r^2$. Write
+$I_m=[\mathrm{lo}_m,\mathrm{hi}_m]$ for the bracket of Theorem~\ref{thm:upper}.
 
-\emph{Near the origin, $0\le x\le1/16$.} Here $\partial_xQ_m(x;\lambda)>0$. Since
-$Q_m(0;\lambda_m)=m!\,P_m(\lambda_m)=0$, this gives $Q_m(x;\lambda_m)>0$ on $(0,1/16]$.
+\emph{Near the origin, $0\le x\le1/16$.} The certificate shows $\partial_xQ_m(x;\lambda)>0$ for
+every $\lambda\in I_m$. Only this derivative bound is uniform in $\lambda$. At the exact root,
+$Q_m(0;\lambda_m)=m!\,P_m(\lambda_m)=0$, so $Q_m(x;\lambda_m)>0$ on $(0,1/16]$. For other
+$\lambda\in I_m$ nothing is claimed here; at $\lambda=\mathrm{hi}_m$ the origin value is negative.
 
-\emph{Middle, $1/16\le x\le1/4$.} Here $Q_m(x;\lambda)>0$ directly.
+\emph{Middle, $1/16\le x\le1/4$.} Here $Q_m(x;\lambda)>0$ for every $\lambda\in I_m$.
 
 Both use the Taylor series $H(x)=\sum_k a_kx^k$ to degree $120$. The theta series is analytic
 for $\lvert\operatorname{Im}r\rvert<\pi/4$, so $H$ is analytic on $\lvert x\rvert<(\pi/4)^2$. On
@@ -153,7 +162,7 @@ $E^m\bigl[\ee^{r/2-X}(2X^2-3X)\bigr]=\ee^{r/2-X}w_m(r,X;\lambda)/(2^mr^{2m})$, w
  w_{k+1}=r(2X-\tfrac12)w_k-2rX\,\partial_Xw_k-r\,\partial_rw_k+2k\,w_k-2\lambda r^2w_k .
 \]
 After the substitution $r=\tfrac12+z$, $X=\tfrac{8539}{1000}(1+2z+2z^2)+u$, every coefficient of
-$w_m$ as a polynomial in $z,u$ is positive on the enclosure of $\lambda_m$. Since
+$w_m$ as a polynomial in $z,u$ is positive for every $\lambda\in I_m$. Since
 $X_n(r)\ge\pi\ee\,\ee^{2z}\ge\tfrac{8539}{1000}(1+2z+2z^2)$, every summand is positive for $r\ge\tfrac12$.
 \end{proof}
 
@@ -168,27 +177,49 @@ even-dimensional endpoints are open in every case.
 \begin{remark}[Prior work and novelty]
 Theorem~\ref{thm:d3} is a corollary of known log-concavity. At $\lambda=0$, membership in $A_5$ is
 Csordas's convexity of $\Phi(\sqrt{t})$ \cite[Theorem 2.12]{Csordas98}. Csordas's later paper
-\cite{Csordas13} treats positive definiteness of related kernels in one dimension and poses open
-problems about the deformed kernel; on a reading of that paper it contains no radial or
-dimension-dependent result and nothing on derivatives of $\Phi(\sqrt{t})$ beyond the second.
-This is one paper, not a literature search: novelty of Theorems~\ref{thm:upper}
-and~\ref{thm:sharp} has not been established.
+\cite{Csordas13} treats positive definiteness of related kernels in one dimension. Its Open
+Problems 4.10 and 4.11 concern one-dimensional kernels built from the deformed density, and its
+Problem 4.14 is a log-concavity question that involves derivatives of $\Phi(\sqrt{t})$ up to order
+four. On two AI readings it contains no radial or dimension-dependent result. An AI referee's
+search by title, endpoint values and terminology found no paper containing
+Theorem~\ref{thm:upper} or~\ref{thm:sharp}. Neither is an exhaustive search, and novelty has
+not been established.
+\end{remark}
+
+\begin{remark}[The de Bruijn--Newman family]
+In the convention of Rodgers and Tao \cite{RT} and Polymath \cite{Polymath},
+$H_t(z)=\int_0^\infty \ee^{tu^2}\Phi_{\rm RT}(u)\cos(zu)\,du$ with $\Phi_{\rm RT}(u)=\Phi(2u)$.
+Substituting $r=2u$ gives
+\[
+ Z_\lambda=4H_{4\lambda}(0),\qquad F_\lambda(s)=\frac{H_{4\lambda}(2s)}{H_{4\lambda}(0)},
+\]
+so the de Bruijn--Newman parameter is $t=4\lambda$. The zeros of $H_t$ are all real exactly when
+$t\ge\Lambda$, and $0\le\Lambda\le0.22$ \cite{RT,Polymath}. That threshold and the endpoints
+$\lambda_m$ concern different properties: reality of zeros in one case, radial positive
+definiteness in the other.
 \end{remark}
 
 \section{Reproducibility}\label{sec:repro}
 \texttt{certify\_bounds.py} (python-flint 0.9.0) encloses $\Phi^{(2j)}(0)$ for $j\le13$ from the
 theta series with an explicit tail bound, and then proves for each $m$: a sign change of $P_m$
-across an interval of width $2\cdot10^{-12}$; $P_m>0$ from a Cauchy root bound up to that
-interval; and $P_m<0$ from that interval up to the upper end of the interval for $\lambda_{m-1}$.
+across a bracket of width $2\cdot10^{-12}$; $P_m>0$ from a Cauchy root bound, itself checked in
+ball arithmetic, up to that bracket; $P_m'<0$ on the bracket; and $P_m<0$ from the bracket up to
+the upper end of the bracket for $\lambda_{m-1}$.
 Runs at 256 and 384 bits produce the same intervals; \texttt{heat-upper-bounds.json} records them.
 \texttt{certify\_sharp.py} carries out the three-region certificate of Theorem~\ref{thm:sharp}
 at 512 and 768 bits, with identical cell counts; \texttt{heat-sharpness.json} records them. An
 independent floating-point comparison of the Taylor form and the summand form of $Q_m$ agrees.
-The dimension-three replay is \texttt{check\_d3.py}. No part of this draft has been formalized in
-Lean or reviewed by another person.
+The dimension-three replay is \texttt{check\_d3.py}. An AI referee replayed both scripts byte-for-byte and
+re-derived the Taylor remainder bound independently. No part of this draft has been formalized
+in Lean or reviewed by a person, and every certificate relies on the Arb library.
 
 \section*{Acknowledgments}
-I used Claude (Anthropic) and ChatGPT (OpenAI) in preparing this work.
+The endpoints were first observed in computations carried out with ChatGPT (OpenAI). The
+lemmas, the statements and proofs of Theorems~\ref{thm:upper} and~\ref{thm:sharp} and both
+certificate scripts were drafted by Claude (Anthropic) in a single session. ChatGPT then acted as
+an AI referee; its report led to a completed certificate for Theorem~\ref{thm:upper}, a corrected
+proof of Theorem~\ref{thm:sharp} and a corrected entry in Table~\ref{tab:roots}. No human
+mathematician has yet reviewed this draft.
 
 \begin{thebibliography}{9}
 \bibitem{PaperI} I. Walker, \emph{The Exact Positive-Definiteness Dimension of the Riemann Xi
@@ -197,10 +228,15 @@ Function}, referee draft, November 25, 2026.
 \bibitem{Csordas98} G. Csordas, \emph{Convexity and the Riemann $\zeta$-function}, Glas. Mat.
 Ser. III 33 (1998), 37--50.
 \bibitem{CV88} G. Csordas and R. S. Varga, \emph{Moment inequalities and the Riemann
-hypothesis}, Constr. Approx. 4 (1988), 175--188.
+hypothesis}, Constr. Approx. 4 (1988), 175--198.
 \bibitem{Csordas13} G. Csordas, \emph{Fourier transforms of positive definite kernels and the
 Riemann $\xi$-function}, \href{https://arxiv.org/abs/1309.0055}{arXiv:1309.0055}.
 \bibitem{GT} L. Grafakos and G. Teschl, \emph{On Fourier transforms of radial functions and
 distributions}, J. Fourier Anal. Appl. 19 (2013), 167--179.
+\bibitem{RT} B. Rodgers and T. Tao, \emph{The de Bruijn--Newman constant is non-negative},
+Forum Math. Pi 8 (2020), e6.
+\bibitem{Polymath} D. H. J. Polymath, \emph{Effective approximation of heat flow evolution of the
+Riemann $\xi$ function, and a new upper bound for the de Bruijn--Newman constant},
+Res. Math. Sci. 6 (2019), Paper No. 31.
 \end{thebibliography}
 \end{document}

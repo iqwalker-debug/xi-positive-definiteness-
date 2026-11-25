@@ -9,6 +9,7 @@
     "upper": "585215779047/62500000000",
     "enclosure": 9.36345246475,
     "cauchy_bound": "12",
+    "derivative_upper_on_bracket": "-0.44669690",
     "positive_cells": 17,
     "negative_cells": 0
    },
@@ -19,6 +20,7 @@
     "upper": "1182243927889/200000000000",
     "enclosure": 5.911219639443,
     "cauchy_bound": "78",
+    "derivative_upper_on_bracket": "-1.5421017",
     "positive_cells": 47,
     "negative_cells": 50
    },
@@ -29,6 +31,7 @@
     "upper": "3211095068339/1000000000000",
     "enclosure": 3.211095068337,
     "cauchy_bound": "476",
+    "derivative_upper_on_bracket": "-5.7922271",
     "positive_cells": 84,
     "negative_cells": 82
    },
@@ -39,6 +42,7 @@
     "upper": "388971912939/500000000000",
     "enclosure": 0.777943825876,
     "cauchy_bound": "1895",
+    "derivative_upper_on_bracket": "-23.300891",
     "positive_cells": 61,
     "negative_cells": 45
    },
@@ -49,6 +53,7 @@
     "upper": "-1564522131263/1000000000000",
     "enclosure": -1.564522131265,
     "cauchy_bound": "24280",
+    "derivative_upper_on_bracket": "-101.22280",
     "positive_cells": 57,
     "negative_cells": 15
    },
@@ -59,6 +64,7 @@
     "upper": "-778234658151/200000000000",
     "enclosure": -3.891173290757,
     "cauchy_bound": "580847",
+    "derivative_upper_on_bracket": "-473.76672",
     "positive_cells": 84,
     "negative_cells": 17
    },
@@ -69,6 +75,7 @@
     "upper": "-1557728211113/250000000000",
     "enclosure": -6.230912844454,
     "cauchy_bound": "9266201",
+    "derivative_upper_on_bracket": "-2362.3284",
     "positive_cells": 116,
     "negative_cells": 17
    },
@@ -79,6 +86,7 @@
     "upper": "-8591806278821/1000000000000",
     "enclosure": -8.591806278823,
     "cauchy_bound": "146273926",
+    "derivative_upper_on_bracket": "-12381.423",
     "positive_cells": 154,
     "negative_cells": 17
    },
@@ -89,6 +97,7 @@
     "upper": "-5486788539707/500000000000",
     "enclosure": -10.973577079416,
     "cauchy_bound": "2610686591",
+    "derivative_upper_on_bracket": "-67415.546",
     "positive_cells": 184,
     "negative_cells": 17
    },
@@ -99,6 +108,7 @@
     "upper": "-2674652402371/200000000000",
     "enclosure": -13.373262011857,
     "cauchy_bound": "51174893106",
+    "derivative_upper_on_bracket": "-377898.22",
     "positive_cells": 240,
     "negative_cells": 18
    },
@@ -109,6 +119,7 @@
     "upper": "-15787472904499/1000000000000",
     "enclosure": -15.787472904501,
     "cauchy_bound": "1002452564491",
+    "derivative_upper_on_bracket": "-2166290.1",
     "positive_cells": 302,
     "negative_cells": 18
    },
@@ -119,6 +130,7 @@
     "upper": "-18213172322361/1000000000000",
     "enclosure": -18.213172322363,
     "cauchy_bound": "17945925707202",
+    "derivative_upper_on_bracket": "-1.2637875e+7",
     "positive_cells": 339,
     "negative_cells": 19
    },
@@ -129,6 +141,7 @@
     "upper": "-20647860614207/1000000000000",
     "enclosure": -20.647860614209,
     "cauchy_bound": "254286203377186",
+    "derivative_upper_on_bracket": "-7.4765453e+7",
     "positive_cells": 410,
     "negative_cells": 19
    }
@@ -144,6 +157,7 @@
     "upper": "585215779047/62500000000",
     "enclosure": 9.36345246475,
     "cauchy_bound": "12",
+    "derivative_upper_on_bracket": "-0.44669690",
     "positive_cells": 17,
     "negative_cells": 0
    },
@@ -154,6 +168,7 @@
     "upper": "1182243927889/200000000000",
     "enclosure": 5.911219639443,
     "cauchy_bound": "78",
+    "derivative_upper_on_bracket": "-1.5421017",
     "positive_cells": 47,
     "negative_cells": 50
    },
@@ -164,6 +179,7 @@
     "upper": "3211095068339/1000000000000",
     "enclosure": 3.211095068337,
     "cauchy_bound": "476",
+    "derivative_upper_on_bracket": "-5.7922271",
     "positive_cells": 84,
     "negative_cells": 82
    },
@@ -174,6 +190,7 @@
     "upper": "388971912939/500000000000",
     "enclosure": 0.777943825876,
     "cauchy_bound": "1895",
+    "derivative_upper_on_bracket": "-23.300891",
     "positive_cells": 61,
     "negative_cells": 45
    },
@@ -184,6 +201,7 @@
     "upper": "-1564522131263/1000000000000",
     "enclosure": -1.564522131265,
     "cauchy_bound": "24280",
+    "derivative_upper_on_bracket": "-101.22280",
     "positive_cells": 57,
     "negative_cells": 15
    },
@@ -194,6 +212,7 @@
     "upper": "-778234658151/200000000000",
     "enclosure": -3.891173290757,
     "cauchy_bound": "580847",
+    "derivative_upper_on_bracket": "-473.76672",
     "positive_cells": 84,
     "negative_cells": 17
    },
@@ -204,6 +223,7 @@
     "upper": "-1557728211113/250000000000",
     "enclosure": -6.230912844454,
     "cauchy_bound": "9266201",
+    "derivative_upper_on_bracket": "-2362.3284",
     "positive_cells": 116,
     "negative_cells": 17
    },
@@ -214,6 +234,7 @@
     "upper": "-8591806278821/1000000000000",
     "enclosure": -8.591806278823,
     "cauchy_bound": "146273926",
+    "derivative_upper_on_bracket": "-12381.423",
     "positive_cells": 154,
     "negative_cells": 18
    },
@@ -224,6 +245,7 @@
     "upper": "-5486788539707/500000000000",
     "enclosure": -10.973577079416,
     "cauchy_bound": "2610686591",
+    "derivative_upper_on_bracket": "-67415.546",
     "positive_cells": 184,
     "negative_cells": 17
    },
@@ -234,6 +256,7 @@
     "upper": "-2674652402371/200000000000",
     "enclosure": -13.373262011857,
     "cauchy_bound": "51174893106",
+    "derivative_upper_on_bracket": "-377898.22",
     "positive_cells": 240,
     "negative_cells": 18
    },
@@ -244,6 +267,7 @@
     "upper": "-15787472904499/1000000000000",
     "enclosure": -15.787472904501,
     "cauchy_bound": "1002452564491",
+    "derivative_upper_on_bracket": "-2166290.1",
     "positive_cells": 302,
     "negative_cells": 18
    },
@@ -254,6 +278,7 @@
     "upper": "-18213172322361/1000000000000",
     "enclosure": -18.213172322363,
     "cauchy_bound": "17945925707202",
+    "derivative_upper_on_bracket": "-1.2637875e+7",
     "positive_cells": 339,
     "negative_cells": 19
    },
@@ -264,6 +289,7 @@
     "upper": "-20647860614207/1000000000000",
     "enclosure": -20.647860614209,
     "cauchy_bound": "254286203377186",
+    "derivative_upper_on_bracket": "-7.4765453e+7",
     "positive_cells": 410,
     "negative_cells": 19
    }
