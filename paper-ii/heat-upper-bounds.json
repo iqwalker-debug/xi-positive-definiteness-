@@ -1,0 +1,272 @@
+[
+ {
+  "precision": 256,
+  "results": [
+   {
+    "dimension": 3,
+    "m": 1,
+    "lower": "37453809859/4000000000",
+    "upper": "585215779047/62500000000",
+    "enclosure": 9.36345246475,
+    "cauchy_bound": "12",
+    "positive_cells": 17,
+    "negative_cells": 0
+   },
+   {
+    "dimension": 5,
+    "m": 2,
+    "lower": "5911219639443/1000000000000",
+    "upper": "1182243927889/200000000000",
+    "enclosure": 5.911219639443,
+    "cauchy_bound": "78",
+    "positive_cells": 47,
+    "negative_cells": 50
+   },
+   {
+    "dimension": 7,
+    "m": 3,
+    "lower": "3211095068337/1000000000000",
+    "upper": "3211095068339/1000000000000",
+    "enclosure": 3.211095068337,
+    "cauchy_bound": "476",
+    "positive_cells": 84,
+    "negative_cells": 82
+   },
+   {
+    "dimension": 9,
+    "m": 4,
+    "lower": "194485956469/250000000000",
+    "upper": "388971912939/500000000000",
+    "enclosure": 0.777943825876,
+    "cauchy_bound": "1895",
+    "positive_cells": 61,
+    "negative_cells": 45
+   },
+   {
+    "dimension": 11,
+    "m": 5,
+    "lower": "-312904426253/200000000000",
+    "upper": "-1564522131263/1000000000000",
+    "enclosure": -1.564522131265,
+    "cauchy_bound": "24280",
+    "positive_cells": 57,
+    "negative_cells": 15
+   },
+   {
+    "dimension": 13,
+    "m": 6,
+    "lower": "-3891173290757/1000000000000",
+    "upper": "-778234658151/200000000000",
+    "enclosure": -3.891173290757,
+    "cauchy_bound": "580847",
+    "positive_cells": 84,
+    "negative_cells": 17
+   },
+   {
+    "dimension": 15,
+    "m": 7,
+    "lower": "-3115456422227/500000000000",
+    "upper": "-1557728211113/250000000000",
+    "enclosure": -6.230912844454,
+    "cauchy_bound": "9266201",
+    "positive_cells": 116,
+    "negative_cells": 17
+   },
+   {
+    "dimension": 17,
+    "m": 8,
+    "lower": "-8591806278823/1000000000000",
+    "upper": "-8591806278821/1000000000000",
+    "enclosure": -8.591806278823,
+    "cauchy_bound": "146273926",
+    "positive_cells": 154,
+    "negative_cells": 17
+   },
+   {
+    "dimension": 19,
+    "m": 9,
+    "lower": "-1371697134927/125000000000",
+    "upper": "-5486788539707/500000000000",
+    "enclosure": -10.973577079416,
+    "cauchy_bound": "2610686591",
+    "positive_cells": 184,
+    "negative_cells": 17
+   },
+   {
+    "dimension": 21,
+    "m": 10,
+    "lower": "-13373262011857/1000000000000",
+    "upper": "-2674652402371/200000000000",
+    "enclosure": -13.373262011857,
+    "cauchy_bound": "51174893106",
+    "positive_cells": 240,
+    "negative_cells": 18
+   },
+   {
+    "dimension": 23,
+    "m": 11,
+    "lower": "-15787472904501/1000000000000",
+    "upper": "-15787472904499/1000000000000",
+    "enclosure": -15.787472904501,
+    "cauchy_bound": "1002452564491",
+    "positive_cells": 302,
+    "negative_cells": 18
+   },
+   {
+    "dimension": 25,
+    "m": 12,
+    "lower": "-18213172322363/1000000000000",
+    "upper": "-18213172322361/1000000000000",
+    "enclosure": -18.213172322363,
+    "cauchy_bound": "17945925707202",
+    "positive_cells": 339,
+    "negative_cells": 19
+   },
+   {
+    "dimension": 27,
+    "m": 13,
+    "lower": "-20647860614209/1000000000000",
+    "upper": "-20647860614207/1000000000000",
+    "enclosure": -20.647860614209,
+    "cauchy_bound": "254286203377186",
+    "positive_cells": 410,
+    "negative_cells": 19
+   }
+  ]
+ },
+ {
+  "precision": 384,
+  "results": [
+   {
+    "dimension": 3,
+    "m": 1,
+    "lower": "37453809859/4000000000",
+    "upper": "585215779047/62500000000",
+    "enclosure": 9.36345246475,
+    "cauchy_bound": "12",
+    "positive_cells": 17,
+    "negative_cells": 0
+   },
+   {
+    "dimension": 5,
+    "m": 2,
+    "lower": "5911219639443/1000000000000",
+    "upper": "1182243927889/200000000000",
+    "enclosure": 5.911219639443,
+    "cauchy_bound": "78",
+    "positive_cells": 47,
+    "negative_cells": 50
+   },
+   {
+    "dimension": 7,
+    "m": 3,
+    "lower": "3211095068337/1000000000000",
+    "upper": "3211095068339/1000000000000",
+    "enclosure": 3.211095068337,
+    "cauchy_bound": "476",
+    "positive_cells": 84,
+    "negative_cells": 82
+   },
+   {
+    "dimension": 9,
+    "m": 4,
+    "lower": "194485956469/250000000000",
+    "upper": "388971912939/500000000000",
+    "enclosure": 0.777943825876,
+    "cauchy_bound": "1895",
+    "positive_cells": 61,
+    "negative_cells": 45
+   },
+   {
+    "dimension": 11,
+    "m": 5,
+    "lower": "-312904426253/200000000000",
+    "upper": "-1564522131263/1000000000000",
+    "enclosure": -1.564522131265,
+    "cauchy_bound": "24280",
+    "positive_cells": 57,
+    "negative_cells": 15
+   },
+   {
+    "dimension": 13,
+    "m": 6,
+    "lower": "-3891173290757/1000000000000",
+    "upper": "-778234658151/200000000000",
+    "enclosure": -3.891173290757,
+    "cauchy_bound": "580847",
+    "positive_cells": 84,
+    "negative_cells": 17
+   },
+   {
+    "dimension": 15,
+    "m": 7,
+    "lower": "-3115456422227/500000000000",
+    "upper": "-1557728211113/250000000000",
+    "enclosure": -6.230912844454,
+    "cauchy_bound": "9266201",
+    "positive_cells": 116,
+    "negative_cells": 17
+   },
+   {
+    "dimension": 17,
+    "m": 8,
+    "lower": "-8591806278823/1000000000000",
+    "upper": "-8591806278821/1000000000000",
+    "enclosure": -8.591806278823,
+    "cauchy_bound": "146273926",
+    "positive_cells": 154,
+    "negative_cells": 18
+   },
+   {
+    "dimension": 19,
+    "m": 9,
+    "lower": "-1371697134927/125000000000",
+    "upper": "-5486788539707/500000000000",
+    "enclosure": -10.973577079416,
+    "cauchy_bound": "2610686591",
+    "positive_cells": 184,
+    "negative_cells": 17
+   },
+   {
+    "dimension": 21,
+    "m": 10,
+    "lower": "-13373262011857/1000000000000",
+    "upper": "-2674652402371/200000000000",
+    "enclosure": -13.373262011857,
+    "cauchy_bound": "51174893106",
+    "positive_cells": 240,
+    "negative_cells": 18
+   },
+   {
+    "dimension": 23,
+    "m": 11,
+    "lower": "-15787472904501/1000000000000",
+    "upper": "-15787472904499/1000000000000",
+    "enclosure": -15.787472904501,
+    "cauchy_bound": "1002452564491",
+    "positive_cells": 302,
+    "negative_cells": 18
+   },
+   {
+    "dimension": 25,
+    "m": 12,
+    "lower": "-18213172322363/1000000000000",
+    "upper": "-18213172322361/1000000000000",
+    "enclosure": -18.213172322363,
+    "cauchy_bound": "17945925707202",
+    "positive_cells": 339,
+    "negative_cells": 19
+   },
+   {
+    "dimension": 27,
+    "m": 13,
+    "lower": "-20647860614209/1000000000000",
+    "upper": "-20647860614207/1000000000000",
+    "enclosure": -20.647860614209,
+    "cauchy_bound": "254286203377186",
+    "positive_cells": 410,
+    "negative_cells": 19
+   }
+  ]
+ }
+]

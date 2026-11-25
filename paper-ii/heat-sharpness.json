@@ -1,0 +1,96 @@
+[
+ {
+  "precision": 512,
+  "taylor_degree": 120,
+  "sup_bound": "[17183566.09756015046381519412035716902458378521173299248896154511640343036600084875011233381633080600278533345096714193502332210516841757269286336296950 +/- 7.39e-144]",
+  "results": [
+   {
+    "dimension": 5,
+    "lambda_lower": "5911219639443/1000000000000",
+    "lambda_upper": "1182243927889/200000000000",
+    "cells_A": 10,
+    "cells_B": 105,
+    "tail_coefficients": 35
+   },
+   {
+    "dimension": 7,
+    "lambda_lower": "3211095068337/1000000000000",
+    "lambda_upper": "3211095068339/1000000000000",
+    "cells_A": 5,
+    "cells_B": 58,
+    "tail_coefficients": 54
+   },
+   {
+    "dimension": 9,
+    "lambda_lower": "194485956469/250000000000",
+    "lambda_upper": "388971912939/500000000000",
+    "cells_A": 3,
+    "cells_B": 24,
+    "tail_coefficients": 77
+   },
+   {
+    "dimension": 11,
+    "lambda_lower": "-312904426253/200000000000",
+    "lambda_upper": "-1564522131263/1000000000000",
+    "cells_A": 3,
+    "cells_B": 21,
+    "tail_coefficients": 104
+   },
+   {
+    "dimension": 13,
+    "lambda_lower": "-3891173290757/1000000000000",
+    "lambda_upper": "-778234658151/200000000000",
+    "cells_A": 3,
+    "cells_B": 24,
+    "tail_coefficients": 135
+   }
+  ]
+ },
+ {
+  "precision": 768,
+  "taylor_degree": 120,
+  "sup_bound": "[17183566.0975601504638151941203571690245837852117329924889615451164034303660008487501123338163308060027853334509671419350233221051684175726928633629695035581152186708001079921243442716111629809635223984557208346507137760038393815 +/- 3.84e-221]",
+  "results": [
+   {
+    "dimension": 5,
+    "lambda_lower": "5911219639443/1000000000000",
+    "lambda_upper": "1182243927889/200000000000",
+    "cells_A": 10,
+    "cells_B": 105,
+    "tail_coefficients": 35
+   },
+   {
+    "dimension": 7,
+    "lambda_lower": "3211095068337/1000000000000",
+    "lambda_upper": "3211095068339/1000000000000",
+    "cells_A": 5,
+    "cells_B": 58,
+    "tail_coefficients": 54
+   },
+   {
+    "dimension": 9,
+    "lambda_lower": "194485956469/250000000000",
+    "lambda_upper": "388971912939/500000000000",
+    "cells_A": 3,
+    "cells_B": 24,
+    "tail_coefficients": 77
+   },
+   {
+    "dimension": 11,
+    "lambda_lower": "-312904426253/200000000000",
+    "lambda_upper": "-1564522131263/1000000000000",
+    "cells_A": 3,
+    "cells_B": 21,
+    "tail_coefficients": 104
+   },
+   {
+    "dimension": 13,
+    "lambda_lower": "-3891173290757/1000000000000",
+    "lambda_upper": "-778234658151/200000000000",
+    "cells_A": 3,
+    "cells_B": 24,
+    "tail_coefficients": 135
+   }
+  ]
+ }
+]

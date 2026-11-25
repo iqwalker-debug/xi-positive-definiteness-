@@ -1,0 +1,206 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\ee}{\mathrm{e}}
+\title{Positive-Definiteness Endpoints of\\ Heat-Deformed Riemann Xi Kernels}
+\author{Ian Walker}
+\date{Working draft, November 25, 2026. Not yet reviewed.}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Multiply the theta density of the Riemann Xi function by $\ee^{\lambda r^2}$ and ask in which
+Euclidean dimensions the resulting radial kernel is positive semidefinite. In dimension three the
+admissible parameters are exactly $\lambda\le-\Phi''(0)/(2\Phi(0))$; this is a short corollary of
+the Csordas--Varga log-concavity theorem. In each odd dimension from five to twenty-seven we prove
+an explicit upper bound for the admissible set: the smallest real root of a polynomial built from
+the even derivatives of the density at the origin. The bounds are certified in ball arithmetic.
+In dimensions five to thirteen the bound is attained, by a computer-assisted proof, so the
+admissible set is determined exactly. For dimensions fifteen and above this is a conjecture.
+\end{abstract}
+
+\section{Setting}
+As in Paper~I \cite{PaperI}, put $X_n(r)=\pi n^2\ee^{2r}$ and
+$\Phi(r)=\sum_{n\ge1}\ee^{r/2-X_n(r)}X_n(r)(2X_n(r)-3)$. The function $\Phi$ is even, positive,
+real-analytic and decays faster than any Gaussian. For real $\lambda$ set
+\[
+ \rho_\lambda(r)=\frac{\ee^{\lambda r^2}\Phi(r)}{Z_\lambda},\qquad
+ Z_\lambda=\int_\R \ee^{\lambda r^2}\Phi(r)\,dr,\qquad
+ F_\lambda(t)=\int_\R \ee^{itr}\rho_\lambda(r)\,dr .
+\]
+Then $F_0$ is the normalized Xi profile of Paper~I. Let $A_d$ be the set of $\lambda$ for which
+$K(x,y)=F_\lambda(\lVert x-y\rVert)$ is positive semidefinite on $\R^d$. Restriction to subspaces
+gives $A_{d+1}\subseteq A_d$.
+
+Write $H(x)=\Phi(\sqrt{x})$, which is real-analytic on $[0,\infty)$ because $\Phi$ is even, and
+$g_\lambda(x)=\ee^{\lambda x}H(x)$. Put $a_j=H^{(j)}(0)/j!=\Phi^{(2j)}(0)/(2j)!$ and
+\[
+ Q_m(x;\lambda)=(-1)^m\sum_{k=0}^{m}\binom{m}{k}\lambda^{m-k}H^{(k)}(x),\qquad
+ P_m(\lambda)=(-1)^m\sum_{j=0}^{m}a_j\frac{\lambda^{m-j}}{(m-j)!},
+\]
+so that $(-1)^m g_\lambda^{(m)}(x)=\ee^{\lambda x}Q_m(x;\lambda)$ and $Q_m(0;\lambda)=m!\,P_m(\lambda)$.
+
+\begin{lemma}[Criterion]\label{lem:crit}
+For $d=2m+1$, $\lambda\in A_d$ if and only if $Q_m(x;\lambda)\ge0$ for every $x>0$.
+\end{lemma}
+\begin{proof}
+The radial dimension walk \cite{GT}, in the normalization of Paper~I, gives the spectral density
+$f_{2m+1}(\sqrt{x})=(-1/\pi)^m g_\lambda^{(m)}(x)/Z_\lambda$. The profile is Schwartz, so Bochner's
+theorem and Fourier uniqueness identify positive semidefiniteness with $f_{2m+1}\ge0$.
+\end{proof}
+
+\begin{lemma}[Downward closure]\label{lem:down}
+If $d$ is odd, $\lambda\in A_d$ and $\lambda'<\lambda$, then $\lambda'\in A_d$.
+\end{lemma}
+\begin{proof}
+Let $d=2m+1$ and $c=\lambda-\lambda'>0$. Since $A_d\subseteq A_{2k+1}$ for $k\le m$,
+Lemma~\ref{lem:crit} gives $(-1)^k g_\lambda^{(k)}\ge0$ for $0\le k\le m$. By Leibniz,
+$(-1)^m\bigl(g_\lambda\,\ee^{-cx}\bigr)^{(m)}=\ee^{-cx}\sum_k\binom{m}{k}c^{m-k}(-1)^kg_\lambda^{(k)}\ge0$.
+\end{proof}
+
+\section{Dimension three}
+\begin{theorem}\label{thm:d3}
+$A_3=(-\infty,\lambda_1]$ with $\lambda_1=-\Phi''(0)/(2\Phi(0))=9.36345246475\ldots$
+\end{theorem}
+\begin{proof}
+By Csordas and Varga \cite{CV88}, as recorded in \cite[Theorem 2.2(b)]{Csordas98}, the function
+$t\mapsto\log\Phi_{\rm C}(\sqrt{t})$ is strictly concave on $(0,\infty)$ for Csordas's kernel
+$\Phi_{\rm C}$. Our $\Phi(r)$ is $\Phi_{\rm C}(r/2)$ (Paper~I, Section~1), and concavity survives
+the linear change $t\mapsto t/4$. Hence $H'/H$ is strictly decreasing on $(0,\infty)$, and its
+limit at $0$ is $a_1/a_0=-\lambda_1$. So $H'(x)+\lambda_1H(x)<0$ for $x>0$, that is
+$Q_1(x;\lambda_1)>0$, and $\lambda_1\in A_3$ by Lemma~\ref{lem:crit}. Lemma~\ref{lem:down} gives
+$(-\infty,\lambda_1]\subseteq A_3$. For $\lambda>\lambda_1$, $Q_1(0;\lambda)=-(a_1+\lambda a_0)<0$,
+so $Q_1<0$ near zero and $\lambda\notin A_3$.
+\end{proof}
+An interval-arithmetic replay of the same inequality (500 cells, 128 and 192 bits) agrees and is
+kept as a cross-check; it is not needed for the proof.
+
+\section{Upper bounds in odd dimensions five to twenty-seven}
+\begin{theorem}\label{thm:upper}
+For $1\le m\le13$ the polynomial $P_m$ has a smallest real root $\lambda_m$, given in
+Table~\ref{tab:roots}; these satisfy $\lambda_m<\lambda_{m-1}$, and $P_m<0$ on
+$(\lambda_m,\lambda_{m-1}]$ for $m\ge2$. Consequently
+\[
+ A_{2m+1}\subseteq(-\infty,\lambda_m]\qquad\text{and}\qquad A_{2m+2}\subseteq(-\infty,\lambda_m]
+ \qquad(1\le m\le13).
+\]
+\end{theorem}
+\begin{proof}
+The three numerical statements are certified in ball arithmetic (Section~\ref{sec:repro}).
+For the inclusion, argue by induction on $m$; the case $m=1$ is Theorem~\ref{thm:d3}. Let
+$\lambda\in A_{2m+1}$. Then $\lambda\in A_{2m-1}\subseteq(-\infty,\lambda_{m-1}]$. By
+Lemma~\ref{lem:crit} and continuity at $x=0$, $m!\,P_m(\lambda)=Q_m(0;\lambda)\ge0$, which
+excludes $(\lambda_m,\lambda_{m-1}]$. Hence $\lambda\le\lambda_m$. The even case is
+$A_{2m+2}\subseteq A_{2m+1}$.
+\end{proof}
+
+\begin{table}[h]\centering
+\begin{tabular}{rr@{\qquad}rr}
+\toprule
+$d$ & $\lambda_m$ & $d$ & $\lambda_m$\\
+\midrule
+3 & $9.36345246475$ & 17 & $-8.59180627882$\\
+5 & $5.91121963944$ & 19 & $-10.97357707942$\\
+7 & $3.21109506834$ & 21 & $-13.37326201186$\\
+9 & $0.77794382588$ & 23 & $-15.78747290450$\\
+11 & $-1.56452213126$ & 25 & $-18.21317232236$\\
+13 & $-3.89117329076$ & 27 & $-20.64786061421$\\
+15 & $-6.23091284445$ & & \\
+\bottomrule
+\end{tabular}
+\caption{Smallest real root of $P_m$, $d=2m+1$, rounded to eleven decimals. Each is enclosed in
+a certified interval of width $2\cdot10^{-12}$.}\label{tab:roots}
+\end{table}
+
+At $\lambda=0$ the table reads $\lambda_4>0>\lambda_5$. The second inequality reproves that the
+undeformed Xi kernel is not positive semidefinite in dimension eleven. It says nothing about
+dimension ten, which Paper~I settles by a separate witness.
+
+\section{Exact endpoints in dimensions five to thirteen}
+\begin{theorem}\label{thm:sharp}
+$A_{2m+1}=(-\infty,\lambda_m]$ for $1\le m\le6$, that is, in dimensions $3,5,7,9,11,13$.
+Consequently $\lambda_m\le\sup A_{2m}\le\lambda_{m-1}$ for $2\le m\le6$.
+\end{theorem}
+\begin{proof}
+The case $m=1$ is Theorem~\ref{thm:d3}. For $2\le m\le6$, Theorem~\ref{thm:upper} gives one
+inclusion, and by Lemmas~\ref{lem:crit} and~\ref{lem:down} the other follows from
+$Q_m(x;\lambda_m)\ge0$ for all $x>0$. This is certified in three regions of $x=r^2$, for every
+$\lambda$ in the enclosure of $\lambda_m$.
+
+\emph{Near the origin, $0\le x\le1/16$.} Here $\partial_xQ_m(x;\lambda)>0$. Since
+$Q_m(0;\lambda_m)=m!\,P_m(\lambda_m)=0$, this gives $Q_m(x;\lambda_m)>0$ on $(0,1/16]$.
+
+\emph{Middle, $1/16\le x\le1/4$.} Here $Q_m(x;\lambda)>0$ directly.
+
+Both use the Taylor series $H(x)=\sum_k a_kx^k$ to degree $120$. The theta series is analytic
+for $\lvert\operatorname{Im}r\rvert<\pi/4$, so $H$ is analytic on $\lvert x\rvert<(\pi/4)^2$. On
+$\lvert x\rvert\le3/5$ one has $\lvert\operatorname{Re}r\rvert,\lvert\operatorname{Im}r\rvert\le t=\sqrt{3/5}$,
+hence $\lvert X_n\rvert\le\pi n^2\ee^{2t}$ and $\operatorname{Re}X_n\ge\pi n^2\ee^{-2t}\cos2t>0$,
+which bounds $\lvert H\rvert$ by an explicit constant $M$. Cauchy's estimate
+$\lvert a_k\rvert\le M(3/5)^{-k}$ then bounds the omitted terms of each derivative.
+
+\emph{Tail, $r\ge1/2$.} With $E=-\tfrac{1}{2r}\partial_r-\lambda$ one has
+$Q_m=\sum_n E^m\bigl[\ee^{r/2-X_n}(2X_n^2-3X_n)\bigr]$ and
+$E^m\bigl[\ee^{r/2-X}(2X^2-3X)\bigr]=\ee^{r/2-X}w_m(r,X;\lambda)/(2^mr^{2m})$, where $w_0=2X^2-3X$ and
+\[
+ w_{k+1}=r(2X-\tfrac12)w_k-2rX\,\partial_Xw_k-r\,\partial_rw_k+2k\,w_k-2\lambda r^2w_k .
+\]
+After the substitution $r=\tfrac12+z$, $X=\tfrac{8539}{1000}(1+2z+2z^2)+u$, every coefficient of
+$w_m$ as a polynomial in $z,u$ is positive on the enclosure of $\lambda_m$. Since
+$X_n(r)\ge\pi\ee\,\ee^{2z}\ge\tfrac{8539}{1000}(1+2z+2z^2)$, every summand is positive for $r\ge\tfrac12$.
+\end{proof}
+
+\begin{conjecture}\label{conj}
+$A_{2m+1}=(-\infty,\lambda_m]$ for every $m\ge1$.
+\end{conjecture}
+For $7\le m\le13$ the conjecture is equivalent to $Q_m(x;\lambda_m)\ge0$ for all $x>0$, which has
+not been tested here. The computation that first produced these endpoints recorded that a
+uniform version of the root law has limitations, so the statement stays a conjecture. The exact
+even-dimensional endpoints are open in every case.
+
+\begin{remark}[Prior work and novelty]
+Theorem~\ref{thm:d3} is a corollary of known log-concavity. At $\lambda=0$, membership in $A_5$ is
+Csordas's convexity of $\Phi(\sqrt{t})$ \cite[Theorem 2.12]{Csordas98}. Csordas's later paper
+\cite{Csordas13} treats positive definiteness of related kernels in one dimension and poses open
+problems about the deformed kernel; on a reading of that paper it contains no radial or
+dimension-dependent result and nothing on derivatives of $\Phi(\sqrt{t})$ beyond the second.
+This is one paper, not a literature search: novelty of Theorems~\ref{thm:upper}
+and~\ref{thm:sharp} has not been established.
+\end{remark}
+
+\section{Reproducibility}\label{sec:repro}
+\texttt{certify\_bounds.py} (python-flint 0.9.0) encloses $\Phi^{(2j)}(0)$ for $j\le13$ from the
+theta series with an explicit tail bound, and then proves for each $m$: a sign change of $P_m$
+across an interval of width $2\cdot10^{-12}$; $P_m>0$ from a Cauchy root bound up to that
+interval; and $P_m<0$ from that interval up to the upper end of the interval for $\lambda_{m-1}$.
+Runs at 256 and 384 bits produce the same intervals; \texttt{heat-upper-bounds.json} records them.
+\texttt{certify\_sharp.py} carries out the three-region certificate of Theorem~\ref{thm:sharp}
+at 512 and 768 bits, with identical cell counts; \texttt{heat-sharpness.json} records them. An
+independent floating-point comparison of the Taylor form and the summand form of $Q_m$ agrees.
+The dimension-three replay is \texttt{check\_d3.py}. No part of this draft has been formalized in
+Lean or reviewed by another person.
+
+\section*{Acknowledgments}
+I used Claude (Anthropic) and ChatGPT (OpenAI) in preparing this work.
+
+\begin{thebibliography}{9}
+\bibitem{PaperI} I. Walker, \emph{The Exact Positive-Definiteness Dimension of the Riemann Xi
+Function}, referee draft, November 25, 2026.
+\url{https://github.com/iqwalker-debug/xi-positive-definiteness-}.
+\bibitem{Csordas98} G. Csordas, \emph{Convexity and the Riemann $\zeta$-function}, Glas. Mat.
+Ser. III 33 (1998), 37--50.
+\bibitem{CV88} G. Csordas and R. S. Varga, \emph{Moment inequalities and the Riemann
+hypothesis}, Constr. Approx. 4 (1988), 175--188.
+\bibitem{Csordas13} G. Csordas, \emph{Fourier transforms of positive definite kernels and the
+Riemann $\xi$-function}, \href{https://arxiv.org/abs/1309.0055}{arXiv:1309.0055}.
+\bibitem{GT} L. Grafakos and G. Teschl, \emph{On Fourier transforms of radial functions and
+distributions}, J. Fourier Anal. Appl. 19 (2013), 167--179.
+\end{thebibliography}
+\end{document}
