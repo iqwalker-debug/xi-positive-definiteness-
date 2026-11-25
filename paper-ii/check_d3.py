@@ -1,4 +1,7 @@
 """Rerun with python-flint 0.9.0, Python assertions enabled."""
+if not __debug__:
+    raise SystemExit("Verification requires Python assertions. Remove -O or PYTHONOPTIMIZE.")
+
 from fractions import Fraction as F
 import json
 from flint import arb, ctx

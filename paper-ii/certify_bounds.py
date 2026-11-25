@@ -4,10 +4,13 @@ Proves, in ball arithmetic:
   (1) an enclosure [lo_m, hi_m] of width 2e-12 with P_m(lo_m) > 0 > P_m(hi_m);
   (2) P_m > 0 on [-B, lo_m], where B is a Cauchy root bound (so lo_m..hi_m holds the smallest real root);
   (3) P_m' < 0 on the whole bracket [lo_m, hi_m], so the bracket holds exactly one root and
-      P_m < 0 from that root to hi_m.  (Algebraically P_m' = -P_{m-1}, and hi_m < lo_{m-1}.)
-  (4) P_m < 0 on [hi_m, hi_{m-1}]  (no sign return before the previous dimension's endpoint).
+      P_m < 0 from that root to hi_m.  (Algebraically P_m' = -P_{m-1}, and, for m >= 2, hi_m < lo_{m-1}.)
+  (4) For m >= 2, P_m < 0 on [hi_m, hi_{m-1}]  (no sign return before the previous dimension's endpoint).
 Items (3) and the Arb check of the Cauchy radius were added after the AI referee report of Nov 25, 2026.
 """
+if not __debug__:
+    raise SystemExit("Verification requires Python assertions. Remove -O or PYTHONOPTIMIZE.")
+
 from fractions import Fraction as F
 import json, sys
 from flint import arb, ctx
@@ -83,8 +86,13 @@ def run(bits, MMAX=13):
         if prev_hi is not None:
             assert hi < prev_lo                               # bracket lies left of the previous one
             cover(hi, prev_hi, -1, 1)
+        # Arb endpoints are dyadics. Preserve the exact value in the existing rational-string field.
+        upper = dP.upper()
+        mantissa, exponent = map(int, upper.man_exp())
+        upper_text = str(mantissa * F(2)**exponent)
+        assert ball(upper_text) == upper and upper < 0
         out.append(dict(dimension=2*m+1, m=m, lower=str(lo), upper=str(hi), enclosure=float(lo),
-                        cauchy_bound=str(Bq), derivative_upper_on_bracket=dP.upper().str(8, radius=False), positive_cells=cells[0], negative_cells=cells[1]))
+                        cauchy_bound=str(Bq), derivative_upper_on_bracket=upper_text, positive_cells=cells[0], negative_cells=cells[1]))
         prev_hi = hi; prev_lo = lo
     return dict(precision=bits, results=out)
 
@@ -95,4 +103,6 @@ if __name__ == '__main__':
             print(r['precision'], 'D%d' % o['dimension'], '%.12f' % o['enclosure'], o['positive_cells'], o['negative_cells'])
     assert [ (o['lower'], o['upper']) for o in res[0]['results'] ] == [ (o['lower'], o['upper']) for o in res[1]['results'] ]
     with open('heat-upper-bounds.json', 'w') as f: json.dump(res, f, indent=1)
+    with open('heat-upper-bounds.json') as f:
+        assert json.load(f) == res, 'certificate serialization mismatch'
     print('OK')

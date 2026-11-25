@@ -1,6 +1,6 @@
-"""Sharpness certificate for the odd-dimensional heat endpoints, d = 5..13 (python-flint 0.9.0).
+"""Sharpness certificate for the odd-dimensional heat endpoints, odd d = 5..27 (python-flint 0.9.0).
 
-Claim certified, for m = 2..6 and lambda_m the smallest real root of P_m (enclosed in
+Claim certified, for m = 2..13 and lambda_m the smallest real root of P_m (enclosed in
 heat-upper-bounds.json):   Q_m(x; lambda_m) > 0 for every x > 0,
 where Q_m(x; lam) = (-1)^m sum_k C(m,k) lam^(m-k) H^(k)(x),  H(x) = Phi(sqrt x).
 
@@ -11,6 +11,9 @@ Three regions in x = r^2:
 A and B use the Taylor series of H at 0 with a Cauchy remainder: H is analytic on |x| < (pi/4)^2,
 |H| <= M on |x| <= rho = 3/5, so |a_k| <= M rho^-k.
 """
+if not __debug__:
+    raise SystemExit("Verification requires Python assertions. Remove -O or PYTHONOPTIMIZE.")
+
 from fractions import Fraction as F
 import json, math
 from flint import arb, acb, ctx
@@ -90,7 +93,8 @@ def run(bits):
     # region C polynomials (exact in r, X; lam kept symbolic)
     r, X, z, u, lam = sp.symbols('r X z u lam')
     w = [2*X**2 - 3*X]
-    for k in range(6):
+    max_m = 13
+    for k in range(max_m):
         wk = w[-1]
         w.append(sp.expand(r*(2*X-sp.Rational(1,2))*wk - 2*r*X*sp.diff(wk, X) - r*sp.diff(wk, r)
                            + 2*k*wk - 2*lam*r**2*wk))
@@ -98,7 +102,7 @@ def run(bits):
     assert arb.pi()*arb(1).exp() > ball(F(8539, 1000))      # pi e^(2R) >= c, and e^(2z) >= 1+2z+2z^2
 
     out = []
-    for m in range(2, 7):
+    for m in range(2, max_m + 1):
         lo, hi = bounds[m]; L = ball(lo).union(ball(hi)); sgn = 1 if m % 2 == 0 else -1
         def Q(x, delta, shift):
             return sgn*sum(binom(m, k)*L**(m-k)*H(k+shift, x, delta) for k in range(m+1))
@@ -113,6 +117,7 @@ def run(bits):
         cover(DELTA_A, DELTA_B, 'B', DELTA_B, 0)     # value positive in the middle
         e = sp.expand(w[m].subs({r: Rr+z, X: c*(1+2*z+2*z**2)+u}))
         P = sp.Poly(e, z, u, domain=sp.QQ[lam])
+        assert P.coeff_monomial((0, 0)) != 0, (m, "missing constant term")
         ncoef = 0
         for coeff in P.coeffs():
             pl = sp.Poly(coeff, lam)

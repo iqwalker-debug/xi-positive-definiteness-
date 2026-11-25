@@ -31,6 +31,9 @@ jobs:
           python certify_bounds.py | tee bounds.log
           python certify_sharp.py | tee sharp.log
           python check_d3.py | tee d3.log
+          python check_export.py | tee export.log
+          python integer/upper.py | tee integer-upper.log
+          python integer/sharp.py | tee integer-sharp.log
           cmp heat-upper-bounds.json committed/heat-upper-bounds.json
           cmp heat-sharpness.json committed/heat-sharpness.json
           tail -n 1 bounds.log | grep -qx OK
