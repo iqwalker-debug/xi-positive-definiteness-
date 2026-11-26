@@ -29,16 +29,16 @@ theorem cutoff_of_zero_marginal {F : ℝ → ℝ} {d : ℕ} (hd : Admits F d)
   obtain ⟨x,hx⟩ := hex
   have hp := integral_pos_of_integrable_nonneg_nonzero (hc.comp continuous_abs) hi
     (fun u => hg |u| (abs_nonneg u)) (x := ‖x‖) (by simpa using hx)
-  linarith
+  exact (ne_of_gt hp) hz
 
 /-- Apply the marginal argument to an odd-dimensional endpoint root.
 The scalar k absorbs the Fourier normalization and factorial. -/
-theorem odd_endpoint_cutoff {m : ℕ} {λ₀ k : ℝ} {P : ℝ → ℝ}
-    (root : P λ₀ = 0) (odd : Admits (profile λ₀) (2*m+1))
-    (lift : Admits (profile λ₀) (2*m+1+1) → ∃ g : ℝ → ℝ, Continuous g ∧
+theorem odd_endpoint_cutoff {m : ℕ} {hRoot k : ℝ} {P : ℝ → ℝ}
+    (root : P hRoot = 0) (odd : Admits (profile hRoot) (2*m+1))
+    (lift : Admits (profile hRoot) (2*m+1+1) → ∃ g : ℝ → ℝ, Continuous g ∧
       Integrable (fun u : ℝ => g |u|) ∧ (∀ r ≥ 0, 0 ≤ g r) ∧
-      (∫ x : E (2*m+1+1), g ‖x‖) = 1 ∧ (∫ u : ℝ, g |u|) = k * P λ₀) :
-    ∀ d, Admits (profile λ₀) d ↔ d ≤ 2*m+1 := by
+      (∫ x : E (2*m+1+1), g ‖x‖) = 1 ∧ (∫ u : ℝ, g |u|) = k * P hRoot) :
+    ∀ d, Admits (profile hRoot) d ↔ d ≤ 2*m+1 := by
   apply cutoff_of_zero_marginal odd
   simpa [root] using lift
 
@@ -66,7 +66,10 @@ theorem tail_le_sq {h : ℝ} (hh : |h| ≤ 1/4) :
   have hp := pow_le_pow_left₀ (by positivity : 0 ≤ |h|/3) hq 11
   apply (div_le_iff₀ (by linarith : 0 < 1-|h|/3)).2
   calc
-    _ = 10^11 * (|h|/3)^11 * (h^2/9) := by rw [show (13:ℕ) = 11+2 by decide, pow_add, div_pow, sq_abs]; ring
+    _ = 10^11 * (|h|/3)^11 * (h^2/9) := by
+      have hs : (|h|/3)^2 = h^2/9 := by norm_num [div_pow, sq_abs]
+      rw [show (13:ℕ) = 11+2 by decide, pow_add, hs]
+      ring
     _ ≤ 10^11 * (1/12 : ℝ)^11 * (h^2/9) := by gcongr
     _ ≤ h^2 * (1-|h|/3) := by nlinarith [mul_nonneg (sq_nonneg h) (sub_nonneg.mpr hq)]
 
@@ -109,6 +112,7 @@ theorem mixture_midpoint {Ω : Type*} [MeasurableSpace Ω] (μ : Measure Ω) [Is
     b^2 ≤ a*c := by
   have hv := ProbabilityTheory.variance_nonneg X μ
   rw [ProbabilityTheory.variance_eq_sub hX] at hv
+  change 0 ≤ (∫ x, (X x)^2 ∂μ) - (∫ x, X x ∂μ)^2 at hv
   rw [hb,hc]
   nlinarith [mul_nonneg (sq_nonneg a) hv]
 
@@ -150,7 +154,7 @@ theorem finite_ceiling (h : ℝ) (one : Admits (profile h) 1)
   have fails : ∃ d, ¬ Admits (profile h) d := by
     by_contra! hall
     obtain ⟨μ,hm,hX,ha,hb,hc⟩ := mixture hall
-    letI := hm
+    let _ := hm
     exact (not_lt_of_ge (mixture_midpoint μ hX ha hb hc)) (tilted_midpoint (midpoint_gap boxes))
   let n := Nat.find fails
   have hn : ¬ Admits (profile h) n := Nat.find_spec fails
@@ -161,7 +165,11 @@ theorem finite_ceiling (h : ℝ) (one : Admits (profile h) 1)
     by_contra hf
     have hmin : n ≤ n-1 := Nat.find_min' fails hf
     omega
-  exact ⟨n-1, by omega, euclideanPSD_cutoff _ _ hd (by simpa [Nat.sub_add_cancel hn2.le] using hn)⟩
+  have hs : n - 1 + 1 = n := by omega
+  apply Exists.intro (n-1)
+  refine ⟨by omega, euclideanPSD_cutoff _ _ hd ?_⟩
+  rw [hs]
+  exact hn
 
 #print axioms cutoff_of_zero_marginal
 #print axioms odd_endpoint_cutoff
