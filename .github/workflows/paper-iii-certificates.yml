@@ -1,0 +1,33 @@
+name: Paper III certificates
+
+on:
+  push:
+    branches: [main, paper-iii-v2]
+    paths: ['paper-iii/**', '.github/workflows/paper-iii-certificates.yml']
+  pull_request:
+    branches: [main]
+    paths: ['paper-iii/**', '.github/workflows/paper-iii-certificates.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    name: Replay finite certificates and delayed witness
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: paper-iii
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install NumPy
+        run: python -m pip install numpy==2.3.5
+      - name: Reproduce all certificate results
+        run: sh replay.sh

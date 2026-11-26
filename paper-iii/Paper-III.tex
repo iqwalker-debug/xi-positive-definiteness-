@@ -7,7 +7,7 @@
 \newcommand{\R}{\mathbb R}
 \newcommand{\sechead}[1]{\medskip{\large\bfseries #1}\par}
 \begin{document}
-{\small GENESIS \hfill Paper III $\cdot$ Preprint v1 for independent review}
+{\small GENESIS \hfill Paper III $\cdot$ Preprint v2 draft for independent review}
 
 {\LARGE\bfseries\raggedright Finite witnesses for failure of positive definiteness\\ in quadratic Dirichlet $L$-functions\par}
 Ian Walker \hfill November 25, 2026
@@ -45,7 +45,7 @@ The decay and transformation justify analytic continuation of the integral to ev
 \]
 Since $H_p(z)=z+O(z^4)$ as $z\downarrow0$, a negative value forces both signs on open intervals. By Bochner's theorem and uniqueness of Fourier transforms of finite measures [5], no real nonzero multiple of $2h_p(r)\,dr$ can then represent a positive-definite profile. Restricting a radial kernel on $\R^d$ to a line yields the same obstruction for every $d\ge1$. Division by the central value is permissible whenever that value is nonzero.
 
-\textbf{Why the density-one conclusion is already available.} Put $F_p(y)=\sum_{n=1}^{p-1}\chi_p(n)y^n$. For $a>0$, periodicity and the Gaussian integral give
+\textbf{What is already known about density one.} Put $F_p(y)=\sum_{n=1}^{p-1}\chi_p(n)y^n$. For $a>0$, periodicity and the Gaussian integral give
 \[
  \frac{F_p(e^{-a})}{1-e^{-pa}}
  =\sum_{n\ge1}\chi_p(n)e^{-an}
@@ -54,7 +54,7 @@ Since $H_p(z)=z+O(z^4)$ as $z\downarrow0$, a negative value forces both signs on
 \]
 Indeed the integral of $t^{-1/2}\exp(-a^2/(4t)-n^2t)$ is $\sqrt{\pi}\,e^{-an}/n$. Termwise integration is absolutely justified by $\sum_{n\ge1}e^{-an}<\infty$. If $H_p$ were everywhere nonnegative, its strict positivity near zero and the strictly positive integral weight would give $F_p(y)>0$ for every $0<y<1$. Even one interior zero of $F_p$ therefore forces a negative value of $H_p$.
 
-Baker and Montgomery [1, pp.~23--24] define the family of prime discriminants and include it in their oscillation theorem. For the consequence about Fekete polynomials we use the explicit prime-family statement of Conrey, Granville, Poonen and Soundararajan [2, p.~866]: the number of real zeros of $F_p$ in $(0,1)$ tends to infinity in density. The exceptional primes remain of relative density zero among $p\equiv3\pmod4$, since this progression contains asymptotically half of the primes. This proves the qualitative conclusion from the cited prime-family statement. Sarnak [3] discusses sparsity for positive-definite quadratic $L$-functions directly. The finite calculation below answers the distinct question of which specific prime classes have a common explicit witness.
+Baker and Montgomery [1] proved that Fekete polynomials have many zeros in $(0,1)$ for almost all discriminants. Later accounts state their theorem for fundamental discriminants: for every fixed $K$ there are at least $K$ zeros for almost all fundamental discriminants [8]. Primes have density zero among fundamental discriminants, so that form does not by itself give a statement about almost all primes. The prime-family form is stated by Conrey, Granville, Poonen and Soundararajan [2, p.~866], who attribute it to [1]: the number of real zeros of $F_p$ in $(0,1)$ tends to infinity for almost all primes $p$. Under that statement the exceptional primes have relative density zero among $p\equiv3\pmod4$, since this progression contains asymptotically half of the primes, and the identity above gives a negative value of $H_p$ for almost all such primes. We use the prime-family statement only in the Remark of Section 7. Theorem 1 and Propositions 2 and 3 do not depend on it. Sarnak [3] discusses sparsity for positive-definite quadratic $L$-functions directly, and Jung and Shin [7] prove sparsity of positive-definite members in several families of automorphic forms. The finite calculation below answers the distinct question of which specific prime classes have a common explicit witness.
 
 \newpage
 \sechead{3. The uniform bound and the count of residue classes}
@@ -153,18 +153,31 @@ Both traversals terminate below the strict majority threshold. These terminal co
 \sechead{7. How far out can the first negative witness lie?}
 The failure of a grid to find a witness could reflect rounding or a loose tail bound. There is also an intrinsic limitation. Even if every value were evaluated exactly, some infinite prime families would pass every test in the entire interval covered by the grid.
 
-\textbf{Proposition 2 (witnesses arbitrarily close to one).} For every $0<z_0<1$ there is a positive-relative-density set of primes $p\equiv3\pmod4$ for which $H_p(z)>0$ throughout $(0,z_0]$ and $H_p(z)<0$ somewhere in $(z_0,1)$. More explicitly, choose any integer $M\ge2$ with $M(M+1)>1/(-\log z_0)$. Such a set has relative density $2^{-\pi(M)}$, where $\pi(M)$ counts primes up to $M$.
+\textbf{Proposition 2 (no witness below a prescribed point).} For every $0<z_0<1$ there is a positive-relative-density set of primes $p\equiv3\pmod4$ for which $H_p(z)>0$ throughout $(0,z_0]$. More explicitly, choose any integer $M\ge2$ with $M(M+1)>1/(-\log z_0)$. The primes $p>M$ with $\chi_p(\ell)=+1$ for every prime $\ell\le M$ have this property and relative density $2^{-\pi(M)}$, where $\pi(M)$ counts primes up to $M$. Any negative value of $H_p$ for such a prime lies in $(z_0,1)$.
 
 \textit{Proof.} Prescribe $\chi_p(\ell)=+1$ for every prime $\ell\le M$ and take $p>M$. These classes have relative density $2^{-\pi(M)}$ by the counting argument in Section 3. All $n\le M$ then have sign $+1$. Write $a=-\log z$. Since $2M^2\ge M(M+1)>1/a$ for $z\le z_0$, the unsigned terms decrease beyond $M$. The integral bound of Section 3 gives
 \[
  H_p(z)\ \ge\ \sum_{n=1}^M n z^{n^2}-\sum_{n>M}n z^{n^2}
  \ \ge\ \frac{z^{M^2}}2\left(M(M+1)-\frac1a\right)>0 .
 \]
-Remove from the prescribed classes the relative-density-zero exceptional set in Section 2. Every remaining prime has a negative value, which must lie in $(z_0,1)$. Removing that exceptional set leaves the density of the prescribed classes unchanged. $\square$
+$\square$
 
-\textbf{For the actual grid.} Take $z_0=1999/2000$ and $M=45$. The 14 primes through 43 determine the signs of all integers through 45. Since $45\cdot46=2070$ and $1/(-\log z_0)<2000$, one obtains $H_p(z)>35z^{2025}$ on the full interval. A set of relative density $1/16384$ therefore evades all eleven test points while still failing positive definiteness. This is a lower bound for the proportion of primes with this behavior.
+\textbf{Remark (conditional).} Under the prime-family statement of Section 2, all primes in these classes outside a set of relative density zero do have a negative value of $H_p$, necessarily in $(z_0,1)$. Proposition 3 gives an explicit family for which this holds without that statement.
 
-\textbf{Code and review status.} The accompanying archive includes the LaTeX source, three witness tables and both upper-bound implementations. Run \texttt{sh replay.sh} after extraction on Linux with Python, NumPy, GNU C++17 and \texttt{sha256sum}. The two upper-bound methods share the same necessary condition and interval partition. This AI-assisted preprint awaits external review. Priority for the finite optimization result remains unconfirmed.
+\textbf{For the actual grid.} Take $z_0=1999/2000$ and $M=45$. The 14 primes through 43 determine the signs of all integers through 45. Since $45\cdot46=2070$ and $1/(-\log z_0)<2000$, one obtains $H_p(z)>35z^{2025}$ on the full interval. A set of relative density $1/16384$ therefore evades all eleven test points, and also the five points of Theorem 1, since every one of the sixteen points is at most $1999/2000$.
+
+\textbf{Proposition 3 (an explicit delayed witness).} Let $f$ be the completely multiplicative function with $f(\ell)=+1$ for primes $\ell\le43$ and $f(\ell)=-1$ for primes $47\le\ell\le1500$. The primes $p\equiv3\pmod4$ with $p>1500$ and $\chi_p(\ell)=f(\ell)$ for all $239$ primes $\ell\le1500$ have relative density $2^{-239}$. For each of them $H_p(z)>0$ on $(0,1999/2000]$, and
+\[
+ H_p(1-1/750000)<-30821 .
+\]
+
+\textit{Proof.} The density follows from the counting argument in Section 3 with the modulus $8\prod\ell$ over odd primes $\ell\le1500$. Every integer through $46$ has sign $+1$, so positivity on $(0,1999/2000]$ is the case $M=45$ above. Put $N=1500$ and $b=750000$. Since $p>N$, every $n\le N$ has $\chi_p(n)=f(n)$. Since $2N^2\ge b$, the tail bound of Section 3 applies and
+\[
+ H_p(z)\le\sum_{n\le N}f(n)\,nz^{n^2}+\frac b2z^{N^2},\qquad z=1-1/b .
+\]
+The program \texttt{delayed\_witness.py} evaluates the right side with outward rounding in units of $2^{-120}$, using repeated squaring for the powers. Its upper bound is negative and below $-30821$. $\square$
+
+\textbf{Code and review status.} The accompanying archive includes the LaTeX source, three witness tables, both upper-bound implementations and the delayed-witness certificate. Run \texttt{sh replay.sh} after extraction on Linux with Python, NumPy, GNU C++17 and \texttt{sha256sum}. The two upper-bound methods share the same necessary condition and interval partition. This AI-assisted preprint awaits external review. Priority for the finite optimization result remains unconfirmed.
 
 \textbf{References}\par
 {\small\raggedright
@@ -173,5 +186,7 @@ Remove from the prescribed classes the relative-density-zero exceptional set in 
 [3] P. Sarnak, \href{https://publications.ias.edu/sarnak/paper/511}{Letter to E. Bachmat on positive definite $L$-functions}, 2011.\par
 [4] A. Sheth and W. Voo, \href{https://arxiv.org/abs/2611.12152}{Super-positivity via Dirichlet theta functions}, 2026, introduction. For theta zeros of positive discriminants see O. Klurman, Y. Lamzouri and M. Munsch, \href{https://arxiv.org/abs/2403.02195}{arXiv:2403.02195}, Corollary 1.7 of v1.\par
 [5] W. Rudin, \emph{Fourier Analysis on Groups}, Interscience, 1962, Chapter 1.\par
-[6] H. Davenport, \emph{Multiplicative Number Theory}, third ed., Springer, 2000.\par}
+[6] H. Davenport, \emph{Multiplicative Number Theory}, third ed., Springer, 2000.\par
+[7] J. Jung and S. W. Shin, \href{https://doi.org/10.1007/s11854-016-0017-9}{On the sparsity of positive-definite automorphic forms within a family}, \emph{J. Anal. Math.} 129 (2016), 105--138.\par
+[8] O. Klurman, Y. Lamzouri and M. Munsch, \href{https://arxiv.org/abs/2403.02195}{Sign changes of short character sums and real zeros of Fekete polynomials}, arXiv:2403.02195.\par}
 \end{document}
