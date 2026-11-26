@@ -56,7 +56,8 @@ jobs:
           cache: pip
           cache-dependency-path: paper-iv/requirements-ci.txt
       - name: Install pinned readers
-        run: python -m pip install --only-binary=:all: -r paper-iv/requirements-ci.txt
+        run: |
+          python -m pip install --only-binary=:all: -r paper-iv/requirements-ci.txt
       - name: Recompute summaries from the archived microphone pairs
         run: python paper-iv/acoustic/replay_windows.py --check-stored
       - name: Compare manuscript with certificates and exercise mutations
