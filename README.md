@@ -2,7 +2,7 @@
 
 ## How to cite these papers
 
-Cite **Ian Walker** and the title of the paper containing the result you use. The [BibTeX entries for Papers I–III](papers.bib) link to the exact manuscript versions dated November 25, 2026. For the collection and its verification materials, use the [repository citation](CITATION.cff).
+For Papers I–III, cite Ian Walker and the title of the manuscript containing the result. Paper IV is an AI-assisted GENESIS research program draft prepared for Ian Walker. The [paper-specific BibTeX entries](papers.bib) link to the exact manuscript versions. For the collection and its verification materials, use the [repository citation](CITATION.cff).
 
 ## Paper I
 
@@ -32,3 +32,9 @@ Both meshes reproduce a strictly negative normalized Gram sum of approximately �
 [Finite witnesses for failure of positive definiteness in quadratic Dirichlet L-functions](paper-iii/Paper-III.pdf) by Ian Walker. For the certificate defined in Theorem 1, five common points are necessary and sufficient to certify a strict majority of the prime sign patterns.
 
 [LaTeX source](paper-iii/Paper-III.tex) · [Reproduction instructions and counts](paper-iii/README.md) · [Certificate code and witness tables](paper-iii/certificate)
+
+## Paper IV
+
+[Sharp space–time covariance bounds for the Riemann Xi profile](paper-iv/Paper-IV.pdf) is a revision 2 working draft prepared for Ian Walker. With the complete equal-time covariance fixed, it bounds delayed correlations and studies how their joint range contracts with spatial dimension. Its Xi specialization uses Paper I. External specialist review and priority assessment remain open.
+
+[Manuscript source, figures, Lean and Arb checks](paper-iv/README.md)
