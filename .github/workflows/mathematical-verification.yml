@@ -77,7 +77,6 @@ jobs:
         run: |
           set -euo pipefail
           lean --version
-          lake update
           lake exe cache get
       - name: Compile lemma and inspect axioms
         working-directory: verification/lean
@@ -91,6 +90,7 @@ jobs:
           grep -F "'GenesisTidalMellin.exact_cutoff_of_arb' depends on axioms: [propext, Classical.choice, Quot.sound]" lean-run.log
           grep -F "'GenesisTidalMellin.strict_d9' depends on axioms: [propext, Classical.choice, Quot.sound]" lean-run.log
           grep -F "'GenesisTidalMellin.strict_cutoff_of_arb' depends on axioms: [propext, Classical.choice, Quot.sound]" lean-run.log
+          grep -F "'GenesisTidalMellin.exact_cutoff_of_row_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]" lean-run.log
           if grep -Eq 'sorryAx|declaration uses .sorry.' lean-run.log; then
             echo "Unproved declaration found"
             exit 1
