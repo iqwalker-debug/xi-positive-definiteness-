@@ -1,0 +1,8 @@
+{
+  "cutoff": 1500,
+  "denominator": 750000,
+  "prescribed_primes": 239,
+  "relative_density": "2^-239",
+  "upper_bound": "-40968533653933794713174440543973247602474/1329227995784915872903807060280344576",
+  "upper_bound_decimal": -30821.299117870043
+}
