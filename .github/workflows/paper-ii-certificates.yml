@@ -46,3 +46,36 @@ jobs:
             paper-ii/*.log
             paper-ii/*.json
           retention-days: 90
+
+  extension:
+    name: Arb certificates for dimensions 29 to 41
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned dependencies
+        run: python -m pip install --requirement paper-ii/requirements.txt
+      - name: Replay and compare
+        working-directory: paper-ii
+        run: |
+          set -euo pipefail
+          mkdir committed && cp heat-upper-bounds-extended.json heat-sharpness-extended.json committed/
+          python certify_bounds_induction.py | tee bounds-induction.log
+          python certify_sharp.py --bounds heat-upper-bounds-extended.json --max-m 20 --output heat-sharpness-extended.json | tee sharp-extended.log
+          cmp heat-upper-bounds-extended.json committed/heat-upper-bounds-extended.json
+          cmp heat-sharpness-extended.json committed/heat-sharpness-extended.json
+          tail -n 1 bounds-induction.log | grep -qx OK
+          tail -n 1 sharp-extended.log | grep -qx OK
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: paper-ii-extension-evidence
+          path: |
+            paper-ii/*.log
+            paper-ii/*-extended.json
+          retention-days: 90
