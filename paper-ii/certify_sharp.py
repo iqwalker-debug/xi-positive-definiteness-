@@ -1,4 +1,7 @@
-"""Sharpness certificate for the odd-dimensional heat endpoints, odd d = 5..27 (python-flint 0.9.0).
+"""Sharpness certificate for the odd-dimensional heat endpoints, odd d = 5..27 by default (python-flint 0.9.0).
+
+With --bounds heat-upper-bounds-extended.json --max-m 20 --output heat-sharpness-extended.json the same
+three-region check runs for odd d = 5..41, on the brackets of certify_bounds_induction.py.
 
 Claim certified, for m = 2..13 and lambda_m the smallest real root of P_m (enclosed in
 heat-upper-bounds.json):   Q_m(x; lambda_m) > 0 for every x > 0,
@@ -68,12 +71,12 @@ def sup_bound():
     M += 2*(-3*arb(2001)**2/400).exp()
     return M*(t/2).exp()
 
-def run(bits):
+def run(bits, bounds_file='heat-upper-bounds.json', max_m=13):
     ctx.prec = bits
     polys = theta_polys(2*K)
     a = taylor_coeffs(polys)
     M = sup_bound()
-    bounds = {o['m']: (F(o['lower']), F(o['upper'])) for o in json.load(open('heat-upper-bounds.json'))[0]['results']}
+    bounds = {o['m']: (F(o['lower']), F(o['upper'])) for o in json.load(open(bounds_file))[0]['results']}
     fact = [arb(1)]
     for i in range(1, K+2): fact.append(fact[-1]*i)
     rho = ball(RHO)
@@ -93,7 +96,6 @@ def run(bits):
     # region C polynomials (exact in r, X; lam kept symbolic)
     r, X, z, u, lam = sp.symbols('r X z u lam')
     w = [2*X**2 - 3*X]
-    max_m = 13
     for k in range(max_m):
         wk = w[-1]
         w.append(sp.expand(r*(2*X-sp.Rational(1,2))*wk - 2*r*X*sp.diff(wk, X) - r*sp.diff(wk, r)
@@ -130,9 +132,15 @@ def run(bits):
     return dict(precision=bits, taylor_degree=K, sup_bound=str(M), results=out)
 
 if __name__ == '__main__':
-    res = [run(b) for b in (512, 768)]
+    import argparse
+    cli = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    cli.add_argument('--bounds', default='heat-upper-bounds.json')
+    cli.add_argument('--max-m', type=int, default=13)
+    cli.add_argument('--output', default='heat-sharpness.json')
+    args = cli.parse_args()
+    res = [run(b, args.bounds, args.max_m) for b in (512, 768)]
     for rr in res:
         for o in rr['results']:
             print(rr['precision'], 'D%d' % o['dimension'], 'A', o['cells_A'], 'B', o['cells_B'], 'tail', o['tail_coefficients'])
-    with open('heat-sharpness.json', 'w') as f: json.dump(res, f, indent=1)
+    with open(args.output, 'w') as f: json.dump(res, f, indent=1)
     print('OK')

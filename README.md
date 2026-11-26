@@ -23,7 +23,7 @@ Both meshes reproduce a strictly negative normalized Gram sum of approximately â
 
 ## Paper II
 
-[Positive-Definiteness Endpoints of Heat-Deformed Riemann Xi Kernels](paper-ii/Paper-II.pdf) by Ian Walker. This preprint gives the exact heat-parameter endpoints for positive semidefiniteness in odd Euclidean dimensions from 3 through 27. It awaits independent human review.
+[Positive-Definiteness Endpoints of Heat-Deformed Riemann Xi Kernels](paper-ii/Paper-II.pdf) by Ian Walker. This preprint gives the exact heat-parameter endpoints for positive semidefiniteness in odd Euclidean dimensions from 3 through 41. It awaits independent human review.
 
 [LaTeX source](paper-ii/Paper-II.tex) Â· [Certificates, Lean checks, and reproduction instructions](paper-ii/README.md)
 
