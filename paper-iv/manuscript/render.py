@@ -1,8 +1,9 @@
 """Build from editable Markdown with Pandoc, Chromium and Python Playwright."""
 from pathlib import Path
-import subprocess, os, shutil, tempfile
+import subprocess, os, shutil, sys, tempfile
 from playwright.sync_api import sync_playwright
 r=Path(__file__).resolve().parent
+subprocess.run([sys.executable, str(r.parent / "verify_claims.py"), "--check"], check=True)
 style="""
 @page{size:letter;margin:0}
 *{box-sizing:border-box} body{margin:0;color:#193345;font:11.0pt/1.43 "DejaVu Serif",serif;background:#fff}
@@ -16,7 +17,8 @@ p{margin:.092in 0}.callout{font:10.2pt/1.45 "DejaVu Sans",sans-serif;background:
 table{width:100%;border-collapse:collapse;margin:.11in 0;font:9.3pt/1.35 "DejaVu Sans",sans-serif}
 th{background:#176a60;color:#fff;text-align:left;padding:7px 8px}td{border-bottom:1px solid #d0ded8;padding:6px 8px}tbody tr:nth-child(even){background:#f1f6f3}
 .math{font-family:"Latin Modern Math","DejaVu Math TeX Gyre",serif}math[display=block]{font-size:1.03em;margin:.11in 0}math{font-family:"Latin Modern Math","DejaVu Math TeX Gyre",serif}
-figure{margin:0;text-align:center}figure figcaption{display:none}img.wide{width:100%;max-height:3.3in;object-fit:contain}img.joint{width:78%;max-height:3.15in;object-fit:contain}
+figure{margin:0;text-align:center}figure figcaption{display:none}img.wide{width:100%;max-height:3.3in;object-fit:contain}img.joint{width:78%;max-height:2.88in;object-fit:contain}
+img.acoustic{width:100%;max-height:3.20in;object-fit:contain}.p9 table{font-size:8.6pt}.p10 table{font-size:9pt;line-height:1.3}.p10 th,.p10 td{padding:5px 6px}.p9 th,.p9 td{padding:5px 6px}
 img{max-width:100%}p:has(>em:only-child){font:9.2pt/1.37 "DejaVu Sans",sans-serif;color:#52676d}
 strong{color:#163647}th strong{color:#fff}li{margin:.03in 0}
 a{color:#116b63;text-decoration:underline}ol{padding-left:.24in}
@@ -25,7 +27,7 @@ section.references ol{font:9.2pt/1.38 "DejaVu Sans",sans-serif}
 .proofphoto{width:97%;height:6.7in;object-fit:contain}.widehold{width:100%;max-height:4.15in;object-fit:contain}.milestone{width:6.94in;height:auto}
 """
 title = 'Sharp space–time covariance bounds for the Riemann Xi profile'
-section_name = 'REVISED MANUSCRIPT'
+section_name = 'MANUSCRIPT  /  REVISION 3'
 src = (r/'manuscript.md').read_text().split('<!--page-->')
 pages=[]
 for i,s in enumerate(src,1):
@@ -43,7 +45,7 @@ with sync_playwright() as p:
     page.evaluate("document.fonts.ready")
     sizes=page.locator('.sheet').evaluate_all("""items=>items.map(x=>[x.className,Math.round(x.querySelector('footer').getBoundingClientRect().top-x.querySelector('main').getBoundingClientRect().bottom)])""")
     print('Vertical space before footer, CSS pixels:',sizes)
-    assert min(v for _,v in sizes)>4
+    assert min(v for _,v in sizes)>=12
     assert page.locator('math').count()>5
     assert page.locator('img').evaluate_all("imgs=>imgs.every(x=>x.complete&&x.naturalWidth>0)")
     page.pdf(path=str(pdf_path),print_background=True,prefer_css_page_size=True,tagged=True)
@@ -56,6 +58,8 @@ with fitz.open(pdf_path) as d:
     d.set_toc([[1,re.search(r'^# (.+)$',section,re.M).group(1),i] for i,section in enumerate(src,1)]+[])
     metadata=d.metadata
     metadata.update(title=title,subject=section_name+', 26 November 2026',author='GENESIS research program; AI-assisted manuscript prepared for Ian Walker')
+    from pdf_provenance import source_fingerprint
+    metadata['keywords'] = 'paper-iv-source-sha256=' + source_fingerprint()
     d.set_metadata(metadata)
     d.save(str(r/'bookmarked.pdf'),garbage=4,deflate=True)
 (r/'bookmarked.pdf').replace(pdf_path)

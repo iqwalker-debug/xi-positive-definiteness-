@@ -59,15 +59,16 @@ def read_wav(wav, late=False):
         raise ValueError("Public PCM checksum mismatch")
     return np.frombuffer(pcm, dtype="<i2").reshape(-1, 8)
 
+def spectrum(pcm, a, b):
+    x = pcm[a*FS:b*FS].reshape(b-a, FS, 8).astype(float)
+    x = (x - x.mean(axis=1, keepdims=True)) * np.hanning(FS)[None,:,None]
+    h = np.fft.rfft(x, axis=1)[:, FREQ, :]
+    return np.einsum("bfi,bfj->fij", h.conj(), h) / (b-a)
+
 def form_spectra(pcm, late=False):
-    def spectrum(a, b):
-        x = pcm[a*FS:b*FS].reshape(b-a, FS, 8).astype(float)
-        x = (x - x.mean(axis=1, keepdims=True)) * np.hanning(FS)[None,:,None]
-        h = np.fft.rfft(x, axis=1)[:, FREQ, :]
-        return np.einsum("bfi,bfj->fij", h.conj(), h) / (b-a)
     blocks = {"all":(64,96), "early":(64,80), "late":(80,96)} if late else {"all":(14,22), "early":(14,18), "late":(18,22)}
     blocks["training"] = (2,10)
-    return {key:spectrum(a,b) for key,(a,b) in blocks.items()}
+    return {key:spectrum(pcm,a,b) for key,(a,b) in blocks.items()}
 
 def odd_summaries(spec, weights):
     p = spec * weights[:,None,None]

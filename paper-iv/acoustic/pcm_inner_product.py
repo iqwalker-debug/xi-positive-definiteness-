@@ -16,14 +16,20 @@ def load_pcm(path):
             if (w.getframerate(),w.getnchannels(),w.getsampwidth()) != (FS,8,2):
                 raise ValueError('Expected 48 kHz, 16-bit, eight-channel input')
             x=np.frombuffer(w.readframes(96*FS),dtype='<i2').reshape(-1,8)
-    if x.shape[0] < 96*FS or x.shape[1] != 8:
+    if x.ndim != 2 or x.shape[0] < 96*FS or x.shape[1] != 8:
         raise ValueError('96 s of eight-channel data required')
-    x=x[:96*FS];h=hashlib.sha256(np.asarray(x,dtype='<i2').tobytes()).hexdigest()
+    x = x[:96*FS]
+    if not np.issubdtype(x.dtype, np.integer) or x.min() < -32768 or x.max() > 32767:
+        raise ValueError('Expected integer PCM samples in the signed 16-bit range')
+    x = np.asarray(x, dtype='<i2')
+    h = hashlib.sha256(x.tobytes()).hexdigest()
     if h != 'a178bccb8ef114051468fef0188b2efab808e31ce8dd5897119836d65d4caf39':
         raise ValueError('PCM SHA-256 differs')
     return x,h
 
-def compute(x):
+def compute(x, holdouts=None):
+    if holdouts is None:
+        holdouts = {"short": (14, 22), "late": (64, 96)}
     band=np.arange(200,1601)
     window=np.hanning(FS)[:,None]
     def select(s):
@@ -36,7 +42,7 @@ def compute(x):
         return np.fft.irfft(buf,n=FS,axis=0)
     for key,w in [('eq',1/np.sqrt(power)),('native',np.ones_like(power))]:
         sets={}
-        for block,(lo,hi) in {'train':(2,10),'short':(14,22),'late':(64,96)}.items():
+        for block,(lo,hi) in {'train':(2,10), **holdouts}.items():
             den=np.zeros(8)
             odd={step:np.zeros(8-step) for step in (1,2)}
             reverse={step:np.zeros(8-step) for step in (1,2)}
@@ -58,7 +64,7 @@ def compute(x):
             sets[block]=odd
         training={d:sets['train'][d].mean() for d in (1,2)}
         output[key]={}
-        for blk in ('short','late'):
+        for blk in holdouts:
             obs=sets[blk]
             scores={name:np.mean(np.concatenate([abs(obs[d]-sign*training[d]) for d in (1,2)]))
                     for name,sign in [('zero',0),('train',1),('reversed_train',-1)]}
