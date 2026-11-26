@@ -22,3 +22,9 @@ Both meshes reproduce a strictly negative normalized Gram sum of approximately �
 [Positive-Definiteness Endpoints of Heat-Deformed Riemann Xi Kernels](paper-ii/Paper-II.pdf) by Ian Walker. This preprint gives the exact heat-parameter endpoints for positive semidefiniteness in odd Euclidean dimensions from 3 through 27. It awaits independent human review.
 
 [LaTeX source](paper-ii/Paper-II.tex) · [Certificates, Lean checks, and reproduction instructions](paper-ii/README.md)
+
+## Paper III
+
+[Finite witnesses for failure of positive definiteness in quadratic Dirichlet L-functions](paper-iii/Paper-III.pdf) by Ian Walker. For the certificate defined in Theorem 1, five common points are necessary and sufficient to certify a strict majority of the prime sign patterns.
+
+[LaTeX source](paper-iii/Paper-III.tex) · [Reproduction instructions and counts](paper-iii/README.md) · [Certificate code and witness tables](paper-iii/certificate)

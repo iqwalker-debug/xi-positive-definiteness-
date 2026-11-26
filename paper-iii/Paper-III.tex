@@ -1,0 +1,177 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=.9in]{geometry}
+\usepackage{amsmath,amssymb,booktabs}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Finite witnesses for failure of positive definiteness in quadratic Dirichlet L-functions},pdfauthor={Ian Walker}}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\newcommand{\R}{\mathbb R}
+\newcommand{\sechead}[1]{\medskip{\large\bfseries #1}\par}
+\begin{document}
+{\small GENESIS \hfill Paper III $\cdot$ Preprint v1 for independent review}
+
+{\LARGE\bfseries\raggedright Finite witnesses for failure of positive definiteness\\ in quadratic Dirichlet $L$-functions\par}
+Ian Walker \hfill November 25, 2026
+
+\sechead{1. An explicit test and its minimum size}
+For a prime $p\equiv3\pmod4$, write $\chi_p(n)=(n/p)$ and set
+\[
+ \Lambda_p(s)=(p/\pi)^{(s+1)/2}\Gamma((s+1)/2)L(s,\chi_p),
+ \qquad H_p(z)=\sum_{n\ge1}n\chi_p(n)z^{n^2}.
+\]
+A negative value of $H_p$ on $(0,1)$ rules out positive definiteness of $t\mapsto c\Lambda_p(1/2+it)$ for every real $c\ne0$. Positive definiteness here means that each matrix of profile values at pairwise differences is positive semidefinite. Section 2 derives the known almost-everywhere failure from the prime-family statement cited in [2]. Our question is which prime classes admit a common, explicit negative witness, and how many test points are required to identify a majority using a specified rule.
+
+\textbf{Theorem 1 (fixed certificate).} Let $p>61$, and let its mask record the signs of $\chi_p$ at the first 18 primes. Truncate at $n=300$. For each term of undetermined sign use $+nz^{n^2}$ as its upper bound and add the nonnegative tail estimate in Section 3 wherever it applies. Use common test points for the whole family. Under this certificate:
+\begin{enumerate}
+\item Five rational points $z=1-1/b$, with $b=4,52,212,695,1438$, certify $131854$ of the $262144$ masks. Their classes have relative natural density $65927/131072$, approximately $50.2983\%$, among primes $p\equiv3\pmod4$.
+\item Any four real points in $(0,1)$ certify at most $129901$ masks. The four points $z=1-1/b$ with $b=4,52,212,1100$ certify $129840$ masks. Thus the maximum for four points lies between $129840$ and $129901$, a gap of $61$ masks. Five is therefore the minimum number of common points required for a strict majority, which starts at $131073$ masks.
+\item Using the union of the five points and the eleven original points from Section 3 certifies $133315$ masks, with relative density approximately $50.8556\%$.
+\end{enumerate}
+The upper bound in part 2 even allows exact arithmetic and discards the tail: it counts masks for which the resulting finite polynomial could be negative. The lower bounds in parts 1 and 3 include the tail and all rounding errors. Stronger estimates for the undetermined terms would give a different optimization problem.
+
+\textbf{Example.} For $p=2339$, the original grid gives $b=1000$ and mask $159561$. Direct interval arithmetic yields
+\[
+ H_{2339}(999/1000)\le-1058697065047782561516209/1208925819614629174706176 .
+\]
+Each accepted mask has a denominator in the accompanying witness tables.
+\newpage
+\sechead{2. The Fourier criterion and its relation to earlier work}
+Write $\theta_p(x)=H_p(\exp(-\pi x/p))$. The quadratic character is odd and primitive with root number $+1$. The theta transformation gives $\theta_p(x)=x^{-3/2}\theta_p(1/x)$ [4]. Thus $h_p(r)=e^{3r/2}\theta_p(e^{2r})$ is even. The $n=1$ term dominates $\theta_p(x)$ at large $x$, giving super-exponential decay of $h_p$ at both ends. Termwise Mellin integration for $\Re s>1$ gives
+\[
+ \int_0^\infty \theta_p(x)x^{(s+1)/2}\frac{dx}{x}=\Lambda_p(s).
+\]
+The decay and transformation justify analytic continuation of the integral to every $s$. Substituting $s=1/2+it$ and $x=e^{2r}$ gives
+\[
+ \Lambda_p(1/2+it)=2\int_{\R}e^{itr} h_p(r)\,dr.
+\]
+Since $H_p(z)=z+O(z^4)$ as $z\downarrow0$, a negative value forces both signs on open intervals. By Bochner's theorem and uniqueness of Fourier transforms of finite measures [5], no real nonzero multiple of $2h_p(r)\,dr$ can then represent a positive-definite profile. Restricting a radial kernel on $\R^d$ to a line yields the same obstruction for every $d\ge1$. Division by the central value is permissible whenever that value is nonzero.
+
+\textbf{Why the density-one conclusion is already available.} Put $F_p(y)=\sum_{n=1}^{p-1}\chi_p(n)y^n$. For $a>0$, periodicity and the Gaussian integral give
+\[
+ \frac{F_p(e^{-a})}{1-e^{-pa}}
+ =\sum_{n\ge1}\chi_p(n)e^{-an}
+ =\frac1{\sqrt{\pi}}\int_0^\infty
+       t^{-1/2}e^{-a^2/(4t)}H_p(e^{-t})\,dt .
+\]
+Indeed the integral of $t^{-1/2}\exp(-a^2/(4t)-n^2t)$ is $\sqrt{\pi}\,e^{-an}/n$. Termwise integration is absolutely justified by $\sum_{n\ge1}e^{-an}<\infty$. If $H_p$ were everywhere nonnegative, its strict positivity near zero and the strictly positive integral weight would give $F_p(y)>0$ for every $0<y<1$. Even one interior zero of $F_p$ therefore forces a negative value of $H_p$.
+
+Baker and Montgomery [1, pp.~23--24] define the family of prime discriminants and include it in their oscillation theorem. For the consequence about Fekete polynomials we use the explicit prime-family statement of Conrey, Granville, Poonen and Soundararajan [2, p.~866]: the number of real zeros of $F_p$ in $(0,1)$ tends to infinity in density. The exceptional primes remain of relative density zero among $p\equiv3\pmod4$, since this progression contains asymptotically half of the primes. This proves the qualitative conclusion from the cited prime-family statement. Sarnak [3] discusses sparsity for positive-definite quadratic $L$-functions directly. The finite calculation below answers the distinct question of which specific prime classes have a common explicit witness.
+
+\newpage
+\sechead{3. The uniform bound and the count of residue classes}
+\textbf{One class by hand.} For $p\equiv19\pmod{24}$, quadratic reciprocity gives $\chi_p(2)=\chi_p(3)=-1$ and $\chi_p(4)=1$. With $z=4/5$ we obtain
+\[
+ H_p(z)\le z-2z^4-3z^9+4z^{16}
+        +\frac{5z^{25}}{1-(6/5)z^{11}}<-\tfrac14.
+\]
+The successive unsigned terms from $n=5$ have ratio $(1+1/n)z^{2n+1}\le(6/5)z^{11}$. The last inequality is a rational comparison. This one test covers a quarter of the specified prime family.
+
+\textbf{Equal weights.} Write $\ell_0,\ldots,\ell_{17}$ for the primes from 2 through 61 in increasing order. For $p>61$, the bit of index $i$ is one when $\chi_p(\ell_i)=-1$. In the progression $p\equiv3\pmod4$, residues 3 and 7 modulo 8 give opposite signs at 2. At each odd $\ell_i$, reciprocity expresses $\chi_p(\ell_i)$ as a fixed sign times $(p/\ell_i)$. Half of the nonzero residues give each sign. The Chinese remainder theorem and the prime number theorem in arithmetic progressions [6] now give relative density $2^{-18}$ for each mask, using the fixed modulus $8\prod_{i=1}^{17}\ell_i$.
+
+\textbf{Truncation.} Take $N=300$, $z=1-1/b$, and
+\[
+ b\in\{5,10,20,32,50,100,200,333,500,1000,2000\}.
+\]
+For $n\le N$ with all prime factors at most 61, the mask specifies $\chi_p(n)$ by multiplicativity. Otherwise use $|\chi_p(n)|\le1$, which also covers multiples of $p$. Since $-\log z\ge1/b$ and $2N^2\ge b$, the function $t z^{t^2}$ decreases on $[N,\infty)$. Thus the missing tail has absolute value at most
+\[
+ \int_N^\infty t z^{t^2}\,dt
+       =z^{N^2}/(-2\log z)\le b z^{N^2}/2 .
+\]
+
+\textbf{Outward rounding.} Put $S=2^{64}$. Starting with $L=U=S$, multiply by $(b-1)/b$ and round $L$ down and $U$ up at each step. At exponent $n^2$ this gives $L_n\le S z^{n^2}\le U_n$. For smooth $n$ sum the signed $nL_n$ into a center $C$ and add $n(U_n-L_n)$ to an error $E$. For every other $n\le N$ add $nU_n$ to $E$; for the tail add $\lceil bU_N/2\rceil$. Accept precisely when $C+E<0$ at one or more scales. The termwise estimates prove $S H_p(z)\le C+E$ uniformly over all primes realizing the mask.
+
+\newpage
+\sechead{4. The original grid and the five-point certificate}
+Group the smooth terms by their exponent-parity masks $k$. A conductor mask $m$ assigns sign $(-1)^{\operatorname{popcount}(m\,\&\, k)}$ to group $k$. The Walsh--Hadamard transform computes all centers by summing with these signs. Its successive sum-and-difference stages implement the two choices for each bit. For each accepted mask the verifier also recomputes a negative bound at its assigned scale by direct signed summation, a prime-power factor sieve, and outward-rounded repeated squaring with unit $2^{80}$.
+
+For the original eleven-point grid, the left table counts distinct masks after processing the denominators in order. The right table gives the largest union of accepted masks over subsets of a given size. Each such maximum is computed by enumerating every subset of that size and counting set bits in the union. The majority threshold is $131073$.
+
+\begin{center}\small
+\begin{tabular}[t]{rr}
+\toprule $b$ & Cumulative count\\\midrule
+5&65536\\10&65536\\20&94208\\32&98304\\50&99328\\100&108032\\200&115968\\333&121590\\500&125246\\1000&131213\\2000&132606\\\bottomrule
+\end{tabular}\hspace{1cm}
+\begin{tabular}[t]{rr}
+\toprule Scales used & Maximum count\\\midrule
+1&65536\\2&103242\\3&124382\\4&128683\\5&130089\\6&131531\\\bottomrule
+\end{tabular}
+\end{center}
+
+
+\textbf{The new five points.} The successive cumulative counts at $b=4,52,212,695,1438$ are $65536$, $102400$, $116528$, $128059$ and $131854$. Six points are necessary and sufficient within the original grid; five suffice when other locations are allowed. The original grid alone covers $132606$ masks. The five new points contribute $709$ masks absent from that grid and miss $1461$ of its accepted masks. Taking their union gives the count in Theorem 1(3).
+
+For example, $p=20219$ has mask $261457$ and lies among the additional classes. Its assigned witness in the new table satisfies
+\[
+ H_{20219}(1437/1438)\le
+ -2865299997018384087109295/1208925819614629174706176<-2 .
+\]
+\newpage
+\sechead{5. A necessary condition over a continuous interval}
+Call $n$ smooth when every prime dividing it is at most 61. For a mask $m$, write $\sigma_m(n)$ for its known sign on smooth $n$. Form the polynomial
+\[
+ A_m(z)=\sum_{\substack{n\le300\\ n\ {\rm smooth}}}\sigma_m(n)n z^{n^2}
+       +\sum_{\substack{n\le300\\ n\ {\rm not\ smooth}}}n z^{n^2}.
+\]
+At $z=1-1/b$, the verifier applies its tail estimate only when $b\le 2N^2=180000$, with $N=300$. For larger $b$ this rule issues no certificate. The continuous upper bound below still covers those points. Where the verifier applies, it adds a nonnegative tail and rounds its upper bound outward. Therefore its acceptance at $z$ implies $A_m(z)<0$. Our global upper bound allows every mask for which this necessary condition could hold. Even removing the tail and all rounding losses in the original rule cannot defeat the resulting upper bound.
+
+For $0<z\le1/2$, all masks satisfy $A_m(z)\ge z-\sum_{n\ge2}nz^{n^2}>0$. Indeed the sum is at most $2z^4/(1-\tfrac32 z^5)<z$ by the ratio of successive terms. Partition $[1/2,1]$ into 2049 closed intervals. For $j=1,\ldots,16$, split $[1-2^{-j},1-2^{-j-1}]$ into 128 equal pieces. The last interval is $[1-2^{-17},1]$. Using the endpoint $1$ is harmless for the finite polynomial.
+
+\textbf{First enclosure.} On $I=[a,b]$, the linear interpolant to $A_m$ deviates from it by at most
+\[
+ E_I=\frac{(b-a)^2}{8}\sum_{n=1}^{300}n k(k-1)b^{k-2},\qquad k=n^2 .
+\]
+This follows by bounding the absolute second derivative in the two-node interpolation remainder; the term for $k=1$ is zero. See \href{https://dlmf.nist.gov/3.3}{NIST DLMF, Section 3.3}. A mask can be discarded on $I$ whenever lower bounds at both endpoints are at least an upper bound for $E_I$.
+
+The Python implementation uses fixed-point units $2^{-46}$. It bounds each power by squaring with outward rounding and evaluates all signed endpoint sums by a Walsh--Hadamard transform. The curvature calculation uses unbounded integer arithmetic. Signed 64-bit transforms suffice: the sum of the absolute coefficients before corrections is at most $45150\cdot2^{46}$, and even twice this bound fits. For each interval the output is a superset of all masks which could certify at a point of $I$.
+
+\textbf{Second enclosure.} A separately written C++ program constructs affine lower bounds without computing curvature. For a positive term $nz^k$ use its tangent at the midpoint. For a negative term $-nz^k$ use its endpoint chord. Both are lower bounds by convexity of $z^k$. A mask is possible only if the sum of these lines is negative at some endpoint. The program rounds these endpoint bounds downward in units of $2^{-32}$. It enumerates low-prime signs directly and the remaining nine signs in Gray-code order. No integer $n\le300$ has two prime factors from the upper nine primes. With the low-prime signs fixed, a Gray-code step flips one high-prime sign. The update reverses the contribution of its entire bucket at each endpoint. A bucket can contain several coefficients.
+
+\newpage
+\sechead{6. Counting all choices of four points}
+For an interval $I$, let $B(I)$ be its set of possible masks. Every quadruple with $z_i\in I_i$ can certify at most
+\[
+ \left|B(I_1)\cup B(I_2)\cup B(I_3)\cup B(I_4)\right|.
+\]
+Intervals may repeat. A point below $1/2$ contributes the empty set, so allowing four intervals from the partition also bounds choices using fewer effective points.
+
+Build a binary tree over the partition, taking the union of child sets at each parent. For a box of four tree nodes, discard the whole box if its union contains at most the traversal limit ($129903$ for interpolation and $129901$ for tangents and chords). Otherwise split into child boxes. Each split covers all original choices, and reaching four leaf nodes gives an explicit finite bound. This turns a calculation over a continuum into a finite integer check.
+
+The first traversal splits one selected node at a time. If it occurs $k$ times, all $k+1$ ways of allocating those positions between its children are examined. A leaf whose set contains the union of its sibling subtree can bound both children. The second traversal uses the tangent masks, splits every coordinate simultaneously, and uses no such dominance pruning. It sorts the four node indices and processes equal boxes once, since their unions are invariant under permutation.
+
+\begin{center}\small
+\begin{tabular}{lrr}
+\toprule Implementation & Boxes examined & Largest terminal bound\\\midrule
+Interpolation / one-node splits & 2254 & 129903\\
+Tangent and chord / simultaneous splits & 648429 & 129901\\
+\bottomrule
+\end{tabular}
+\end{center}
+Both traversals terminate below the strict majority threshold. These terminal counts are upper bounds from enclosing intervals; attaining either would require four actual points. Fewer than four points cannot do better, since repetition is allowed. Together with the five-point witness this proves the stated minimum.
+
+
+\textbf{A cross-check on indexing.} For every assigned (mask, denominator) pair in the three witness tables, the replay checks that both continuous enclosures retain the mask in every partition interval containing that exact rational point. At a boundary it checks both adjacent intervals. This tests that the upper- and lower-bound programs agree on the mask ordering, endpoint convention and location of actual witnesses.
+\newpage
+\sechead{7. How far out can the first negative witness lie?}
+The failure of a grid to find a witness could reflect rounding or a loose tail bound. There is also an intrinsic limitation. Even if every value were evaluated exactly, some infinite prime families would pass every test in the entire interval covered by the grid.
+
+\textbf{Proposition 2 (witnesses arbitrarily close to one).} For every $0<z_0<1$ there is a positive-relative-density set of primes $p\equiv3\pmod4$ for which $H_p(z)>0$ throughout $(0,z_0]$ and $H_p(z)<0$ somewhere in $(z_0,1)$. More explicitly, choose any integer $M\ge2$ with $M(M+1)>1/(-\log z_0)$. Such a set has relative density $2^{-\pi(M)}$, where $\pi(M)$ counts primes up to $M$.
+
+\textit{Proof.} Prescribe $\chi_p(\ell)=+1$ for every prime $\ell\le M$ and take $p>M$. These classes have relative density $2^{-\pi(M)}$ by the counting argument in Section 3. All $n\le M$ then have sign $+1$. Write $a=-\log z$. Since $2M^2\ge M(M+1)>1/a$ for $z\le z_0$, the unsigned terms decrease beyond $M$. The integral bound of Section 3 gives
+\[
+ H_p(z)\ \ge\ \sum_{n=1}^M n z^{n^2}-\sum_{n>M}n z^{n^2}
+ \ \ge\ \frac{z^{M^2}}2\left(M(M+1)-\frac1a\right)>0 .
+\]
+Remove from the prescribed classes the relative-density-zero exceptional set in Section 2. Every remaining prime has a negative value, which must lie in $(z_0,1)$. Removing that exceptional set leaves the density of the prescribed classes unchanged. $\square$
+
+\textbf{For the actual grid.} Take $z_0=1999/2000$ and $M=45$. The 14 primes through 43 determine the signs of all integers through 45. Since $45\cdot46=2070$ and $1/(-\log z_0)<2000$, one obtains $H_p(z)>35z^{2025}$ on the full interval. A set of relative density $1/16384$ therefore evades all eleven test points while still failing positive definiteness. This is a lower bound for the proportion of primes with this behavior.
+
+\textbf{Code and review status.} The accompanying archive includes the LaTeX source, three witness tables and both upper-bound implementations. Run \texttt{sh replay.sh} after extraction on Linux with Python, NumPy, GNU C++17 and \texttt{sha256sum}. The two upper-bound methods share the same necessary condition and interval partition. This AI-assisted preprint awaits external review. Priority for the finite optimization result remains unconfirmed.
+
+\textbf{References}\par
+{\small\raggedright
+[1] R. C. Baker and H. L. Montgomery, \href{https://doi.org/10.1007/978-1-4612-3464-7_3}{Oscillations of quadratic $L$-functions}, in \emph{Analytic Number Theory}, ed. B. C. Berndt et al., Progress in Mathematics 85, Birkh\"auser Boston, 1990, pp.~23--40.\par
+[2] J. B. Conrey, A. Granville, B. Poonen and K. Soundararajan, \href{https://doi.org/10.5802/aif.1776}{Zeros of Fekete polynomials}, \emph{Ann. Inst. Fourier} 50 (2000), 865--889.\par
+[3] P. Sarnak, \href{https://publications.ias.edu/sarnak/paper/511}{Letter to E. Bachmat on positive definite $L$-functions}, 2011.\par
+[4] A. Sheth and W. Voo, \href{https://arxiv.org/abs/2611.12152}{Super-positivity via Dirichlet theta functions}, 2026, introduction. For theta zeros of positive discriminants see O. Klurman, Y. Lamzouri and M. Munsch, \href{https://arxiv.org/abs/2403.02195}{arXiv:2403.02195}, Corollary 1.7 of v1.\par
+[5] W. Rudin, \emph{Fourier Analysis on Groups}, Interscience, 1962, Chapter 1.\par
+[6] H. Davenport, \emph{Multiplicative Number Theory}, third ed., Springer, 2000.\par}
+\end{document}

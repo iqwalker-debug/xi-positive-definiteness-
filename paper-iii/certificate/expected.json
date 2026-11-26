@@ -1,0 +1,27 @@
+{
+  "patterns": 262144,
+  "certified": 131854,
+  "cumulative": [
+    65536,
+    102400,
+    116528,
+    128059,
+    131854
+  ],
+  "density": "65927/131072",
+  "witnesses_sha256": "3d480ca847f1124ba6d2dd1cfadbbb4af603a466d634af962c9525b8383ca30e",
+  "denominators": [
+    4,
+    52,
+    212,
+    695,
+    1438
+  ],
+  "new_at_each_scale": [
+    65536,
+    36864,
+    14128,
+    11531,
+    3795
+  ]
+}
