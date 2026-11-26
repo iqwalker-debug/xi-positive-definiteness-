@@ -1,5 +1,9 @@
 # xi-positive-definiteness-
 
+## How to cite these papers
+
+Cite **Ian Walker** and the title of the paper containing the result you use. The [BibTeX entries for Papers I–III](papers.bib) link to the exact manuscript versions dated November 25, 2026. For the collection and its verification materials, use the [repository citation](CITATION.cff).
+
 ## Paper I
 
 [The Exact Positive-Definiteness Dimension of the Riemann Xi Function](Paper-I.pdf) by Ian Walker.
