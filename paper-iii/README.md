@@ -1,4 +1,4 @@
-# Paper III, preprint v1 — Ian Walker
+# Paper III, preprint v2 draft — Ian Walker
 
 Finite witnesses for failure of positive definiteness in quadratic Dirichlet L-functions. November 25, 2026. Preprint for independent review.
 
@@ -10,7 +10,7 @@ From the paper-iii directory in a checkout, or the top-level directory of the ex
 
     sh replay.sh
 
-Requirements: Python 3.10 or later with assertions enabled, NumPy, a GNU C++17 compiler with undefined-behavior sanitizer support, cmp and sha256sum. Tested with Python 3.12.14, NumPy 2.3.5 and GCC 14.2. The replay uses temporary disk space for two 65 MiB enclosure files. No network connection is required after dependencies are installed. The checks include archive integrity, three witness tables, grid subset counts, the prime examples 2339 and 20219, and both exhaustive upper-bound calculations. The final test checks every recorded witness against the continuous bounds at its rational test point, using both adjacent intervals for partition boundaries. The Python and C++ upper-bound implementations share a mathematical reduction and partition. A second implementation does not constitute external peer review.
+Requirements: Python 3.10 or later with assertions enabled, NumPy, a GNU C++17 compiler with undefined-behavior sanitizer support, cmp and sha256sum. Tested with Python 3.12.14, NumPy 2.3.5 and GCC 14.2. The replay uses temporary disk space for two 65 MiB enclosure files. No network connection is required after dependencies are installed. The checks include archive integrity, three witness tables, grid subset counts, the prime examples 2339 and 20219, and both exhaustive upper-bound calculations. The replay also compares the exact delayed-witness certificate from Proposition 3 with the committed result. The final test checks every recorded witness against the continuous bounds at its rational test point, using both adjacent intervals for partition boundaries. The Python and C++ upper-bound implementations share a mathematical reduction and partition. A second implementation does not constitute external peer review.
 
 ## Outputs to expect
 
