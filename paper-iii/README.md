@@ -1,6 +1,6 @@
-# Paper III, preprint v1 — Ian Walker
+# Paper III, preprint v2 — Ian Walker
 
-Finite witnesses for failure of positive definiteness in quadratic Dirichlet L-functions. November 25, 2026. Preprint for independent review.
+Finite witnesses for failure of positive definiteness in quadratic Dirichlet L-functions. November 27, 2026. Preprint for independent review.
 
 Read Paper-III.pdf. Paper-III.tex is the complete, editable manuscript. The 18 small-prime signs, truncation at n=300, common test points and upper bound for individual unknown terms define the optimization result. All proportions are relative to primes congruent to 3 modulo 4. A row absent from a table is inconclusive.
 
@@ -11,6 +11,8 @@ From the paper-iii directory in a checkout, or the top-level directory of the ex
     sh replay.sh
 
 Requirements: Python 3.10 or later with assertions enabled, NumPy, a GNU C++17 compiler with undefined-behavior sanitizer support, cmp and sha256sum. Tested with Python 3.12.14, NumPy 2.3.5 and GCC 14.2. The replay uses temporary disk space for two 65 MiB enclosure files. No network connection is required after dependencies are installed. The checks include archive integrity, three witness tables, grid subset counts, the prime examples 2339 and 20219, and both exhaustive upper-bound calculations. The final test checks every recorded witness against the continuous bounds at its rational test point, using both adjacent intervals for partition boundaries. The Python and C++ upper-bound implementations share a mathematical reduction and partition. A second implementation does not constitute external peer review.
+
+The replay also runs `python3 certificate/sensitivity.py` (from the paper directory). With the sign at 61 withheld, the published five points certify 65,301 of 131,072 masks. The alternative denominators (4, 52, 210, 685, 1286) certify 65,360. The script checks both lower and upper mask sets for each grid. The best five locations with 17 signs remain undetermined.
 
 ## Outputs to expect
 

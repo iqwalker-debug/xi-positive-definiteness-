@@ -7,10 +7,10 @@
 \newcommand{\R}{\mathbb R}
 \newcommand{\sechead}[1]{\medskip{\large\bfseries #1}\par}
 \begin{document}
-{\small GENESIS \hfill Paper III $\cdot$ Preprint v1 for independent review}
+{\small GENESIS \hfill Paper III $\cdot$ Preprint v2 for independent review}
 
 {\LARGE\bfseries\raggedright Finite witnesses for failure of positive definiteness\\ in quadratic Dirichlet $L$-functions\par}
-Ian Walker \hfill November 25, 2026
+Ian Walker \hfill November 27, 2026
 
 \sechead{1. An explicit test and its minimum size}
 For a prime $p\equiv3\pmod4$, write $\chi_p(n)=(n/p)$ and set
@@ -18,7 +18,7 @@ For a prime $p\equiv3\pmod4$, write $\chi_p(n)=(n/p)$ and set
  \Lambda_p(s)=(p/\pi)^{(s+1)/2}\Gamma((s+1)/2)L(s,\chi_p),
  \qquad H_p(z)=\sum_{n\ge1}n\chi_p(n)z^{n^2}.
 \]
-A negative value of $H_p$ on $(0,1)$ rules out positive definiteness of $t\mapsto c\Lambda_p(1/2+it)$ for every real $c\ne0$. Positive definiteness here means that each matrix of profile values at pairwise differences is positive semidefinite. Section 2 derives the known almost-everywhere failure from the prime-family statement cited in [2]. Our question is which prime classes admit a common, explicit negative witness, and how many test points are required to identify a majority using a specified rule.
+A negative value of $H_p$ on $(0,1)$ rules out positive definiteness of $t\mapsto c\Lambda_p(1/2+it)$ for every real $c\ne0$. Positive definiteness here means that each matrix of profile values at pairwise differences is positive semidefinite. Section 2 derives the known almost-everywhere failure from the prime-family statement cited in [2]. We fix the first 18 prime signs, truncate at $n=300$, and bound each unresolved term separately. This gives a reproducible question about partial character information: how many common values of $z$ suffice to certify a majority of the resulting classes? The corresponding theta arguments $x=-(p/\pi)\log z$ depend on $p$.
 
 \textbf{Theorem 1 (fixed certificate).} Let $p>61$, and let its mask record the signs of $\chi_p$ at the first 18 primes. Truncate at $n=300$. For each term of undetermined sign use $+nz^{n^2}$ as its upper bound and add the nonnegative tail estimate in Section 3 wherever it applies. Use common test points for the whole family. Under this certificate:
 \begin{enumerate}
@@ -54,7 +54,7 @@ Since $H_p(z)=z+O(z^4)$ as $z\downarrow0$, a negative value forces both signs on
 \]
 Indeed the integral of $t^{-1/2}\exp(-a^2/(4t)-n^2t)$ is $\sqrt{\pi}\,e^{-an}/n$. Termwise integration is absolutely justified by $\sum_{n\ge1}e^{-an}<\infty$. If $H_p$ were everywhere nonnegative, its strict positivity near zero and the strictly positive integral weight would give $F_p(y)>0$ for every $0<y<1$. Even one interior zero of $F_p$ therefore forces a negative value of $H_p$.
 
-Baker and Montgomery [1, pp.~23--24] define the family of prime discriminants and include it in their oscillation theorem. For the consequence about Fekete polynomials we use the explicit prime-family statement of Conrey, Granville, Poonen and Soundararajan [2, p.~866]: the number of real zeros of $F_p$ in $(0,1)$ tends to infinity in density. The exceptional primes remain of relative density zero among $p\equiv3\pmod4$, since this progression contains asymptotically half of the primes. This proves the qualitative conclusion from the cited prime-family statement. Sarnak [3] discusses sparsity for positive-definite quadratic $L$-functions directly. The finite calculation below answers the distinct question of which specific prime classes have a common explicit witness.
+Conrey, Granville, Poonen and Soundararajan [2, p.~866] explicitly attribute to Baker and Montgomery [1] the assertion that the number of real zeros of $F_p$ in $(0,1)$ tends to infinity in density among primes. We use this prime-family statement. The exceptional primes remain of relative density zero among $p\equiv3\pmod4$, since this progression contains asymptotically half of the primes. This proves the qualitative conclusion from the cited prime-family statement. Sarnak [3] discusses sparsity for positive-definite quadratic $L$-functions directly. The finite calculation below answers the distinct question of which specific prime classes have a common explicit witness.
 
 \newpage
 \sechead{3. The uniform bound and the count of residue classes}
@@ -104,6 +104,8 @@ For example, $p=20219$ has mask $261457$ and lies among the additional classes. 
  H_{20219}(1437/1438)\le
  -2865299997018384087109295/1208925819614629174706176<-2 .
 \]
+\textbf{Withholding the sign at 61.} Keep $N=300$ and the same termwise upper-bound rule, but supply only the first 17 signs (through 59). Of $131072$ masks, the published five denominators certify $65301$. The alternative $(4,52,210,685,1286)$ certifies $65360$, an improvement of 59; the majority threshold is $65537$. For each grid, \texttt{sensitivity.py} encloses the signed smooth sum on both sides. Its union of certified masks equals its union of masks for which the finite upper polynomial could be negative, even after dropping the tail allowance. These are fixed-grid counts. Whether any five locations certify a majority with 17 signs remains open here.
+
 \newpage
 \sechead{5. A necessary condition over a continuous interval}
 Call $n$ smooth when every prime dividing it is at most 61. For a mask $m$, write $\sigma_m(n)$ for its known sign on smooth $n$. Form the polynomial
@@ -122,6 +124,8 @@ For $0<z\le1/2$, all masks satisfy $A_m(z)\ge z-\sum_{n\ge2}nz^{n^2}>0$. Indeed 
 This follows by bounding the absolute second derivative in the two-node interpolation remainder; the term for $k=1$ is zero. See \href{https://dlmf.nist.gov/3.3}{NIST DLMF, Section 3.3}. A mask can be discarded on $I$ whenever lower bounds at both endpoints are at least an upper bound for $E_I$.
 
 The Python implementation uses fixed-point units $2^{-46}$. It bounds each power by squaring with outward rounding and evaluates all signed endpoint sums by a Walsh--Hadamard transform. The curvature calculation uses unbounded integer arithmetic. Signed 64-bit transforms suffice: the sum of the absolute coefficients before corrections is at most $45150\cdot2^{46}$, and even twice this bound fits. For each interval the output is a superset of all masks which could certify at a point of $I$.
+
+\textit{Worked interval.} On the first cell $[1/2,257/512]$, use units of $2^{-46}$. The minima over all masks of the rounded endpoint lower bounds are $25980246662604$ and $25964990545881$. Rounding the curvature loss $E_I$ upward gives $495426578$ units. Subtracting this loss from the smaller endpoint minimum still gives a positive lower bound throughout the cell, so its possible-mask set is empty.
 
 \textbf{Second enclosure.} A separately written C++ program constructs affine lower bounds without computing curvature. For a positive term $nz^k$ use its tangent at the midpoint. For a negative term $-nz^k$ use its endpoint chord. Both are lower bounds by convexity of $z^k$. A mask is possible only if the sum of these lines is negative at some endpoint. The program rounds these endpoint bounds downward in units of $2^{-32}$. It enumerates low-prime signs directly and the remaining nine signs in Gray-code order. No integer $n\le300$ has two prime factors from the upper nine primes. With the low-prime signs fixed, a Gray-code step flips one high-prime sign. The update reverses the contribution of its entire bucket at each endpoint. A bucket can contain several coefficients.
 
