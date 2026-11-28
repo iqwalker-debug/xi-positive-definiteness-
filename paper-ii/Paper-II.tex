@@ -312,6 +312,22 @@ $\Lambda\ge0$ \cite{RT}, this gives $C_{10}=\varnothing$, and restriction
 gives $C_d\subseteq C_{10}$ for every $d\ge10$.
 \end{proof}
 
+\begin{remark}[A uniform finite witness in dimension ten]
+Let $c_j$ and $N>0$ be the squared-distance histogram and normalization of
+the spacing-$7$ grid in Paper~I. Put
+\[
+ q(r)=N^{-1}\sum_j c_j\cos(7\sqrt j\,r).
+\]
+The \href{https://github.com/iqwalker-debug/xi-positive-definiteness-/blob/4e53689a04e144a8aabd716e19852d295be38157/paper-ii/D10-heat-witness.md}{uniform certificate and error bounds}
+give $\int_0^\infty \ee^{\lambda r^2}\Phi(r)q(r)\,dr<-1/1000$
+for every $0\le\lambda\le1$. Dividing by the positive half-line mass gives
+the normalized Gram form of the same grid for $F_\lambda$. For $\lambda>1$
+the D9 upper bound already excludes D10. This proves the D10 exclusion
+in the coexistence corollary independently of Lemma~\ref{lem:down-all}.
+A companion certificate verifies $Q_4(x;1/16)>0$ for all $x>0$.
+Thus $1/16\in C_9$, since $\Lambda/4\le0.055<1/16$.
+\end{remark}
+
 \begin{remark}[The value of $\Lambda$]
 The dimension classification uses the bounds $0\le\Lambda\le0.22$.
 The Riemann hypothesis is equivalent to $\Lambda\le0$ \cite{RT};
@@ -339,7 +355,12 @@ A second implementation, using directed integer arithmetic, recomputes the brack
 checks from the same analytic reduction. Five Lean modules check polynomial and heat-derivative
 identities, finite arithmetic on supplied coefficient enclosures, and implications used in the
 endpoint and remainder arguments. The theta enclosures, Fourier criterion for this kernel, and
-full regional inequalities remain external to Lean.
+full regional inequalities remain external to Lean. The Gaussian-tilt module
+checks the shell argument under its spectral representation hypotheses.
+A separate Lean proof connects the concrete heat family and the Paper~I grid
+to the uniform integral bound above. It uses the classical zero threshold,
+its published bounds, the D9 upper bound, the D9 fourth-derivative sign
+at $1/16$, and the D10 integral certificate.
 
 \section*{Acknowledgments}
 The endpoints were first observed in computations carried out with ChatGPT (OpenAI). The

@@ -93,7 +93,7 @@ def run(bits, *, d9_witness=False):
     # region C polynomials (exact in r, X; lam kept symbolic)
     r, X, z, u, lam = sp.symbols('r X z u lam')
     w = [2*X**2 - 3*X]
-    max_m = max(bounds)
+    max_m = 4 if d9_witness else 13
     for k in range(max_m):
         wk = w[-1]
         w.append(sp.expand(r*(2*X-sp.Rational(1,2))*wk - 2*r*X*sp.diff(wk, X) - r*sp.diff(wk, r)
@@ -102,7 +102,7 @@ def run(bits, *, d9_witness=False):
     assert arb.pi()*arb(1).exp() > ball(F(8539, 1000))      # pi e^(2R) >= c, and e^(2z) >= 1+2z+2z^2
 
     out = []
-    for m in sorted(k for k in bounds if k >= 2):
+    for m in ([4] if d9_witness else range(2, max_m + 1)):
         lo, hi = bounds[m]; L = ball(lo).union(ball(hi)); sgn = 1 if m % 2 == 0 else -1
         def Q(x, delta, shift):
             return sgn*sum(binom(m, k)*L**(m-k)*H(k+shift, x, delta) for k in range(m+1))

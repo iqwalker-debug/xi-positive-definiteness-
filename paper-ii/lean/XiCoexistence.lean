@@ -19,6 +19,13 @@ def entireNumerator (s : ℝ) (z : ℂ) :=
   2 * ∫ r in Ioi (0:ℝ), (positiveWeight s r : ℂ) * Complex.cos (z*r)
 def B : Set ℝ := {s | ∀ z : ℂ, entireNumerator s z = 0 → z.im = 0}
 
+theorem entire_on_real (s t : ℝ) : entireNumerator s (t : ℂ) = (numerator s t : ℂ) := by
+  have hp (r : ℝ) : (positiveWeight s r : ℂ) * Complex.cos ((t:ℂ)*r) =
+      ((positiveWeight s r * Real.cos (t*r) : ℝ) : ℂ) := by push_cast <;> rfl
+  unfold entireNumerator numerator
+  simp_rw [hp, integral_complex_ofReal]
+  push_cast <;> rfl
+
 def newmanH (t : ℝ) (z : ℂ) :=
   ∫ u in Ioi (0:ℝ), ((Real.exp (t*u^2) * phi (2*u) : ℝ) : ℂ) * Complex.cos (z*u)
 
@@ -205,7 +212,8 @@ abbrev FourthPositive := ∀ x > 0, 0 < iteratedDeriv 4 (jet 0) x
 
 private theorem fourth_pos (h : FourthPositive) {x : ℝ} (hx : 0 < x) : 0 < jet 4 x := by
   rw [jet_iter]
-  exact mul_pos (by positivity) (h x hx)
+  rw [show (-Real.pi⁻¹)^4 = (Real.pi⁻¹)^4 by ring]
+  exact mul_pos (pow_pos (inv_pos.mpr Real.pi_pos) _) (h x hx)
 
 private theorem jet_deriv (j : ℕ) {x : ℝ} (hx : 0 < x) :
     HasDerivAt (jet j) (-Real.pi * jet (j+1) x) x := by
@@ -243,7 +251,7 @@ private theorem jet_small (j : ℕ) (R ε : ℝ) (hε : 0 < ε) :
     have hh := congrArg abs eq
     rw [abs_mul, abs_neg, abs_of_pos Real.pi_pos, abs_div, abs_of_pos (sub_pos.mpr hab)] at hh
     have hs : |jet j b - jet j a| < ε := (abs_sub _ _).trans_lt (by linarith)
-    have hq := (div_le_self (abs_nonneg _) hgap)
+    have hq := div_le_self (abs_nonneg (jet j b - jet j a)) hgap
     nlinarith [Real.pi_gt_three, mul_nonneg (sub_nonneg.mpr Real.pi_gt_three.le) (abs_nonneg (jet (j+1) x))]
 
 private theorem witnessStep {j : ℕ} (pos : ∀ x > 0, 0 < jet (j+1) x) :
@@ -323,7 +331,7 @@ theorem concreteCutoff {L : ℝ} (hL : 0 ≤ L) (hupper : L ≤ 0.22)
     (witnessBounds : FourthPositive)
     (upper9 : A 9 ⊆ Iic 1)
     (cert : ∀ s ∈ Icc (0:ℝ) 1, (∫ r in Ioi (0:ℝ), positiveWeight s r * test r) < 0)
-    {d : ℕ} (hd : 1 ≤ d) : (A d ∩ B).Nonempty ↔ d ≤ 9 := by
+    {d : ℕ} (_hd : 1 ≤ d) : (A d ∩ B).Nonempty ↔ d ≤ 9 := by
   have realZeros := zeroThreshold L deBruijnNewman
   have restrictDim {a b : ℕ} (hab : a ≤ b) {s : ℝ} (h : s ∈ A b) : s ∈ A a :=
     GenesisFormalV5.euclideanPSD_lower (F s) hab h
@@ -341,6 +349,7 @@ theorem concreteCutoff {L : ℝ} (hL : 0 ≤ L) (hupper : L ≤ 0.22)
     change L/4 ≤ 1/16
     linarith
 
+#print axioms entire_on_real
 #print axioms heatScaling
 #print axioms zeroThreshold
 #print axioms zero_profile

@@ -45,3 +45,9 @@ The sixth module, [GaussianTilt.lean](lean/GaussianTilt.lean), checks the Gaussi
 The application to Xi uses the classical radial spectral representation and the projected sphere marginal formula from the manuscript. The Lean module takes geometric identities as hypotheses. The final cutoff lemma also takes the D9 overlap, D10 obstruction, downward closure in D10, dimension restriction, and the nonnegative real-zero threshold as hypotheses. Connecting all these inputs for the concrete Xi profile remains outside this formalization.
 
 [Direct D10 heat witness](D10-heat-witness.md) gives the uniform finite-grid certificate on $0\le\lambda\le1$ and the companion D9 check at $\lambda=1/16$.
+
+## Concrete coexistence proof
+
+[XiCoexistence.lean](lean/XiCoexistence.lean) uses Paper I's theta density and finite-grid theorem directly. The cutoff proof uses the unnormalized half-line integral in the [uniform certificate](D10-heat-witness.md). Its D9 witness is the fixed parameter $1/16$. To replay with the Paper I imports, run `lake exe cache get` and `bash check-xi-bridge.sh` from `paper-ii/lean`.
+
+The formal statement exposes the published real-zero theorem and its numerical bounds, the previously established D9 upper bound, the D9 fourth-derivative sign and the uniform D10 integral sign. Arb evaluates the two signs externally. The general sphere identities used in the separate Gaussian-tilt proof do not enter this cutoff proof.
