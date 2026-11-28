@@ -148,18 +148,28 @@ private theorem mass_pos {s : ℝ} (hs : s ≤ 1) : 0 < numerator s 0 := by
 
 open GenesisD10Witness
 
-def test (r : ℝ) : ℝ := (∑ k ∈ witnessPolynomial.support,
-  (witnessPolynomial.coeff k : ℝ) * Real.cos ((7*Real.sqrt k)*r)) / normalization
+private def gridTest (P : Polynomial ℕ) (N : ℕ) (r : ℝ) :=
+  (∑ k ∈ P.support, (P.coeff k : ℝ) * Real.cos ((7*Real.sqrt k)*r)) / N
+
+def test := gridTest witnessPolynomial normalization
+
+private theorem test_continuous (P : Polynomial ℕ) (N : ℕ) : Continuous (gridTest P N) := by
+  unfold gridTest
+  fun_prop
+
+private theorem gridTest_bound (P : Polynomial ℕ) (N : ℕ) (r : ℝ) :
+    |gridTest P N r| ≤ (∑ k ∈ P.support, (P.coeff k : ℝ)) / N := by
+  rw [gridTest, abs_div, abs_of_nonneg (Nat.cast_nonneg N)]
+  apply div_le_div_of_nonneg_right _ (Nat.cast_nonneg _)
+  apply (Finset.abs_sum_le_sum_abs ..).trans
+  apply Finset.sum_le_sum
+  intro k _
+  rw [abs_mul, abs_of_nonneg (Nat.cast_nonneg _)]
+  exact mul_le_of_le_one_right (Nat.cast_nonneg _) (Real.abs_cos_le_one _)
 
 private theorem test_bound (r : ℝ) : |test r| ≤
-      (∑ k ∈ witnessPolynomial.support, (witnessPolynomial.coeff k : ℝ)) / normalization := by
-    rw [test, abs_div, abs_of_nonneg (Nat.cast_nonneg normalization)]
-    apply div_le_div_of_nonneg_right _ (Nat.cast_nonneg _)
-    apply (Finset.abs_sum_le_sum_abs ..).trans
-    apply Finset.sum_le_sum
-    intro k _
-    rw [abs_mul, abs_of_nonneg (Nat.cast_nonneg _)]
-    exact mul_le_of_le_one_right (Nat.cast_nonneg _) (Real.abs_cos_le_one _)
+    (∑ k ∈ witnessPolynomial.support, (witnessPolynomial.coeff k : ℝ)) / normalization :=
+  gridTest_bound _ _ _
 
 private theorem grid_mass : (∑ k ∈ witnessPolynomial.support,
     (witnessPolynomial.coeff k : ℝ)) / normalization ≤ 10^10 := by
@@ -190,6 +200,7 @@ theorem d10_remainder : HeatMomentCertificate.errorMass (volume.restrict (Ioi (0
     filter_upwards [ae_restrict_mem (μ := volume) (measurableSet_Ioi (a := (0:ℝ)))] with r hr
     have ht := (test_bound r).trans grid_mass
     have hw := weight_bound_triple (s := 3) le_rfl hr
+    unfold positiveWeight at hw
     rw [Real.norm_of_nonneg (mul_nonneg (Real.exp_pos _).le (phi_pos (le_of_lt hr)).le)] at hw
     have hpos := (phi_pos (le_of_lt hr)).le
     rw [abs_mul, abs_of_nonneg hpos]
@@ -220,9 +231,9 @@ theorem d10_integral_of_moments (cert : D10Moments) {s : ℝ} (hs : s ∈ Icc (0
     (∫ r in Ioi (0:ℝ), positiveWeight s r * test r) ≤ -(1499/1000000 : ℝ) - s/4 := by
   have hphi : Continuous phi := continuous_iff_continuousAt.mpr fun x =>
     (thetaSeries_derivative phiPoly x).continuousAt
-  have ht : Continuous test := by unfold test; fun_prop
-  have hi := (weight_int (s := 1) le_rfl).mul_bdd (g := fun r => |test r|)
-    ht.abs.aestronglyMeasurable (ae_of_all _ (fun r => by simpa using test_bound r))
+  have ht : Continuous test := test_continuous _ _
+  have hi := (weight_int (s := 1) le_rfl).mul_bdd (g := fun r => |test r|) (c := 10^10)
+    ht.abs.aestronglyMeasurable (ae_of_all _ (fun r => by rw [Real.norm_eq_abs, abs_abs]; exact (test_bound r).trans grid_mass))
   have hdom : IntegrableOn (fun r => |phi r * test r| * Real.exp (r^2)) (Ioi 0) := by
     apply hi.congr
     filter_upwards [ae_restrict_mem (μ := volume) (measurableSet_Ioi (a := (0:ℝ)))] with r hr
@@ -233,7 +244,7 @@ theorem d10_integral_of_moments (cert : D10Moments) {s : ℝ} (hs : s ∈ Icc (0
   convert hu using 1
   apply integral_congr_ae
   filter_upwards with r
-  unfold positiveWeight
+  simp only [positiveWeight, Pi.mul_apply]
   ring
 
 /-- The parameter-uniform scalar inequality checked in certify_d10_heat.py
@@ -245,7 +256,7 @@ theorem d10_failure {s : ℝ} (hs : s ≤ 1)
     (by fun_prop) (ae_of_all _ fun _ => Real.abs_cos_le_one _)
   have he (r : ℝ) : positiveWeight s r * test r =
       (∑ k ∈ witnessPolynomial.support, (witnessPolynomial.coeff k : ℝ) * b k r) / normalization := by
-    simp only [test, mul_div_assoc', Finset.mul_sum, b]
+    simp only [test, gridTest, mul_div_assoc', Finset.mul_sum, b]
     apply congrArg (fun a : ℝ => a / (normalization : ℝ))
     apply Finset.sum_congr rfl
     intro i _
