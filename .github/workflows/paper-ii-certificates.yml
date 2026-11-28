@@ -55,7 +55,7 @@ jobs:
   gaussian-tilt:
     name: Lean Gaussian tilt and cutoff
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
         with:
@@ -67,8 +67,12 @@ jobs:
           curl --proto '=https' --tlsv1.2 -fsSL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o "$RUNNER_TEMP/elan-init.sh"
           sh "$RUNNER_TEMP/elan-init.sh" -y --default-toolchain none --no-modify-path
           export PATH="$HOME/.elan/bin:$PATH"
-          lake exe cache get Mathlib.Analysis.SpecialFunctions.Exponential Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic Mathlib.MeasureTheory.Integral.DominatedConvergence Mathlib.Tactic.Ring Mathlib.Tactic.Positivity
+          lake exe cache get
           lake env lean GaussianTilt.lean | tee "$RUNNER_TEMP/tilt.log"
           for theorem in shellTilt_nonneg projectedMoment_nonneg shellGram_nonneg mixtureGram_nonneg radialTiltPSD coexistenceCutoff; do
             grep -Fx "'GaussianTilt.$theorem' depends on axioms: [propext, Classical.choice, Quot.sound]" "$RUNNER_TEMP/tilt.log"
+          done
+          bash check-xi-bridge.sh | tee "$RUNNER_TEMP/xi.log"
+          for theorem in zero_profile d10_failure rational_D9 concreteCutoff; do
+            grep -Fx "'XiCoexistence.$theorem' depends on axioms: [propext, Classical.choice, Quot.sound]" "$RUNNER_TEMP/xi.log"
           done
