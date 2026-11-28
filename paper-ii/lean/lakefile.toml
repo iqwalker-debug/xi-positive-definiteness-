@@ -1,6 +1,6 @@
 name = "paperIIAudit"
 version = "0.1.0"
-defaultTargets = ["EndpointHeat", "EndpointLogic", "EndpointPolynomial", "EndpointSigns", "EndpointTail"]
+defaultTargets = ["EndpointHeat", "EndpointLogic", "EndpointPolynomial", "EndpointSigns", "EndpointTail", "GaussianTilt"]
 
 [[require]]
 name = "mathlib"
@@ -21,3 +21,6 @@ name = "EndpointSigns"
 
 [[lean_lib]]
 name = "EndpointTail"
+
+[[lean_lib]]
+name = "GaussianTilt"

@@ -4,6 +4,9 @@ on:
   push:
     branches: [main, paper-ii-draft]
     paths: ['paper-ii/**', '.github/workflows/paper-ii-certificates.yml']
+  pull_request:
+    branches: [main]
+    paths: ['paper-ii/**', '.github/workflows/paper-ii-certificates.yml']
   workflow_dispatch:
 
 permissions:
@@ -30,6 +33,8 @@ jobs:
           mkdir committed && cp heat-upper-bounds.json heat-sharpness.json committed/
           python certify_bounds.py | tee bounds.log
           python certify_sharp.py | tee sharp.log
+          python certify_d10_heat.py | tee d10-heat.log
+          python certify_sharp.py --d9-witness | tee d9-witness.log
           python check_d3.py | tee d3.log
           python check_export.py | tee export.log
           python integer/upper.py | tee integer-upper.log
@@ -46,3 +51,28 @@ jobs:
             paper-ii/*.log
             paper-ii/*.json
           retention-days: 90
+
+  gaussian-tilt:
+    name: Lean Gaussian tilt and cutoff
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Compile and audit the Gaussian tilt module
+        working-directory: paper-ii/lean
+        run: |
+          set -euo pipefail
+          curl --proto '=https' --tlsv1.2 -fsSL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o "$RUNNER_TEMP/elan-init.sh"
+          sh "$RUNNER_TEMP/elan-init.sh" -y --default-toolchain none --no-modify-path
+          export PATH="$HOME/.elan/bin:$PATH"
+          lake exe cache get
+          lake env lean GaussianTilt.lean | tee "$RUNNER_TEMP/tilt.log"
+          for theorem in shellTilt_nonneg projectedMoment_nonneg shellGram_nonneg mixtureGram_nonneg radialTiltPSD coexistenceCutoff; do
+            grep -Fx "'GaussianTilt.$theorem' depends on axioms: [propext, Classical.choice, Quot.sound]" "$RUNNER_TEMP/tilt.log"
+          done
+          bash check-xi-bridge.sh | tee "$RUNNER_TEMP/xi.log"
+          for theorem in entire_on_real heatScaling zeroThreshold zero_profile d10_remainder d10_integral_of_moments d10_failure fourth_of_Q4 rational_D9 concreteCutoff; do
+            grep -Fx "'XiCoexistence.$theorem' depends on axioms: [propext, Classical.choice, Quot.sound]" "$RUNNER_TEMP/xi.log"
+          done

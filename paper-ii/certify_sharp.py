@@ -68,12 +68,12 @@ def sup_bound():
     M += 2*(-3*arb(2001)**2/400).exp()
     return M*(t/2).exp()
 
-def run(bits):
+def run(bits, *, d9_witness=False):
     ctx.prec = bits
     polys = theta_polys(2*K)
     a = taylor_coeffs(polys)
     M = sup_bound()
-    bounds = {o['m']: (F(o['lower']), F(o['upper'])) for o in json.load(open('heat-upper-bounds.json'))[0]['results']}
+    bounds = {4: (F(1, 16), F(1, 16))} if d9_witness else {o['m']: (F(o['lower']), F(o['upper'])) for o in json.load(open('heat-upper-bounds.json'))[0]['results']}
     fact = [arb(1)]
     for i in range(1, K+2): fact.append(fact[-1]*i)
     rho = ball(RHO)
@@ -93,7 +93,7 @@ def run(bits):
     # region C polynomials (exact in r, X; lam kept symbolic)
     r, X, z, u, lam = sp.symbols('r X z u lam')
     w = [2*X**2 - 3*X]
-    max_m = 13
+    max_m = 4 if d9_witness else 13
     for k in range(max_m):
         wk = w[-1]
         w.append(sp.expand(r*(2*X-sp.Rational(1,2))*wk - 2*r*X*sp.diff(wk, X) - r*sp.diff(wk, r)
@@ -102,7 +102,7 @@ def run(bits):
     assert arb.pi()*arb(1).exp() > ball(F(8539, 1000))      # pi e^(2R) >= c, and e^(2z) >= 1+2z+2z^2
 
     out = []
-    for m in range(2, max_m + 1):
+    for m in ([4] if d9_witness else range(2, max_m + 1)):
         lo, hi = bounds[m]; L = ball(lo).union(ball(hi)); sgn = 1 if m % 2 == 0 else -1
         def Q(x, delta, shift):
             return sgn*sum(binom(m, k)*L**(m-k)*H(k+shift, x, delta) for k in range(m+1))
@@ -113,7 +113,7 @@ def run(bits):
             if depth > 40: raise ValueError((m, key, str(l), str(rr), str(v)))
             mid = (l+rr)/2
             cover(l, mid, key, delta, shift, depth+1); cover(mid, rr, key, delta, shift, depth+1)
-        cover(F(0), DELTA_A, 'A', DELTA_B, 1)        # derivative positive near the origin
+        cover(F(0), DELTA_A, 'A', DELTA_B, 0 if d9_witness else 1)  # fixed witness checks the value itself
         cover(DELTA_A, DELTA_B, 'B', DELTA_B, 0)     # value positive in the middle
         e = sp.expand(w[m].subs({r: Rr+z, X: c*(1+2*z+2*z**2)+u}))
         P = sp.Poly(e, z, u, domain=sp.QQ[lam])
@@ -130,6 +130,14 @@ def run(bits):
     return dict(precision=bits, taylor_degree=K, sup_bound=str(M), results=out)
 
 if __name__ == '__main__':
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--d9-witness', action='store_true', help='verify Q4 > 0 at lambda=1/16 on the full half-line')
+    if parser.parse_args().d9_witness:
+        for bits in (512, 768):
+            print(run(bits, d9_witness=True)['results'][0], bits, flush=True)
+        print('OK')
+        raise SystemExit(0)
     res = [run(b) for b in (512, 768)]
     for rr in res:
         for o in rr['results']:

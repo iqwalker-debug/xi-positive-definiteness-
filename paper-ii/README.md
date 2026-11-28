@@ -38,4 +38,16 @@ lake exe cache get
 lake build
 ```
 
-The manifest pins Mathlib. The five modules check the endpoint polynomial derivative, heat differentiation and downward shifts, the bracket and three-region implications, geometric remainder estimates, and finite arithmetic for the supplied coefficient boxes. The sign module retains a regression check against five rounded bounds from the previous draft. Identifying the concrete Xi kernel's coefficients with those boxes and establishing its full Fourier and regional hypotheses remain external to Lean.
+The manifest pins Mathlib. The five endpoint modules check the endpoint polynomial derivative, heat differentiation and downward shifts, the bracket and three-region implications, geometric remainder estimates, and finite arithmetic for the supplied coefficient boxes. The sign module retains a regression check against five rounded bounds from the previous draft. Identifying the concrete Xi kernel's coefficients with those boxes and establishing its full Fourier and regional hypotheses remain external to Lean.
+
+The sixth module, [GaussianTilt.lean](lean/GaussianTilt.lean), checks the Gaussian shell expansion under the integral for signed tests, positivity of projected cosine Gram forms given the marginal identity, positivity after radius mixing and normalization, the radial kernel theorem `radialTiltPSD` for the normalized tilted cosine transform, and the final cutoff implication. To inspect its axiom report, run `lake env lean GaussianTilt.lean` from the Lean directory.
+
+The application to Xi uses the classical radial spectral representation and the projected sphere marginal formula from the manuscript. The Lean module takes geometric identities as hypotheses. The final cutoff lemma also takes the D9 overlap, D10 obstruction, downward closure in D10, dimension restriction, and the nonnegative real-zero threshold as hypotheses. Connecting all these inputs for the concrete Xi profile remains outside this formalization.
+
+[Direct D10 heat witness](D10-heat-witness.md) gives the uniform finite-grid certificate on $0\le\lambda\le1$ and the companion D9 check at $\lambda=1/16$.
+
+## Concrete coexistence proof
+
+[XiCoexistence.lean](lean/XiCoexistence.lean) uses Paper I's theta density and finite-grid theorem directly. The cutoff proof uses the unnormalized half-line integral in the [uniform certificate](D10-heat-witness.md). Its D9 witness is the fixed parameter $1/16$. To replay with the Paper I imports, run `lake exe cache get` and `bash check-xi-bridge.sh` from `paper-ii/lean`.
+
+The formal statement exposes the published real-zero theorem and its numerical bounds, the previously established D9 upper bound, the D9 fourth-derivative sign, and three fixed bounds on D10 moments. Arb checks those numerical inputs. Lean bounds the D10 series remainder and derives a parameter-dependent upper bound on the integral over the whole coexistence test interval. The general sphere identities used in the separate Gaussian-tilt proof do not enter this cutoff proof.

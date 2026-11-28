@@ -4,6 +4,7 @@
 \usepackage[hidelinks]{hyperref}
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{conjecture}[theorem]{Conjecture}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
@@ -238,6 +239,106 @@ $\lambda_m$ concern different properties: reality of zeros in one case, radial p
 definiteness in the other.
 \end{remark}
 
+\section{Coexistence of real zeros and positive definiteness}\label{sec:coexist}
+Let $B=\{\lambda\in\R:\text{ every zero of }F_\lambda\text{ is real}\}$
+and $C_d=A_d\cap B$. The zeros are those of the entire extension of $F_\lambda$.
+To decide coexistence in dimension ten we first extend Lemma~\ref{lem:down}.
+The sphere-mixture representation used below is Schoenberg's theorem
+in the form of Steerneman and van Perlo-ten Kleij \cite[Theorem~1]{SV}.
+If $h_R(u)$ denotes the first-coordinate density of a single sphere,
+then $h_R(\sqrt{x})$ is proportional on $0<x<R^2$ to $(R^2-x)^{k-1}$, with $k=(d-1)/2$.
+This is the truncated-power kernel used in the real-order mixture
+representation of Lef\'evre and Utev \cite[eq.~(1.1)]{LU}.
+Here we use that representation to track the factor $\ee^{-cx}$ and
+apply the resulting closure property to the Xi family.
+
+
+\begin{lemma}[Downward closure in every dimension]\label{lem:down-all}
+For every integer $d\ge1$, if $\lambda\in A_d$ and $c>0$, then $\lambda-c\in A_d$.
+\end{lemma}
+\begin{proof}
+In dimension one, $\rho_\lambda$ is an even probability density for every real
+$\lambda$, so Bochner's theorem gives $A_1=\R$. Suppose $d\ge2$ and $\lambda\in A_d$.
+By Bochner's theorem and uniqueness, the spectral probability measure on $\R^d$
+is rotation invariant. Disintegrating it over the radius gives a mixture of
+uniform sphere laws. Its first coordinate has law $\rho_\lambda(u)\,du$ by
+Fourier uniqueness. A sphere of radius $R>0$ has first-coordinate density
+proportional to $(R^2-u^2)^{(d-3)/2}$ on $|u|<R$, by the spherical
+surface element. The radius-zero component, if present, is a point mass
+at zero and is preserved by the tilt.
+
+For $|u|<R$, put $\alpha=(d-3)/2$. Then
+\[
+ \ee^{-cu^2}(R^2-u^2)^\alpha
+ =\ee^{-cR^2}\sum_{k=0}^\infty\frac{c^k}{k!}(R^2-u^2)^{\alpha+k}.
+\]
+Each summand, extended by zero outside the interval, is a positive multiple
+of the first-coordinate density of a uniform sphere of radius $R$ in
+$\R^{d+2k}$. Orthogonal projection of that sphere law onto the first $d$
+coordinates gives a rotation-invariant probability law on $\R^d$ with the
+same first coordinate. Tonelli's theorem allows these projected laws to
+be mixed over $k$ and $R$ with their positive weights. The resulting
+measure has first marginal $\ee^{-cu^2}\rho_\lambda(u)\,du$ and total mass
+$Z_{\lambda-c}/Z_\lambda$. After normalization its first marginal is
+$\rho_{\lambda-c}(u)\,du$. Rotation invariance therefore identifies its
+characteristic function at $\xi\in\R^d$ with $F_{\lambda-c}(\|\xi\|)$,
+proving the claim.
+\end{proof}
+
+\begin{corollary}[Coexistence]\label{thm:coexist}
+One has $B=[\Lambda/4,\infty)$. Put $\lambda_0=+\infty$. Then
+\begin{enumerate}
+\item $C_1=B$.
+\item $C_{2m+1}=[\Lambda/4,\lambda_m]$ for $1\le m\le4$.
+\item $[\Lambda/4,\lambda_m]\subseteq C_{2m}\subseteq[\Lambda/4,\lambda_{m-1}]$
+for $1\le m\le4$, with an unbounded upper interval for $m=1$.
+\item $C_d=\varnothing$ for every $d\ge10$.
+\end{enumerate}
+Consequently $C_d\ne\varnothing$ exactly for $1\le d\le9$.
+\end{corollary}
+\begin{proof}
+Since $F_\lambda(s)=H_{4\lambda}(2s)/H_{4\lambda}(0)$ with positive
+denominator, the closed real-zero threshold for $H_t$ gives the stated
+$B$ \cite{RT,Polymath}. The first assertion follows from $A_1=\R$.
+For the second, intersect Theorem~\ref{thm:sharp} with $B$ and use
+$\Lambda/4\le0.055<0.77<\lambda_4\le\lambda_m$ for $1\le m\le4$.
+The third follows by intersecting
+$A_{2m+1}\subseteq A_{2m}\subseteq A_{2m-1}$ with $B$.
+
+Paper~I \cite{PaperI} gives $0\notin A_{10}$. If $\lambda>0$ belonged
+to $A_{10}$, Lemma~\ref{lem:down-all} with $c=\lambda$ would imply
+$0\in A_{10}$. Thus $A_{10}\cap[0,\infty)=\varnothing$. Since
+$\Lambda\ge0$ \cite{RT}, this gives $C_{10}=\varnothing$, and restriction
+gives $C_d\subseteq C_{10}$ for every $d\ge10$.
+\end{proof}
+
+\begin{remark}[A uniform finite witness in dimension ten]
+Let $c_j$ and $N>0$ be the squared-distance histogram and normalization of
+the spacing-$7$ grid in Paper~I. Put
+\[
+ q(r)=N^{-1}\sum_j c_j\cos(7\sqrt j\,r).
+\]
+The \href{https://github.com/iqwalker-debug/xi-positive-definiteness-/blob/4e53689a04e144a8aabd716e19852d295be38157/paper-ii/D10-heat-witness.md}{uniform certificate and error bounds}
+give $\int_0^\infty \ee^{\lambda r^2}\Phi(r)q(r)\,dr<-1/1000$
+for every $0\le\lambda\le1$. Dividing by the positive half-line mass gives
+the normalized Gram form of the same grid for $F_\lambda$. For $\lambda>1$
+the D9 upper bound already excludes D10. This proves the D10 exclusion
+in the coexistence corollary independently of Lemma~\ref{lem:down-all}.
+A companion certificate verifies $Q_4(x;1/16)>0$ for all $x>0$.
+Thus $1/16\in C_9$, since $\Lambda/4\le0.055<1/16$.
+\end{remark}
+
+\begin{remark}[The value of $\Lambda$]
+The dimension classification uses the bounds $0\le\Lambda\le0.22$.
+The Riemann hypothesis is equivalent to $\Lambda\le0$ \cite{RT};
+the proof announced by Alp\"oge and its verification
+\cite{Alpoge,LeanRH} therefore specialize $\Lambda$ to zero.
+In particular $C_1=[0,\infty)$, $C_{2m+1}=[0,\lambda_m]$ for
+$1\le m\le4$, and the even-dimensional bounds in item~3 have lower
+endpoint zero. Thus the single parameter $\lambda=0$ realizes
+coexistence simultaneously in dimensions one through nine.
+\end{remark}
+
 \section{Reproducibility}\label{sec:repro}
 The \href{https://github.com/iqwalker-debug/xi-positive-definiteness-/tree/f3e8864e02d2257e1d01714c6446548c585dff5b/paper-ii}{versioned verification supplement} contains the programs, pinned dependencies,
 inputs and replay commands. The \href{https://github.com/iqwalker-debug/xi-positive-definiteness-/actions/runs/45672731858}{GitHub Actions run} records the certificate replay.
@@ -254,7 +355,17 @@ A second implementation, using directed integer arithmetic, recomputes the brack
 checks from the same analytic reduction. Five Lean modules check polynomial and heat-derivative
 identities, finite arithmetic on supplied coefficient enclosures, and implications used in the
 endpoint and remainder arguments. The theta enclosures, Fourier criterion for this kernel, and
-full regional inequalities remain external to Lean.
+full regional inequalities remain external to Lean. The Gaussian-tilt module
+checks the shell argument under its spectral representation hypotheses.
+A separate Lean proof connects the concrete heat family and the Paper~I grid
+to the uniform integral bound above. It uses the classical zero threshold,
+its published bounds, the D9 upper bound, the D9 fourth-derivative sign
+at $1/16$, and three fixed bounds on the D10 moments
+$m_j=\int_0^\infty\Phi(r)q(r)r^{2j}/j!\,dr$.
+Arb checks $m_0\le-3/2000$, $m_1\le-1$, and
+$\sum_{j=2}^{48}\max(m_j,0)\le3/4$. Lean bounds the integrated
+exponential remainder by $10^{-6}$ and deduces the stronger upper bound
+$-1499/10^6-\lambda/4$ on the half-line integral for $0\le\lambda\le1$.
 
 \section*{Acknowledgments}
 The endpoints were first observed in computations carried out with ChatGPT (OpenAI). The
@@ -286,5 +397,14 @@ Forum Math. Pi 8 (2020), e6.
 \bibitem{Polymath} D. H. J. Polymath, \emph{Effective approximation of heat flow evolution of the
 Riemann $\xi$ function, and a new upper bound for the de Bruijn--Newman constant},
 Res. Math. Sci. 6 (2019), Paper No. 31.
+\bibitem{SV} A. G. M. Steerneman and F. van Perlo-ten Kleij,
+\href{https://doi.org/10.1016/j.exmath.2005.01.002}{Spherical distributions: Schoenberg (1938) revisited},
+Expo. Math. 23 (2005), 281--287.
+\bibitem{LU} C. Lef\'evre and S. Utev,
+\href{https://doi.org/10.1051/ps/2012012}{Convolution property and exponential bounds for symmetric monotone densities},
+ESAIM Probab. Stat. 17 (2013), 605--613.
+\bibitem{Alpoge} L. Alp\"oge, \href{https://alpo.ge/remark.pdf}{announcement of a formal proof of the Riemann hypothesis}, November 20, 2026.
+\bibitem{LeanRH} Lean FRO and Mathlib Initiative, \href{https://leanprover-community.github.io/blog/posts/riemann-hypothesis/}{Lean verification of the Riemann Hypothesis}, November 21, 2026.
 \end{thebibliography}
 \end{document}
+
