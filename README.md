@@ -6,7 +6,7 @@ Cite **Ian Walker** and the title of the paper containing the result you use. Th
 
 ## Paper I
 
-[The Exact Positive-Definiteness Dimension of the Riemann Xi Function](Paper-I.pdf) by Ian Walker.
+[The Exact Positive-Definiteness Dimension of the Riemann Xi Function](Paper-I.pdf) by Ian Walker. [Zenodo DOI](https://doi.org/10.5281/zenodo.24614006).
 
 The November 27 revision compares the derivative recurrences in Section 1 and identifies the numerical hypotheses of the Lean cutoff theorem beside Theorem 1.
 
