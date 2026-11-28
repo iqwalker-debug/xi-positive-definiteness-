@@ -25,6 +25,24 @@ For $r\ge2$, use $2X^2\le16 e^{X/2}$ for $X\ge0$. Split the remaining $X_n/2$ in
 
 At each real quadrature node include theta summands $1\le n<13$. Their omitted absolute sum is at most $16 e\,e^{-13^2-13}/(1-e^{-1})$, since $X_n/2\ge n^2+n$ for $n\ge13$. The code encloses the contributions to all coefficients of the degree-48 Taylor polynomial in $s$ for the quadrature sum. Its uniform Taylor error is at most $e^4 4^{49}/49!$ times the sum of absolute weighted sample values before multiplying by the heat factor. On each of 256 closed, adjoining parameter intervals, interval Horner evaluation plus all three errors has upper endpoint below $-1/1000$. The runs at 192 and 256 bits use the same mathematical argument.
 
+## Three fixed bounds imply negativity throughout the interval
+
+Write $w=\Phi q$ and define the signed half-line moments
+$m_j=\int_0^\infty w(r)r^{2j}/j!\,dr$. Arb encloses the moments through degree 48 and checks three rational bounds,
+\[
+m_0\le -3/2000,\qquad m_1\le -1,\qquad
+\sum_{j=2}^{48}\max(m_j,0)\le 3/4 .
+\]
+The quadrature bound above applies to each moment because $|z|^{2j}/j!\le e^{|z|^2}$ on each complex disk. On the real tail, $r^{2j}/j!\le e^{r^2}$. The script adds both errors to each moment upper bound before taking positive parts.
+
+Lean bounds the remaining exponential series under the integral. For $x\ge0$, its terms of order $j\ge49$ have sum at most $3^{-49}e^{3x}$. For the concrete grid $|q|\le10^{10}$, and the theta series obeys $e^{3r^2}\Phi(r)\le32 e^{-r}$ for $r>0$. Thus the integrated absolute remainder is at most $32\cdot10^{10}/3^{49}<10^{-6}$. The script also checks a remainder bound by its original compact-interval and tail estimates.
+
+For $0\le s\le1$ and $j\ge2$, $s^jm_j\le s\max(m_j,0)$. Integrating the truncated series and applying the three fixed bounds gives
+\[
+I(s)\le-\frac{1499}{10^6}-\frac{s}{4}.
+\]
+This is a bound on the unnormalized half-line integral. The uniform sign is a Lean conclusion. The three moment bounds are external numerical inputs. [Lean proof](lean/HeatMomentCertificate.lean)
+
 ## Replay
 
 From the Paper II directory with its pinned Python dependencies installed, run:

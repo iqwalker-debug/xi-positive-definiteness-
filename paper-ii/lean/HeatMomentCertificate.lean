@@ -44,7 +44,7 @@ theorem rest_le_triple {x : ℝ} (hx : 0 ≤ x) :
     calc
       _ = 1 * (x^(j+49) / (j+49).factorial) := (one_mul _).symm
       _ ≤ _ := by
-        convert mul_le_mul_of_nonneg_right he (show 0 ≤ x^(j+49) / ((j+49).factorial : ℝ) by positivity) using 1 <;> ring
+        convert mul_le_mul_of_nonneg_right he (show 0 ≤ x^(j+49) / ((j+49).factorial : ℝ) by positivity) using 1; ring
   have hsum := (tail x).summable.tsum_le_tsum hscale (((tail (3*x)).mul_left (1/3^49)).summable)
   rw [(tail x).tsum_eq, ((tail (3*x)).mul_left (1/3^49)).tsum_eq] at hsum
   apply hsum.trans
@@ -103,7 +103,7 @@ theorem uniform_of_moments (hw : AEStronglyMeasurable w μ)
   rw [integral_add (integrable_finsetSum _ fun j _ => (hm j).const_mul _) hrem,
     integral_finsetSum _ (fun j _ => (hm j).const_mul _)]
   simp_rw [integral_const_mul]
-  change (∑ j ∈ range 49, s^j * moment μ w j) + _ < _
+  change (∑ j ∈ range 49, s^j * moment μ w j) + _ ≤ _
   have remUpper := (integral_mono hrem herr point).trans remainder
   rw [show 49 = 2 + 47 by decide, sum_range_add]
   have high (k : ℕ) : s^(2+k) * moment μ w (2+k) ≤ s * max (moment μ w (2+k)) 0 := by

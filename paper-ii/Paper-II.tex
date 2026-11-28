@@ -360,7 +360,12 @@ checks the shell argument under its spectral representation hypotheses.
 A separate Lean proof connects the concrete heat family and the Paper~I grid
 to the uniform integral bound above. It uses the classical zero threshold,
 its published bounds, the D9 upper bound, the D9 fourth-derivative sign
-at $1/16$, and the D10 integral certificate.
+at $1/16$, and three fixed bounds on the D10 moments
+$m_j=\int_0^\infty\Phi(r)q(r)r^{2j}/j!\,dr$.
+Arb checks $m_0\le-3/2000$, $m_1\le-1$, and
+$\sum_{j=2}^{48}\max(m_j,0)\le3/4$. Lean bounds the integrated
+exponential remainder by $10^{-6}$ and deduces the stronger upper bound
+$-1499/10^6-\lambda/4$ on the half-line integral for $0\le\lambda\le1$.
 
 \section*{Acknowledgments}
 The endpoints were first observed in computations carried out with ChatGPT (OpenAI). The
