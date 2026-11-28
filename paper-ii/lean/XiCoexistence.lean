@@ -159,12 +159,12 @@ private theorem test_continuous (P : Polynomial ℕ) (N : ℕ) : Continuous (gri
 
 private theorem gridTest_bound (P : Polynomial ℕ) (N : ℕ) (r : ℝ) :
     |gridTest P N r| ≤ (∑ k ∈ P.support, (P.coeff k : ℝ)) / N := by
-  rw [gridTest, abs_div, abs_of_nonneg (Nat.cast_nonneg N)]
+  rw [gridTest, abs_div, (abs_of_nonneg (Nat.cast_nonneg N) : |(N : ℝ)| = (N : ℝ))]
   apply div_le_div_of_nonneg_right _ (Nat.cast_nonneg _)
   apply (Finset.abs_sum_le_sum_abs ..).trans
   apply Finset.sum_le_sum
   intro k _
-  rw [abs_mul, abs_of_nonneg (Nat.cast_nonneg _)]
+  rw [abs_mul, (abs_of_nonneg (Nat.cast_nonneg (P.coeff k)) : |(P.coeff k : ℝ)| = (P.coeff k : ℝ))]
   exact mul_le_of_le_one_right (Nat.cast_nonneg _) (Real.abs_cos_le_one _)
 
 private theorem test_bound (r : ℝ) : |test r| ≤
