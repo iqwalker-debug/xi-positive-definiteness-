@@ -1,5 +1,6 @@
 import XiCutoff
 import EndpointHeat
+import HeatMomentCertificate
 
 noncomputable section
 open MeasureTheory Set Filter
@@ -85,7 +86,7 @@ theorem zero_profile : F 0 = GenesisTidal.criticalXiProfile := by
 
 private def tailConstant : ℝ := 16 * ∑' n : ℕ, Real.exp (-(n:ℝ))
 
-private theorem weight_bound {s r : ℝ} (hs : s ≤ 1) (hr : 0 < r) :
+private theorem weight_bound_triple {s r : ℝ} (hs : s ≤ 3) (hr : 0 < r) :
     ‖positiveWeight s r‖ ≤ tailConstant * Real.exp (-r) := by
   have he := Real.quadratic_le_exp_of_nonneg (show 0 ≤ 2*r by positivity)
   have bound (n : ℕ) :
@@ -93,17 +94,16 @@ private theorem weight_bound {s r : ℝ} (hs : s ≤ 1) (hr : 0 < r) :
         (16 * Real.exp (-r)) * Real.exp (-(n:ℝ)) := by
     have hn : 0 ≤ (n:ℝ) := Nat.cast_nonneg _
     have hsq : 1 ≤ ((n:ℝ)+1)^2 := by nlinarith [sq_nonneg (n:ℝ)]
-    have hX : 3 * Real.exp (2*r) ≤ thetaX n r := by
+    have hex := Real.one_le_exp (show 0 ≤ 2*r by positivity)
+    have hX : 3 * (Real.exp (2*r) + n) ≤ thetaX n r := by
       unfold thetaX
-      apply mul_le_mul_of_nonneg_right _ (Real.exp_pos _).le
-      nlinarith [mul_le_mul_of_nonneg_left hsq Real.pi_pos.le, Real.pi_gt_three]
-    have hN : 3 * ((n:ℝ)+1)^2 ≤ thetaX n r := by
-      unfold thetaX
-      calc
-        _ ≤ Real.pi * ((n:ℝ)+1)^2 := by gcongr; exact Real.pi_gt_three.le
-        _ ≤ _ := le_mul_of_one_le_right (by positivity) (Real.one_le_exp (by positivity))
+      have hsq' : (n:ℝ) + 1 ≤ ((n:ℝ)+1)^2 := by nlinarith [sq_nonneg (n:ℝ)]
+      have hmul := mul_le_mul_of_nonneg_right hsq' (Real.exp_pos (2*r)).le
+      have hpi := mul_le_mul_of_nonneg_right Real.pi_gt_three.le
+        (mul_nonneg (sq_nonneg ((n:ℝ)+1)) (Real.exp_pos (2*r)).le)
+      nlinarith [mul_le_mul_of_nonneg_left hex hn]
     have bud : s*r^2 + 3*r/2 + n ≤ thetaX n r/2 := by
-      nlinarith [mul_le_mul_of_nonneg_right hs (sq_nonneg r), sq_nonneg (n:ℝ), sq_nonneg r]
+      nlinarith [mul_le_mul_of_nonneg_right hs (sq_nonneg r)]
     have hx : 3 ≤ thetaX n r := by linarith
     have hpoly := Real.pow_div_factorial_le_exp (thetaX n r/2) (by linarith : 0 ≤ thetaX n r/2) 2
     norm_num [Nat.factorial] at hpoly
@@ -123,6 +123,10 @@ private theorem weight_bound {s r : ℝ} (hs : s ≤ 1) (hr : 0 < r) :
   rw [← tsum_mul_left]
   exact (tsum_of_norm_bounded (Real.summable_exp_neg_nat.mul_left _).hasSum bound).trans_eq
     (by rw [tsum_mul_left]; dsimp [tailConstant]; ring)
+
+private theorem weight_bound {s r : ℝ} (hs : s ≤ 1) (hr : 0 < r) :
+    ‖positiveWeight s r‖ ≤ tailConstant * Real.exp (-r) :=
+  weight_bound_triple (by linarith) hr
 
 private theorem weight_int {s : ℝ} (hs : s ≤ 1) : IntegrableOn (positiveWeight s) (Ioi 0) := by
   apply ((integrableOn_exp_neg_Ioi 0).const_mul tailConstant).mono'
@@ -146,6 +150,91 @@ open GenesisD10Witness
 
 def test (r : ℝ) : ℝ := (∑ k ∈ witnessPolynomial.support,
   (witnessPolynomial.coeff k : ℝ) * Real.cos ((7*Real.sqrt k)*r)) / normalization
+
+private theorem test_bound (r : ℝ) : |test r| ≤
+      (∑ k ∈ witnessPolynomial.support, (witnessPolynomial.coeff k : ℝ)) / normalization := by
+    rw [test, abs_div, abs_of_nonneg (Nat.cast_nonneg normalization)]
+    apply div_le_div_of_nonneg_right _ (Nat.cast_nonneg _)
+    apply (Finset.abs_sum_le_sum_abs ..).trans
+    apply Finset.sum_le_sum
+    intro k _
+    rw [abs_mul, abs_of_nonneg (Nat.cast_nonneg _)]
+    exact mul_le_of_le_one_right (Nat.cast_nonneg _) (Real.abs_cos_le_one _)
+
+private theorem grid_mass : (∑ k ∈ witnessPolynomial.support,
+    (witnessPolynomial.coeff k : ℝ)) / normalization ≤ 10^10 := by
+  have hn : (∑ k ∈ witnessPolynomial.support, witnessPolynomial.coeff k) =
+      witnessPolynomial.eval 1 := by simp [Polynomial.eval_eq_sum, Polynomial.sum]
+  have he : witnessPolynomial.eval 1 = (∑ p : Fin 10 × Fin 10, pairWeight p)^10 := by
+    simp [witnessPolynomial, histogram, Polynomial.eval_finsetSum]
+  rw [div_le_iff₀ (show 0 < (normalization:ℝ) by exact_mod_cast normalization_pos)]
+  exact_mod_cast (show ∑ k ∈ witnessPolynomial.support, witnessPolynomial.coeff k ≤
+    (10:ℕ)^10 * normalization by rw [hn, he]; decide)
+
+private theorem tailConstant_le : tailConstant ≤ 32 := by
+  have he : Real.exp (-1) ≤ (1/2:ℝ) := by
+    rw [Real.exp_neg, inv_eq_one_div, one_div_le_one_div (Real.exp_pos 1) (by norm_num)]
+    linarith [Real.add_one_le_exp 1]
+  have hs := Real.summable_exp_neg_nat.tsum_le_tsum (g := fun n : ℕ => (1/2:ℝ)^n)
+    (fun n => by simpa [← Real.exp_nat_mul] using pow_le_pow_left₀ (Real.exp_pos (-1)).le he n)
+    (summable_geometric_of_lt_one (by norm_num) (by norm_num))
+  rw [tsum_geometric_of_lt_one (by norm_num) (by norm_num)] at hs
+  unfold tailConstant
+  linarith
+
+theorem d10_remainder : HeatMomentCertificate.errorMass (volume.restrict (Ioi (0:ℝ)))
+    (fun r => phi r * test r) ≤ 1/1000000 := by
+  let C : ℝ := (1/3^49) * (10^10 * 32)
+  have hmajor : ∀ᵐ r ∂(volume.restrict (Ioi (0:ℝ))),
+      |phi r * test r| * HeatMomentCertificate.rest (r^2) ≤ C * Real.exp (-r) := by
+    filter_upwards [ae_restrict_mem (μ := volume) (measurableSet_Ioi (a := (0:ℝ)))] with r hr
+    have ht := (test_bound r).trans grid_mass
+    have hw := weight_bound_triple (s := 3) le_rfl hr
+    rw [Real.norm_of_nonneg (mul_nonneg (Real.exp_pos _).le (phi_pos (le_of_lt hr)).le)] at hw
+    have hpos := (phi_pos (le_of_lt hr)).le
+    rw [abs_mul, abs_of_nonneg hpos]
+    calc
+      _ ≤ phi r * |test r| * ((1/3^49) * Real.exp (3*r^2)) :=
+        mul_le_mul_of_nonneg_left (HeatMomentCertificate.rest_le_triple (sq_nonneg _))
+          (mul_nonneg hpos (abs_nonneg _))
+      _ = (1/3^49) * (|test r| * positiveWeight 3 r) := by unfold positiveWeight; ring
+      _ ≤ (1/3^49) * (10^10 * (tailConstant * Real.exp (-r))) := by
+        apply mul_le_mul_of_nonneg_left _ (by positivity)
+        exact mul_le_mul ht hw (mul_nonneg (Real.exp_pos _).le hpos) (by norm_num)
+      _ ≤ C * Real.exp (-r) := by
+        dsimp [C]
+        calc
+          _ ≤ (1/3^49) * (10^10 * (32 * Real.exp (-r))) := by gcongr; exact tailConstant_le
+          _ = _ := by ring
+  have hi := integral_mono_of_nonneg (ae_of_all _ (fun r => mul_nonneg (abs_nonneg _)
+    (sub_nonneg.mpr (Real.sum_le_exp_of_nonneg (sq_nonneg r) 49))))
+      ((integrableOn_exp_neg_Ioi 0).const_mul C) hmajor
+  rw [integral_const_mul, integral_exp_neg_Ioi_zero, mul_one] at hi
+  exact hi.trans (by norm_num [C])
+
+/-- All three numerical inputs here are independent of the heat parameter. -/
+abbrev D10Moments := HeatMomentCertificate.Bounds (volume.restrict (Ioi (0:ℝ)))
+  (fun r => phi r * test r)
+
+theorem d10_integral_of_moments (cert : D10Moments) {s : ℝ} (hs : s ∈ Icc (0:ℝ) 1) :
+    (∫ r in Ioi (0:ℝ), positiveWeight s r * test r) ≤ -(1499/1000000 : ℝ) - s/4 := by
+  have hphi : Continuous phi := continuous_iff_continuousAt.mpr fun x =>
+    (thetaSeries_derivative phiPoly x).continuousAt
+  have ht : Continuous test := by unfold test; fun_prop
+  have hi := (weight_int (s := 1) le_rfl).mul_bdd (g := fun r => |test r|)
+    ht.abs.aestronglyMeasurable (ae_of_all _ (fun r => by simpa using test_bound r))
+  have hdom : IntegrableOn (fun r => |phi r * test r| * Real.exp (r^2)) (Ioi 0) := by
+    apply hi.congr
+    filter_upwards [ae_restrict_mem (μ := volume) (measurableSet_Ioi (a := (0:ℝ)))] with r hr
+    rw [abs_mul, abs_of_nonneg (phi_pos (le_of_lt hr)).le]
+    simp only [positiveWeight, one_mul]
+    ring
+  have hu := HeatMomentCertificate.uniform_of_moments _ _ (hphi.mul ht).aestronglyMeasurable hdom cert d10_remainder hs.1 hs.2
+  convert hu using 1
+  apply integral_congr_ae
+  filter_upwards with r
+  unfold positiveWeight
+  ring
 
 /-- The parameter-uniform scalar inequality checked in certify_d10_heat.py
 is enough to refute PSD, using the actual finite grid and coefficients. -/
@@ -346,7 +435,7 @@ theorem concreteCutoff {L : ℝ} (hL : 0 ≤ L) (hupper : L ≤ 0.22)
     (deBruijnNewman : ∀ t, (∀ z : ℂ, newmanH t z = 0 → z.im = 0) ↔ L ≤ t)
     (witnessBounds : ∀ x > 0, 0 < Q4 x)
     (upper9 : A 9 ⊆ Iic 1)
-    (cert : ∀ s ∈ Icc (0:ℝ) 1, (∫ r in Ioi (0:ℝ), positiveWeight s r * test r) < 0)
+    (cert : D10Moments)
     {d : ℕ} (_hd : 1 ≤ d) : (A d ∩ B).Nonempty ↔ d ≤ 9 := by
   have realZeros := zeroThreshold L deBruijnNewman
   have restrictDim {a b : ℕ} (hab : a ≤ b) {s : ℝ} (h : s ∈ A b) : s ∈ A a :=
@@ -358,7 +447,7 @@ theorem concreteCutoff {L : ℝ} (hL : 0 ≤ L) (hupper : L ≤ 0.22)
     have hs : 0 ≤ s := le_trans (by positivity : 0 ≤ L/4) hb
     have ten := restrictDim (a := 10) (by omega) ha
     have capped : s ≤ 1 := upper9 (restrictDim (by decide : 9 ≤ 10) ten)
-    exact d10_failure capped (cert s ⟨hs,capped⟩) ten
+    exact d10_failure capped ((d10_integral_of_moments cert ⟨hs,capped⟩).trans_lt (by linarith)) ten
   · intro h
     refine ⟨1/16, restrictDim h (rational_D9 (fourth_of_Q4 witnessBounds)), ?_⟩
     rw [realZeros]
@@ -369,6 +458,8 @@ theorem concreteCutoff {L : ℝ} (hL : 0 ≤ L) (hupper : L ≤ 0.22)
 #print axioms heatScaling
 #print axioms zeroThreshold
 #print axioms zero_profile
+#print axioms d10_remainder
+#print axioms d10_integral_of_moments
 #print axioms d10_failure
 #print axioms fourth_of_Q4
 #print axioms rational_D9

@@ -8,4 +8,5 @@ for mod in AxiomDraft D9Coverage D9Fourier D9Mellin ThetaSeries ThetaCosine Thet
   (cd ../../verification/lean && lean -o "$out/$mod.olean" "$mod.lean")
 done
 lean -o "$out/EndpointHeat.olean" EndpointHeat.lean
+lean -o "$out/HeatMomentCertificate.olean" HeatMomentCertificate.lean
 lean XiCoexistence.lean

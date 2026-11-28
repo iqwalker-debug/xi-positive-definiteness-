@@ -65,6 +65,25 @@ def verify(bits):
                 sums[j] += v
                 v = v*r2/(j+1)
 
+    # The same disk majorant bounds each complex Taylor coefficient
+    # integrand: |z|^(2j)/j! <= exp(|z|^2). On [2,infinity) each real
+    # coefficient factor is bounded by exp(r^2), so the same tail applies.
+    moment_error = quadrature_error + tail_error
+    moment_upper = [m.upper() + moment_error for m in sums]
+    check(moment_upper[0] < -arb(3)/2000, "constant moment")
+    check(moment_upper[1] < -1, "linear moment")
+    higher_upper = sum((max(arb(0), m.upper()) for m in moment_upper[2:]), arb(0))
+    check(higher_upper < arb(3)/4, "positive parts of higher moments")
+
+    # This bounds the true integral of |Phi*q| times the exponential
+    # remainder at s=1. On the compact interval use the absolute sup
+    # bound directly, independently of the quadrature nodes and weights.
+    compact_error_mass = 2*total*phi_max*arb(4).exp()*arb(4)**(degree+1)/factorial(degree+1)
+    check(compact_error_mass + tail_error < arb(1)/1000000, "integrated remainder")
+    print(f"PASS {bits} bits; fixed moment bounds: m0 <= -3/2000; m1 <= -1; "
+          "sum of positive higher moments <= 3/4; integrated remainder <= 1/1000000",
+          flush=True)
+
     remainder = magnitude*arb(4).exp()*arb(4)**(degree+1)/factorial(degree+1)
     error = quadrature_error + tail_error + remainder
     upper = -arb(1)/1000
