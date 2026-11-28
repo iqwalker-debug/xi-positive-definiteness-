@@ -9,7 +9,7 @@
 \newcommand{\ee}{\mathrm e}
 \title{The Exact Positive-Definiteness Dimension\\of the Riemann Xi Function}
 \author{Ian Walker}
-\date{Referee draft, November 25, 2026}
+\date{Referee draft, November 27, 2026}
 
 \begin{document}
 \maketitle
@@ -72,6 +72,12 @@ witness in Section~\ref{sec:witness} has normalized Gram form
 strictly less than $-0.01259636712$.
 \end{theorem}
 
+In the formal proof, \texttt{strict\_d9} gives strict positive
+definiteness in dimension nine. The declaration \texttt{strict\_cutoff\_of\_arb}
+takes two lists of upper-bound inequalities for the ten-dimensional shell
+contributions as hypotheses. Section~\ref{sec:witness} identifies the
+interval computations that establish these inequalities.
+
 Sra proves that for each $\alpha>0$ the real-axis reciprocal profile
 $[\xi(1/2)/\xi(1/2+\lVert u\rVert)]^\alpha$ is strictly positive definite
 in every Euclidean dimension \cite[Theorem 1.1, (1.4)]{Sra}. Our profile
@@ -82,6 +88,19 @@ all-dimensional representation would express $F(r)$ as a probability
 mixture of $\exp(-tr^2)$, strictly positive at every finite $r$.
 Determining the last admissible dimension requires the two sign results
 above.
+
+Sra's October preprint \cite[Theorem 1.1 and Section 3.1]{SraHankel}
+studies the same square-root theta profile. With
+$h(t)=\Phi_{\rm C}(\sqrt t)$ in his normalization, our profile is
+$q(s)=h(s/4)/Z$. His order-four result concerns the sign of the
+Hankel determinant $\det[h^{(i+j)}(t)]_{i,j=0}^{3}$.
+The termwise derivative polynomials are shared: if $Q_j$ denotes
+the polynomial in his equation (3.1), our recurrence gives
+$P_j(x)=2^{-j}xQ_j(x)$, by induction from $Q_0(x)=2x-3$.
+Here the sign needed for the radial lift is that of the single entry
+$h^{(4)}(t)$. Section~3 certifies that sign by polynomial inequalities
+for the numerator of $f_9$. Section~\ref{sec:witness} obtains the
+opposite Gram sign in dimension ten from an explicit grid.
 
 Other related work includes Romik's three-dimensional self-transform of
 an auxiliary function \cite{Romik}, the van Dantzig pair studied in
@@ -252,7 +271,8 @@ $D$ is a positive integer.
 Arb/Acb \cite{Johansson} encloses the factors in the defining expression
 for $\xi$ and verifies $\xi(1/2)>0$. Each normalized shell contribution
 is rounded outwards to integer multiples of $10^{-18}$. Both the
-192-bit and 256-bit runs give the following enclosure for the sum
+\href{https://github.com/iqwalker-debug/xi-positive-definiteness-/actions/runs/45646086586/job/139317344510}{192-bit} and
+\href{https://github.com/iqwalker-debug/xi-positive-definiteness-/actions/runs/45646086586/job/139317344794}{256-bit} runs give the following enclosure for the sum
 of these rounded intervals:
 \[
  \frac{-12596367123836528}{10^{18}}
@@ -266,8 +286,7 @@ Embedding the grid into any higher Euclidean space preserves the Gram
 form. This completes the proof of Theorem~\ref{thm:main}.
 
 \section{Verification and reproducibility}
-The supplementary sources are available at
-\url{https://github.com/iqwalker-debug/xi-positive-definiteness-}.
+The \href{https://github.com/iqwalker-debug/xi-positive-definiteness-}{companion repository} contains the supplementary sources.
 The public snapshot is pinned to
 \href{https://github.com/iqwalker-debug/xi-positive-definiteness-/commit/b85224897e27d51141b85c98bad5173c78211dce}{commit \texttt{b852248}},
 with \href{https://github.com/iqwalker-debug/xi-positive-definiteness-/actions/runs/45646086586}{verification run \texttt{45646086586}}.
@@ -275,7 +294,11 @@ The Lean declarations \texttt{strict\_d9} and
 \texttt{strict\_cutoff\_of\_arb} are in \texttt{XiStrict.lean}.
 The D9 proof has no numerical assumptions. For D10, Lean proves the
 obstruction from the row enclosures. Arb supplies those enclosures
-externally. The supplement contains the full shell table, a second
+externally. The \href{https://github.com/iqwalker-debug/xi-positive-definiteness-/actions/runs/45646086586/job/139317344090}{Lean job log}
+records \texttt{propext}, \texttt{Classical.choice}, and
+\texttt{Quot.sound} for each of the two declarations. The row inequalities
+are hypotheses of the cutoff declaration and therefore appear in its type.
+The supplement contains the full shell table, a second
 aggregate finite-sum replay, the D9 interval cross-check, and exact
 commands. Neither the analytic argument nor the witness uses
 information about the zeros of zeta.
@@ -317,6 +340,9 @@ totally positive functions and the Riemann zeta function}.
 \bibitem{Sra} S. Sra, \emph{On some positivity properties of the Riemann
 $\Xi$ function}, preprint (2026).
 \href{https://arxiv.org/abs/2611.02944}{arXiv:2611.02944}.
+\bibitem{SraHankel} S. Sra, \emph{Sharp order-four sign regularity of a
+Jacobi theta kernel}, preprint, October 2026.
+\href{https://hexagonmath.org/pdf/2610.00721v1}{hexagon:2610.00721v1}.
 \bibitem{SraSmooth} S. Sra, \emph{Some positivity properties of Riemann
 $\Xi$ under smoothing}, unpublished preprint (2026).
 \href{https://hexagonmath.org/2611.00345v1}{hexagon:2611.00345v1}.
