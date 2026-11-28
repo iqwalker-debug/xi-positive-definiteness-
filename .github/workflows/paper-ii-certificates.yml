@@ -33,6 +33,8 @@ jobs:
           mkdir committed && cp heat-upper-bounds.json heat-sharpness.json committed/
           python certify_bounds.py | tee bounds.log
           python certify_sharp.py | tee sharp.log
+          python certify_d10_heat.py | tee d10-heat.log
+          python certify_sharp.py --d9-witness | tee d9-witness.log
           python check_d3.py | tee d3.log
           python check_export.py | tee export.log
           python integer/upper.py | tee integer-upper.log

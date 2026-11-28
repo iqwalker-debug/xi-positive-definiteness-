@@ -43,3 +43,5 @@ The manifest pins Mathlib. The five endpoint modules check the endpoint polynomi
 The sixth module, [GaussianTilt.lean](lean/GaussianTilt.lean), checks the Gaussian shell expansion under the integral for signed tests, positivity of projected cosine Gram forms given the marginal identity, positivity after radius mixing and normalization, the radial kernel theorem `radialTiltPSD` for the normalized tilted cosine transform, and the final cutoff implication. To inspect its axiom report, run `lake env lean GaussianTilt.lean` from the Lean directory.
 
 The application to Xi uses the classical radial spectral representation and the projected sphere marginal formula from the manuscript. The Lean module takes geometric identities as hypotheses. The final cutoff lemma also takes the D9 overlap, D10 obstruction, downward closure in D10, dimension restriction, and the nonnegative real-zero threshold as hypotheses. Connecting all these inputs for the concrete Xi profile remains outside this formalization.
+
+[Direct D10 heat witness](D10-heat-witness.md) gives the uniform finite-grid certificate on $0\le\lambda\le1$ and the companion D9 check at $\lambda=1/16$.
