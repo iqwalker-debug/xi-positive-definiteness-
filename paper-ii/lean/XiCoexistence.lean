@@ -8,16 +8,52 @@ open scoped ENNReal
 namespace XiCoexistence
 
 abbrev E := GenesisD9Fourier.E
-def density (u : ℝ) := profile 0 (u^2)
-def weight (s u : ℝ) := Real.exp (s*u^2) * density u
 def positiveWeight (s r : ℝ) := Real.exp (s*r^2) * phi r
 def numerator (s t : ℝ) := 2 * ∫ r in Ioi (0:ℝ), positiveWeight s r * Real.cos (t*r)
 def F (s t : ℝ) := numerator s t / numerator s 0
 def A (d : ℕ) : Set ℝ := {s | GenesisFormalV4.RadialPSD (E d) (F s)}
 /-- Complex-frequency cosine numerator. Division by a positive normalizer
 does not affect its zero set. -/
-def entireNumerator (s : ℝ) (z : ℂ) := ∫ u : ℝ, (weight s u : ℂ) * Complex.cos (z*u)
+def entireNumerator (s : ℝ) (z : ℂ) :=
+  2 * ∫ r in Ioi (0:ℝ), (positiveWeight s r : ℂ) * Complex.cos (z*r)
 def B : Set ℝ := {s | ∀ z : ℂ, entireNumerator s z = 0 → z.im = 0}
+
+def newmanH (t : ℝ) (z : ℂ) :=
+  ∫ u in Ioi (0:ℝ), ((Real.exp (t*u^2) * phi (2*u) : ℝ) : ℂ) * Complex.cos (z*u)
+
+theorem heatScaling (s : ℝ) (z : ℂ) : entireNumerator s z = 4 * newmanH (4*s) (2*z) := by
+  let g (r : ℝ) := (positiveWeight s r : ℂ) * Complex.cos (z*r)
+  have h := integral_comp_mul_left_Ioi' g 0 (by norm_num : (0:ℝ) < 2)
+  rw [mul_zero, Complex.real_smul] at h
+  change 2 * (∫ r in Ioi (0:ℝ), g r) = _
+  rw [← h]
+  have hp (u : ℝ) : g (2*u) =
+      ((Real.exp ((4*s)*u^2) * phi (2*u) : ℝ) : ℂ) * Complex.cos ((2*z)*u) := by
+    simp only [g, positiveWeight, show s*(2*u)^2 = (4*s)*u^2 by ring,
+      Complex.ofReal_mul, Complex.ofReal_ofNat]
+    rw [show z*(2*(u:ℂ)) = (2*z)*u by ring]
+  simp_rw [hp]
+  unfold newmanH
+  push_cast
+  ring
+
+theorem zeroThreshold (L : ℝ)
+    (deBruijnNewman : ∀ t, (∀ z : ℂ, newmanH t z = 0 → z.im = 0) ↔ L ≤ t) :
+    B = Ici (L/4) := by
+  ext s
+  change (∀ z : ℂ, entireNumerator s z = 0 → z.im = 0) ↔ L/4 ≤ s
+  constructor
+  · intro hs
+    have h : L ≤ 4*s := (deBruijnNewman _).mp (by
+      intro z hz
+      have hzero := hs (z/2) (by rw [heatScaling]; simpa [hz])
+      simpa using hzero)
+    linarith
+  · intro hs z hz
+    rw [heatScaling, mul_eq_zero] at hz
+    have hzero := (deBruijnNewman (4*s)).mpr (by linarith) (2*z)
+      (hz.resolve_left (by norm_num))
+    simpa using hzero
 
 private theorem phi_pos {r : ℝ} (hr : 0 ≤ r) : 0 < phi r := by
   have ht (n : ℕ) : 0 < weightedTerm phiPoly n r := by
@@ -76,7 +112,8 @@ private theorem weight_int {s : ℝ} (hs : s ≤ 1) : IntegrableOn (positiveWeig
     calc
       _ ≤ Real.exp (s*r^2) * (Real.exp (r/2-thetaX n r) * (16*Real.exp (thetaX n r/2))) := by gcongr
       _ = 16 * Real.exp (s*r^2 + (r/2-thetaX n r) + thetaX n r/2) := by rw [Real.exp_add, Real.exp_add]; ring
-      _ ≤ 16 * Real.exp (-r + -(n:ℝ)) := by gcongr; linarith
+      _ ≤ 16 * Real.exp (-r + -(n:ℝ)) :=
+        mul_le_mul_of_nonneg_left (Real.exp_le_exp.mpr (by linarith)) (by norm_num)
       _ = _ := by rw [Real.exp_add]; ring
   change ‖Real.exp (s*r^2) * ∑' n, weightedTerm phiPoly n r‖ ≤ _
   rw [← tsum_mul_left]
@@ -108,19 +145,20 @@ theorem d10_failure {s : ℝ} (hs : s ≤ 1)
   have he (r : ℝ) : positiveWeight s r * test r =
       (∑ k ∈ witnessPolynomial.support, (witnessPolynomial.coeff k : ℝ) * b k r) / normalization := by
     simp only [test, mul_div_assoc', Finset.mul_sum, b]
-    congr 1
+    apply congrArg (fun a : ℝ => a / (normalization : ℝ))
     apply Finset.sum_congr rfl
     intro i _
     ring
   simp_rw [he] at cert
   rw [integral_div, integral_finsetSum _ (fun k _ => (hi k).const_mul _)] at cert
   simp_rw [integral_const_mul] at cert
-  have hn := (div_neg_iff_of_pos (show (0:ℝ) < normalization by exact_mod_cast normalization_pos)).mp cert
+  have hn := (div_lt_iff₀ (show (0:ℝ) < normalization by exact_mod_cast normalization_pos)).mp cert
+  rw [zero_mul] at hn
   apply not_radialPSD_of_negative
   change (∑ k ∈ witnessPolynomial.support, (witnessPolynomial.coeff k : ℝ) *
     ((2 * ∫ r in Ioi (0:ℝ), b k r) / numerator s 0)) < 0
   simp only [mul_div_assoc', ← Finset.sum_div]
-  apply (div_neg_iff_of_pos (mass_pos hs)).mpr
+  apply div_neg_of_neg_of_pos _ (mass_pos hs)
   convert mul_neg_of_pos_of_neg (by norm_num : (0:ℝ) < 2) hn using 1
   rw [Finset.mul_sum]
   apply Finset.sum_congr rfl
@@ -134,9 +172,13 @@ def jet : ℕ → ℝ → ℝ
   | j+1 => fun x => -(deriv (jet j) x) / Real.pi
 
 structure WitnessBounds : Prop where
-  measurable : ∀ j ≤ 4, Measurable (jet j)
   steps : ∀ j < 4, GenesisD9Fourier.OpenStep (jet j) (jet (j+1))
   fourth : ∀ x > 0, 0 < jet 4 x
+
+private theorem jet_meas (j : ℕ) : Measurable (jet j) := by
+  cases j with
+  | zero => exact (by fun_prop : Measurable (fun x : ℝ => Real.exp (x/16))).mul (profile_meas 0 (by decide))
+  | succ j => exact (measurable_deriv (jet j)).neg.div_const _
 
 theorem rational_D9 (h : WitnessBounds) : (1/16 : ℝ) ∈ A 9 := by
   have base := GenesisD9Fourier.base (G := jet 0) (F := numerator (1/16)) (by
@@ -158,10 +200,10 @@ theorem rational_D9 (h : WitnessBounds) : (1/16 : ℝ) ∈ A 9 := by
   have p3 := (h.steps 3 (by decide)).pos h.fourth
   have p2 := (h.steps 2 (by decide)).pos p3
   have p1 := (h.steps 1 (by decide)).pos p2
-  have t1 := GenesisD9Fourier.lift_positive hi (h.measurable 1 (by decide)) p1 (h.steps 0 (by decide)) base
-  have t2 := GenesisD9Fourier.lift_positive t1.1 (h.measurable 2 (by decide)) p2 (h.steps 1 (by decide)) t1.2
-  have t3 := GenesisD9Fourier.lift_positive t2.1 (h.measurable 3 (by decide)) p3 (h.steps 2 (by decide)) t2.2
-  have t4 := GenesisD9Fourier.lift_positive t3.1 (h.measurable 4 (by decide)) h.fourth (h.steps 3 (by decide)) t3.2
+  have t1 := GenesisD9Fourier.lift_positive hi (jet_meas 1) p1 (h.steps 0 (by decide)) base
+  have t2 := GenesisD9Fourier.lift_positive t1.1 (jet_meas 2) p2 (h.steps 1 (by decide)) t1.2
+  have t3 := GenesisD9Fourier.lift_positive t2.1 (jet_meas 3) p3 (h.steps 2 (by decide)) t2.2
+  have t4 := GenesisD9Fourier.lift_positive t3.1 (jet_meas 4) h.fourth (h.steps 3 (by decide)) t3.2
   let f := fun k : E 9 => if k = 0 then 0 else jet 4 (‖k‖^2) / numerator (1/16) 0
   have heq : f =ᵐ[volume] fun k => jet 4 (‖k‖^2) / numerator (1/16) 0 := by
     filter_upwards [volume.ae_ne (0 : E 9)] with k hk
@@ -181,11 +223,12 @@ theorem rational_D9 (h : WitnessBounds) : (1/16 : ℝ) ∈ A 9 := by
 /-- An explicit positive D9 witness suffices. The paper's D9 endpoint
 exceeds 1/16, and the published threshold bound is below 1/16. -/
 theorem concreteCutoff {L : ℝ} (hL : 0 ≤ L) (hupper : L ≤ 0.22)
-    (realZeros : B = Ici (L/4))
+    (deBruijnNewman : ∀ t, (∀ z : ℂ, newmanH t z = 0 → z.im = 0) ↔ L ≤ t)
     (witnessBounds : WitnessBounds)
     (upper9 : A 9 ⊆ Iic 1)
     (cert : ∀ s ∈ Icc (0:ℝ) 1, (∫ r in Ioi (0:ℝ), positiveWeight s r * test r) < 0)
     {d : ℕ} (hd : 1 ≤ d) : (A d ∩ B).Nonempty ↔ d ≤ 9 := by
+  have realZeros := zeroThreshold L deBruijnNewman
   have restrictDim {a b : ℕ} (hab : a ≤ b) {s : ℝ} (h : s ∈ A b) : s ∈ A a :=
     GenesisFormalV5.euclideanPSD_lower (F s) hab h
   constructor
@@ -202,6 +245,8 @@ theorem concreteCutoff {L : ℝ} (hL : 0 ≤ L) (hupper : L ≤ 0.22)
     change L/4 ≤ 1/16
     linarith
 
+#print axioms heatScaling
+#print axioms zeroThreshold
 #print axioms zero_profile
 #print axioms d10_failure
 #print axioms rational_D9
