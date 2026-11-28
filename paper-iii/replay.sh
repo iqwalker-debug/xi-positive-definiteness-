@@ -20,6 +20,7 @@ cmp "$w/compare.txt" comparison.txt
 cat "$w/compare.txt"
 python3 lookup.py 2339
 python3 witness.py
+python3 sensitivity.py
 python3 enclose.py "$w/first.bin" --subdivisions 128
 echo "433a31662e825baaf2e5682d4fbe233651f24bf18e4372eb05e9b39926811b30  $w/first.bin" | sha256sum -c -
 python3 cover.py "$w/first.bin" --limit 129903
