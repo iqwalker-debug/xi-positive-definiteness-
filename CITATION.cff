@@ -21,8 +21,8 @@ references:
         given-names: Ian
     title: "Positive-Definiteness Endpoints of Heat-Deformed Riemann Xi Kernels"
     year: 2026
-    notes: "Working draft, November 25, 2026"
-    url: "https://github.com/iqwalker-debug/xi-positive-definiteness-/blob/2eff22a4ecd8889a6b344e7231e6a93b924d91fd/paper-ii/Paper-II.pdf"
+    notes: "Working draft, November 27, 2026"
+    url: "https://github.com/iqwalker-debug/xi-positive-definiteness-/blob/1a314e7290b7dad728f767c1ffb29349094e730c/paper-ii/Paper-II.pdf"
   - type: unpublished
     authors:
       - family-names: Walker
