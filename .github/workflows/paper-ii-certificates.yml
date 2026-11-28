@@ -4,6 +4,9 @@ on:
   push:
     branches: [main, paper-ii-draft]
     paths: ['paper-ii/**', '.github/workflows/paper-ii-certificates.yml']
+  pull_request:
+    branches: [main]
+    paths: ['paper-ii/**', '.github/workflows/paper-ii-certificates.yml']
   workflow_dispatch:
 
 permissions:
@@ -46,3 +49,24 @@ jobs:
             paper-ii/*.log
             paper-ii/*.json
           retention-days: 90
+
+  gaussian-tilt:
+    name: Lean Gaussian tilt and cutoff
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Compile and audit the Gaussian tilt module
+        working-directory: paper-ii/lean
+        run: |
+          set -euo pipefail
+          curl --proto '=https' --tlsv1.2 -fsSL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o "$RUNNER_TEMP/elan-init.sh"
+          sh "$RUNNER_TEMP/elan-init.sh" -y --default-toolchain none --no-modify-path
+          export PATH="$HOME/.elan/bin:$PATH"
+          lake exe cache get Mathlib.Analysis.SpecialFunctions.Exponential Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic Mathlib.MeasureTheory.Integral.DominatedConvergence Mathlib.Tactic.Ring Mathlib.Tactic.Positivity
+          lake env lean GaussianTilt.lean | tee "$RUNNER_TEMP/tilt.log"
+          for theorem in shellTilt_nonneg projectedMoment_nonneg shellGram_nonneg mixtureGram_nonneg coexistenceCutoff; do
+            grep -Fx "'GaussianTilt.$theorem' depends on axioms: [propext, Classical.choice, Quot.sound]" "$RUNNER_TEMP/tilt.log"
+          done
