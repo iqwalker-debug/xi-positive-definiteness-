@@ -73,6 +73,6 @@ jobs:
             grep -Fx "'GaussianTilt.$theorem' depends on axioms: [propext, Classical.choice, Quot.sound]" "$RUNNER_TEMP/tilt.log"
           done
           bash check-xi-bridge.sh | tee "$RUNNER_TEMP/xi.log"
-          for theorem in entire_on_real heatScaling zeroThreshold zero_profile d10_failure rational_D9 concreteCutoff; do
+          for theorem in entire_on_real heatScaling zeroThreshold zero_profile d10_failure fourth_of_Q4 rational_D9 concreteCutoff; do
             grep -Fx "'XiCoexistence.$theorem' depends on axioms: [propext, Classical.choice, Quot.sound]" "$RUNNER_TEMP/xi.log"
           done

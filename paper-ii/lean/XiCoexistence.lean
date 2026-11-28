@@ -1,4 +1,5 @@
 import XiCutoff
+import EndpointHeat
 
 noncomputable section
 open MeasureTheory Set Filter
@@ -183,19 +184,20 @@ def jet : ℕ → ℝ → ℝ
   | 0 => fun x => Real.exp (x/16) * profile 0 x
   | j+1 => fun x => -(deriv (jet j) x) / Real.pi
 
+private theorem phi_smooth : ContDiff ℝ ∞ phi := by
+  apply contDiff_of_differentiable_iteratedDeriv
+  intro k _
+  rw [p_iter]
+  exact fun x => (dp k x).differentiableAt
+
 private theorem jet_smooth (j : ℕ) : ContDiffOn ℝ ∞ (jet j) (Ioi 0) := by
   induction j with
   | zero =>
-    have hp : ContDiff ℝ ∞ phi := by
-      apply contDiff_of_differentiable_iteratedDeriv
-      intro k _
-      rw [p_iter]
-      exact fun x => (dp k x).differentiableAt
     intro x hx
     apply ContDiffAt.contDiffWithinAt
     change ContDiffAt ℝ ∞ (fun r => Real.exp (r/16) * phi (Real.sqrt r)) x
     exact (by fun_prop : ContDiffAt ℝ ∞ (fun r : ℝ => Real.exp (r/16)) x).mul
-      (hp.contDiffAt.comp x (Real.contDiffAt_sqrt (ne_of_gt hx)))
+      (phi_smooth.contDiffAt.comp x (Real.contDiffAt_sqrt (ne_of_gt hx)))
   | succ j ih => exact (ih.deriv_of_isOpen isOpen_Ioi (by simp)).neg.div_const _
 
 theorem jet_iter (j : ℕ) : jet j = fun x =>
@@ -209,6 +211,21 @@ theorem jet_iter (j : ℕ) : jet j = fun x =>
     ring
 
 abbrev FourthPositive := ∀ x > 0, 0 < iteratedDeriv 4 (jet 0) x
+
+/-- The exact polynomial-in-derivatives expression enclosed by Arb. -/
+def Q4 (x : ℝ) := ∑ i ∈ Finset.range 5, ((4 : ℕ).choose i : ℝ) *
+    (1/16 : ℝ)^(4-i) * iteratedDeriv i (profile 0) x
+
+theorem fourth_of_Q4 (cert : ∀ x > 0, 0 < Q4 x) : FourthPositive := by
+  intro x hx
+  have hh : ContDiffAt ℝ 4 (profile 0) x :=
+    (phi_smooth.of_le (show (4 : ℕ∞ω) ≤ ∞ by simp)).contDiffAt.comp x
+      (Real.contDiffAt_sqrt hx.ne')
+  have eq : jet 0 = fun r => profile 0 r * Real.exp ((1/16)*r) := by
+    funext r
+    simp only [jet, one_div_mul_eq_div, mul_comm (profile 0 r)]
+  rw [eq, PaperIIAudit.heatDerivative hh]
+  exact mul_pos (Real.exp_pos _) (cert x hx)
 
 private theorem fourth_pos (h : FourthPositive) {x : ℝ} (hx : 0 < x) : 0 < jet 4 x := by
   rw [jet_iter]
@@ -328,7 +345,7 @@ theorem rational_D9 (h : FourthPositive) : (1/16 : ℝ) ∈ A 9 := by
 exceeds 1/16, and the published threshold bound is below 1/16. -/
 theorem concreteCutoff {L : ℝ} (hL : 0 ≤ L) (hupper : L ≤ 0.22)
     (deBruijnNewman : ∀ t, (∀ z : ℂ, newmanH t z = 0 → z.im = 0) ↔ L ≤ t)
-    (witnessBounds : FourthPositive)
+    (witnessBounds : ∀ x > 0, 0 < Q4 x)
     (upper9 : A 9 ⊆ Iic 1)
     (cert : ∀ s ∈ Icc (0:ℝ) 1, (∫ r in Ioi (0:ℝ), positiveWeight s r * test r) < 0)
     {d : ℕ} (_hd : 1 ≤ d) : (A d ∩ B).Nonempty ↔ d ≤ 9 := by
@@ -344,7 +361,7 @@ theorem concreteCutoff {L : ℝ} (hL : 0 ≤ L) (hupper : L ≤ 0.22)
     have capped : s ≤ 1 := upper9 (restrictDim (by decide : 9 ≤ 10) ten)
     exact d10_failure capped (cert s ⟨hs,capped⟩) ten
   · intro h
-    refine ⟨1/16, restrictDim h (rational_D9 witnessBounds), ?_⟩
+    refine ⟨1/16, restrictDim h (rational_D9 (fourth_of_Q4 witnessBounds)), ?_⟩
     rw [realZeros]
     change L/4 ≤ 1/16
     linarith
@@ -354,6 +371,7 @@ theorem concreteCutoff {L : ℝ} (hL : 0 ≤ L) (hupper : L ≤ 0.22)
 #print axioms zeroThreshold
 #print axioms zero_profile
 #print axioms d10_failure
+#print axioms fourth_of_Q4
 #print axioms rational_D9
 #print axioms concreteCutoff
 end XiCoexistence
