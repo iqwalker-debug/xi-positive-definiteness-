@@ -19,10 +19,17 @@ Run the Arb verifier above, then check the generated Lean certificate with Lean 
 ```sh
 cd paper-v
 python formal/generate.py
-git diff --exit-code -- formal/Certificates.lean
+python formal/generate_fields.py
+git diff --exit-code -- formal/Certificates.lean formal/DesignFields.lean
 bash formal/replay.sh
 ```
 
 Set `LEAN_BIN` to the Lean executable and `MATHLIB3_SRC` to the pinned mathlib3 src directory if they are outside the default search path. The generator reads the exact coefficients and missing-index sets from verify.py. Lean checks the emitted proof independently of the generator. The archived output lists axioms for each public theorem.
 
-The two numerical routes share FLINT/Arb. For each route Arb verifies 70 positive leading minors and two upper bounds strictly below one. The trigonometric moment representation and construction of the continuous stationary field are written arguments in Section 2. The Lean files cover the polynomial signs and finite classification; the Xi evaluations and matrix minors are interval computations.
+### Constructive field existence
+
+In `formal/Field.lean`, each harmonic contributes four real sine/cosine trajectories paired with their negatives. The theorem `finite_centered_field` checks that the resulting finite probability weights sum to one, every single-location mean is zero, and every pairwise covariance is the prescribed function of the space and time differences. The covariance is continuous and spatially reflection-symmetric. Stationarity here concerns second moments.
+
+In `formal/DesignFields.lean`, `feasible_subsets` constructs a covariance for every feasible subset and every common nonzero time lag. Each maximal design uses seven or eight spatial/temporal frequency pairs. Lean checks positivity of the interpolating weights, normalization, both delayed readings, and the prescribed equal-time values throughout the rational moment intervals. The construction provides an alternative to the matrix witnesses in the paper. The general truncated trigonometric moment theorem used in Section 2 is not a hypothesis of this Lean proof.
+
+Arb supplies the six Xi moment inequalities used to specialize Lean's real-parameter theorem. Both the zeta–gamma and theta-integral routes check these inequalities, the 70 matrix minors, and the two exclusion ceilings. They share the FLINT/Arb library. The Lean scope does not include evaluation of the Xi function, the general Toeplitz representation theorem for arbitrary inputs, or strict stationarity of all joint distributions.

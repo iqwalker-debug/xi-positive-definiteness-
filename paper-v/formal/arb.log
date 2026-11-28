@@ -1,9 +1,11 @@
 Moment method: xi
+PASS: the six Xi moments satisfy the rational hypotheses of feasible_subsets.
 Exclusion [1, 2, 3, 4, 6] upper bound [0.994642919444277693733940835906414562661649554705029834315126945939 +/- 7.11e-67]
 Exclusion [1, 3, 4, 5, 6] upper bound [0.998663747555113327542006031167072309572269765914456278601295107578 +/- 6.69e-67]
 Excluded subsets: [(1, 2, 3, 4, 6), (1, 3, 4, 5, 6), (1, 2, 3, 4, 5, 6)]
 PASS: 61 feasible, 3 excluded; minimum size 5, first excluding prefix 6.
 Moment method: theta
+PASS: the six Xi moments satisfy the rational hypotheses of feasible_subsets.
 Exclusion [1, 2, 3, 4, 6] upper bound [0.99464291944427769373394083590641456266164955470502983 +/- 5.57e-54]
 Exclusion [1, 3, 4, 5, 6] upper bound [0.99866374755511332754200603116707230957226976591445628 +/- 2.76e-54]
 Excluded subsets: [(1, 2, 3, 4, 6), (1, 3, 4, 5, 6), (1, 2, 3, 4, 5, 6)]

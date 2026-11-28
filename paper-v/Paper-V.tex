@@ -43,6 +43,8 @@ Omitted indices & Missing numerators & $d_0$ & $d_1$ & $d_2$ & $d_3$ & $d_4$ & $
 \end{center}
 The accompanying verifier encloses all seven leading minors of both matrices for each row strictly above zero. Sylvester's criterion and the finite feasibility criterion prove existence. Deleting additional prescribed moments preserves each construction.
 
+The Lean supplement gives a second existence proof specialized to these designs. For each maximal feasible design it interpolates the observed moments with seven or eight spatial and temporal frequency pairs. Lean proves their weights are nonnegative throughout rational intervals containing the Xi values and constructs a centered finite ensemble with the required stationary covariance at every nonzero target lag. Arb checks the six input moment intervals by both formulas described below. This construction avoids the general truncated moment representation theorem for the feasible cases of this example.
+
 \section{Certificates for excluded designs}
 Let $T_j(\cos\theta)=\cos(j\theta)$ and $x=\cos(8r)$ at spatial frequency $r$. Reflection and stationarity give $d_j=\mathbb E[q T_j(x)]$ with a common temporal cosine multiplier $|q|\le1$. Also $\mathbb E[T_j(x)]=m_j$. Set $D=100000$ and
 \[

@@ -10,6 +10,7 @@ from flint import acb, arb, arb_mat, ctx
 # Reuse the published, tail-bounded quadrature from Paper IV.
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "paper-iv/audit-numeric"))
 from matrix import spatial_integral
+from formal.generate_fields import CENTERS, ROWS
 
 # For each maximal feasible set: missing equal-time moments and all delayed
 # moments, as integer numerators with common denominator 10000.
@@ -43,6 +44,11 @@ def xi_moments(method):
 
 def check(moments):
     indices = set(range(1, 7))
+    assert [set(s) for s, _ in ROWS] == [indices - m.keys() for m, _ in FEASIBLE]
+    for j in sorted(indices):
+        scaled = 1000000*moments[j]
+        assert CENTERS[j]-1 < scaled and scaled < CENTERS[j]+1, j
+    print("PASS: the six Xi moments satisfy the rational hypotheses of feasible_subsets.")
     yes, no = [], []
     for missing, witness in FEASIBLE:
         equal = [arb(missing[j])/10000 if j in missing else m for j, m in enumerate(moments)]
