@@ -44,6 +44,7 @@ jobs:
           python certify_d9_cells.py --bits "$ARB_BITS" --check-lean ../lean/D9Coverage.lean | tee -a arb-run.log
           python certify_d9_cells.py --verify "d9-certificate-$ARB_BITS.json" | tee -a arb-run.log
           python certify_finite.py --bits "$ARB_BITS" --output "d10-rows-$ARB_BITS.json" --check-lean ../lean/D10Rows.lean | tee -a arb-run.log
+          python certify_heat_consequences.py --bits "$ARB_BITS" | tee -a arb-run.log
           python certify_finite_d10.py "$ARB_BITS" | tee arb-finite-d10.json
       - uses: actions/upload-artifact@v4
         if: always()
@@ -84,7 +85,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p .lake/build/lib/lean
-          modules=(AxiomDraft D9Coverage D9Fourier D9Mellin ThetaSeries ThetaCosine ThetaJets PositiveWalk XiProfile XiCutoff D9DirectSigns D10Rows XiStrict)
+          modules=(AxiomDraft D9Coverage D9Fourier D9Mellin ThetaSeries ThetaCosine ThetaJets PositiveWalk XiProfile XiCutoff D9DirectSigns D10Rows XiStrict XiHeatConsequences)
           for module in "${modules[@]}"; do
             lake env lean -o ".lake/build/lib/lean/$module.olean" "$module.lean" 2>&1 | tee -a lean-run.log
           done
