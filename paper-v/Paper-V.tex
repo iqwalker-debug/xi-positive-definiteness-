@@ -1,0 +1,78 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,booktabs,hyperref}
+\hypersetup{hidelinks,pdftitle={Five spatial covariance values suffice},pdfauthor={Ian Walker}}
+\title{Five spatial covariance values suffice:\\a sharp finite design for the Riemann Xi profile}
+\author{Ian Walker}
+\date{Working draft, 27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Two delayed correlations of one half at separations 8 and 16 are incompatible with the entire normalized Xi spatial covariance. How many equal-time values establish this incompatibility? Among the six separations $8,16,24,32,40,48$, exactly two five-element designs suffice. They omit 16 and 40 respectively. Every four-element design admits a stationary field realizing both readings. The first five consecutive separations also admit such a field. We classify all 64 subsets using five positive moment completions and two polynomial bounds. All comparisons use exact polynomial arithmetic or outward-rounded intervals.
+\end{abstract}
+\section{What spatial information is given?}
+Let $C(h,t)$ be a continuous unit-variance covariance of a real jointly stationary scalar field on the spatial line and time line. Assume $C(h,t)=C(-h,t)$ for every lag. Fix $b\ne0$ and allow any temporal spectrum. Our target is $C(8,b)=C(16,b)=1/2$. Set
+\[
+ \xi(s)=\tfrac12 s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s),\qquad
+ M_j=\xi(1/2+8ji)/\xi(1/2).
+\]
+For $S\subseteq\{1,\ldots,6\}$ prescribe $C(8j,0)=M_j$ for $j\in S$ and always prescribe $C(0,0)=1$. Elsewhere the equal-time covariance is free. Indices refer to distinct separations; the number of sensors or observations required to estimate them is a different question.
+
+\textbf{Theorem.} A field realizing the target exists if and only if $S$ contains neither $\{1,2,3,4,6\}$ nor $\{1,3,4,5,6\}$. Thus the minimum size among these designs is five, and the shortest excluding consecutive prefix has length six.
+
+Paper IV~\cite{walker} obtained a sharp upper bound of about 0.9294554312 on the sum when the entire spatial profile was fixed. Here the unknown spatial frequencies may vary over all laws matching only the supplied values. Schneider and Hartlap~\cite{sh} studied constraints among equal-time correlations. Finite moment representations~\cite{sch} and moment bounds via polynomial inequalities~\cite{bp} provide the established machinery. Our claim concerns the specified finite design and target. Priority beyond this comparison is open.
+
+\section{Finite feasibility criterion}
+For a real sequence $s_0,\ldots,s_n$, put $H_n(s)_{ik}=s_{|i-k|}$ for $0\le i,k\le n$. For any finite design on a common grid of step $a>0$, take $n$ at least as large as every equal-time or delayed index. Write $m_j=C(ja,0)$ and $d_j=C(ja,b)$. Free entries may be completed arbitrarily. A necessary and sufficient condition is
+\[
+ m_0=1,\qquad H_n(m+d)\succeq0,\qquad H_n(m-d)\succeq0.
+\]
+Indeed the spatial snapshots at times zero and $b$ have common diagonal block $H_n(m)$ and symmetric cross block $H_n(d)$. Adding and subtracting the two snapshots proves necessity. For sufficiency apply the finite trigonometric moment theorem~\cite[Ch.~11]{sch} to obtain positive circle measures for $m+d$ and $m-d$. Average each measure with its reflection. Lift a phase $\theta$ to a real spatial frequency $\theta/a$ using a symmetric lift at the endpoints. Give each measure half weight. Couple the first to temporal frequency zero and the second equally to $\pm\pi/|b|$. The mass is $m_0$ and the cosine transforms at the two time lags are precisely $m$ and $d$. This positive spectral measure defines a continuous stationary covariance on all of space and time.
+
+\section{Certificates for feasible designs}
+In the following table all printed entries of $m$ and $d$ are integer numerators over 10000. Each row sets the missing $m_j$ as shown; other entries are the exact $M_j$, including $m_0=1$.
+\begin{center}\small
+\begin{tabular}{llrrrrrrr}\toprule
+Omitted indices & Missing numerators & $d_0$ & $d_1$ & $d_2$ & $d_3$ & $d_4$ & $d_5$ & $d_6$\\\midrule
+2,5 & 5198,$-6037$ &5392&5000&5000&$-1459$&461&$-3766$&$-4216$\\
+6 & $-8665$ &$-1051$&5000&5000&440&$-2894$&$-6856$&789\\
+4 & 6645 &$-1653$&5000&5000&3017&$-4431$&3048&5029\\
+3 & 4032 &$-789$&5000&5000&$-1188$&974&$-104$&$-291$\\
+1 & 4879 &2692&5000&5000&$-54$&$-2906$&$-2106$&1935\\\bottomrule
+\end{tabular}
+\end{center}
+The accompanying verifier encloses all seven leading minors of both matrices for each row strictly above zero. Sylvester's criterion and the finite feasibility criterion prove existence. Deleting additional prescribed moments preserves each construction.
+
+\section{Certificates for excluded designs}
+Let $T_j(\cos\theta)=\cos(j\theta)$ and $x=\cos(8r)$ at spatial frequency $r$. Reflection and stationarity give $d_j=\mathbb E[q T_j(x)]$ with a common temporal cosine multiplier $|q|\le1$. Also $\mathbb E[T_j(x)]=m_j$. Set $D=100000$ and
+\[
+ P(x)=D^{-1}\sum_{j=0}^6 c_j T_j(x),\qquad
+ g(x)=(u/D)T_1(x)+(2-u/D)T_2(x).
+\]
+At the target, $\mathbb E[qg]=1$. The following two choices give $P\ge|g|$ pointwise. A zero coefficient removes any dependence on that moment.
+\begin{center}\small
+\begin{tabular}{rrrrrrrrr}\toprule
+Omit &$u$ &$c_0$ &$c_1$ &$c_2$ &$c_3$ &$c_4$ &$c_5$ &$c_6$\\\midrule
+5&100000&89734&46883&7967&53117&11076&0&$-8757$\\
+2&98880&89470&50029&0&57353&17221&$-8503$&$-5551$\\\bottomrule
+\end{tabular}
+\end{center}
+Exact rational root counts for $P+g$ and $P-g$ give zero roots on $[-1,1]$ in both rows; each polynomial is positive at zero. The expectations of $P$ are strictly below $0.994643$ and $0.998664$, respectively. Hence $\mathbb E[qg]\le\mathbb E[P]<1$. These are separating bounds; no optimality of their coefficients is required.
+
+The two rows exclude every superset. Any other design either misses one of the common indices $1,3,4,6$, or misses both 2 and 5. It is therefore contained in a feasible row. This proves the theorem and gives 61 feasible subsets and three excluded subsets.
+
+\section{Uncertainty and reproducibility}
+If each supplied equal-time value differs from $M_j$ by at most $\eta$ and each delayed reading differs from $1/2$ by at most $\epsilon$, exclusion still follows whenever
+\[
+ 2\epsilon + \eta\sum_{j=1}^6 |c_j|/D < 1-\mathbb E_M[P].
+\]
+Indeed the positive contrast weights sum to two, and the uncertainty in the polynomial expectation obeys the triangle inequality. The variance is assumed known. Obtaining simultaneous error bounds from sensor data requires a separate statistical model.
+
+The accompanying \texttt{verify.py} checks the rational certificates using two enclosures of the normalized moments: the defining zeta--gamma formula, and the tail-bounded theta quadrature from Paper IV. They use different formulas and share the Arb arithmetic library. A finite-grid linear optimization suggested coefficients; the proof uses only the printed coefficients and continuum checks. The classification is restricted to the six candidate separations. Independent specialist review is pending. This manuscript was prepared with AI assistance.
+\begin{thebibliography}{9}
+\bibitem{walker} I. Walker, \href{https://github.com/iqwalker-debug/xi-positive-definiteness-/blob/61ea8576d6fa02f47a91e279faa4c4cbd0329772/paper-iv/Paper-IV.pdf}{Sharp space--time covariance bounds for the Riemann Xi profile}, revision 4 (2026).
+\bibitem{sch} K. Schm\"udgen, \emph{The Moment Problem}, Springer (2017), Ch.~11.
+\bibitem{bp} D. Bertsimas and I. Popescu, \href{https://doi.org/10.1137/S1052623401399903}{Optimal inequalities in probability theory: a convex optimization approach}, SIAM J. Optim. 15 (2005), 780--804.
+\bibitem{sh} P. Schneider and J. Hartlap, \href{https://doi.org/10.1051/0004-6361/200912424}{Constrained correlation functions}, A\&A (2009).
+\end{thebibliography}
+\end{document}
