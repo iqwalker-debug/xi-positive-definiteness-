@@ -5,7 +5,6 @@ noncomputable section
 open MeasureTheory Set Filter
 open scoped Topology ContDiff
 open GenesisTidalMellin
-open scoped ENNReal
 
 namespace XiCoexistence
 
@@ -22,10 +21,10 @@ def B : Set ℝ := {s | ∀ z : ℂ, entireNumerator s z = 0 → z.im = 0}
 
 theorem entire_on_real (s t : ℝ) : entireNumerator s (t : ℂ) = (numerator s t : ℂ) := by
   have hp (r : ℝ) : (positiveWeight s r : ℂ) * Complex.cos ((t:ℂ)*r) =
-      ((positiveWeight s r * Real.cos (t*r) : ℝ) : ℂ) := by push_cast <;> rfl
+      ((positiveWeight s r * Real.cos (t*r) : ℝ) : ℂ) := by push_cast; rfl
   unfold entireNumerator numerator
   simp_rw [hp, integral_complex_ofReal]
-  push_cast <;> rfl
+  push_cast; rfl
 
 def newmanH (t : ℝ) (z : ℂ) :=
   ∫ u in Ioi (0:ℝ), ((Real.exp (t*u^2) * phi (2*u) : ℝ) : ℂ) * Complex.cos (z*u)
