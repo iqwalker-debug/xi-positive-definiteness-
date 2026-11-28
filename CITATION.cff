@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "For an individual result, cite the corresponding Ian Walker manuscript listed in references. Paper-specific BibTeX entries are in papers.bib."
+message: "For an individual result, cite the corresponding manuscript listed in references. Paper-specific BibTeX entries are in papers.bib."
 title: "Riemann Xi and quadratic Dirichlet L-functions: manuscripts and verification materials"
 authors:
   - family-names: Walker
@@ -32,3 +32,10 @@ references:
     doi: "10.5281/zenodo.24614710"
     notes: "Preprint v2, November 27, 2026"
     url: "https://github.com/iqwalker-debug/xi-positive-definiteness-/blob/18daae521f62669e920c3a7b3ffd88a540ec5a0c/paper-iii/Paper-III.pdf"
+  - type: unpublished
+    authors:
+      - name: "GENESIS research program"
+    title: "Sharp space–time covariance bounds for the Riemann Xi profile"
+    year: 2026
+    notes: "Revision 4, November 27, 2026. AI-assisted working manuscript prepared for Ian Walker."
+    url: "https://github.com/iqwalker-debug/xi-positive-definiteness-/blob/858683e1baebf34a5bda9a160c6ae83227d86fd2/paper-iv/Paper-IV.pdf"

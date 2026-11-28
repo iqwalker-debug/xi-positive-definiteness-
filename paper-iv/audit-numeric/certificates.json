@@ -1,0 +1,15 @@
+{
+  "minimum_eigenvalue": {
+    "lower": "0.02466248633173543815945060307060078",
+    "upper": "0.02466248633173543815945060307060079"
+  },
+  "dimension_gap": {
+    "lower": "3.38500e-12",
+    "upper": "3.42424e-12"
+  },
+  "fourth_derivatives": {
+    "xi": "0.0059600173",
+    "gaussian": "0.0064060885"
+  },
+  "three_dimensional_asymptotic": "2.288185"
+}

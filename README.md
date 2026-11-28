@@ -2,7 +2,7 @@
 
 ## How to cite these papers
 
-Cite **Ian Walker** and the title of the paper containing the result you use. The [BibTeX entries for Papers I–III](papers.bib) link to the exact manuscript versions. For the collection and its verification materials, use the [repository citation](CITATION.cff).
+For Papers I–III, cite Ian Walker and the title of the manuscript containing the result. Paper IV is an AI-assisted GENESIS research program draft prepared for Ian Walker. The [paper-specific BibTeX entries](papers.bib) link to the exact manuscript versions. For the collection and its verification materials, use the [repository citation](CITATION.cff).
 
 ## Paper I
 
@@ -44,3 +44,9 @@ Both meshes reproduce a strictly negative normalized Gram sum of approximately �
 [Finite witnesses for failure of positive definiteness in quadratic Dirichlet L-functions](paper-iii/Paper-III.pdf) by Ian Walker. [Zenodo DOI](https://doi.org/10.5281/zenodo.24614710). Using the first 18 prime signs, truncation at 300, and individual upper bounds on unresolved terms, five common theta points are necessary and sufficient to certify a strict majority of the prime sign patterns.
 
 [LaTeX source](paper-iii/Paper-III.tex) · [Reproduction instructions and counts](paper-iii/README.md) · [Certificate code and witness tables](paper-iii/certificate)
+
+## Paper IV
+
+[Sharp space–time covariance bounds for the Riemann Xi profile](paper-iv/Paper-IV.pdf) is a revision 4 working draft prepared for Ian Walker. Two delayed correlations of 0.50 pass a ten-observation covariance test, yet the full Xi spatial profile limits their sum to approximately 0.9294554312. The paper derives this bound from the fixed radial spectrum and proves strict contraction of the joint region under dimension projection. Its Xi application uses Paper I. An acoustic control reports the intervening microphone windows, including a reversal under both frequency weightings. External specialist review and priority assessment remain open.
+
+[Manuscript source, figures, Lean and Arb checks](paper-iv/README.md)

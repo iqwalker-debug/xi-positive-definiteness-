@@ -1,0 +1,106 @@
+name: Paper IV verification
+
+on:
+  push:
+    branches: [main, paper-iv-revision-2]
+    paths:
+      - 'paper-iv/**'
+      - '.github/workflows/paper-iv-verification.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'paper-iv/**'
+      - '.github/workflows/paper-iv-verification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  arb:
+    name: Independent Arb enclosures and matrix witness
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: paper-iv/requirements-ci.txt
+      - name: Verify archived numerical files
+        working-directory: paper-iv/independent-numeric
+        run: sha256sum -c SHA256SUMS
+      - name: Install pinned numerical libraries
+        run: |
+          python -m pip install --only-binary=:all: -r paper-iv/requirements-ci.txt
+      - name: Replay and compare enclosures
+        run: python paper-iv/replay_numeric.py
+
+      - name: Replay the two rational eigenvalue shifts and the dimension gap
+        run: python paper-iv/audit-numeric/replay.py
+
+  manuscript:
+    name: Published numbers, acoustic windows and PDF
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: paper-iv/requirements-ci.txt
+      - name: Install pinned readers
+        run: |
+          python -m pip install --only-binary=:all: -r paper-iv/requirements-ci.txt
+      - name: Recompute summaries from the archived microphone pairs
+        run: python paper-iv/acoustic/replay_windows.py --check-stored
+      - name: Compare manuscript with certificates and exercise mutations
+        run: |
+          python paper-iv/verify_claims.py --check
+          python paper-iv/verify_claims.py --self-test
+      - name: Verify the deposited PDF matches its sources and figures
+        run: python paper-iv/manuscript/pdf_provenance.py
+
+  lean:
+    name: Lean 3 projection and Gram proofs
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify archived proofs
+        working-directory: paper-iv/formal
+        run: sha256sum -c SHA256SUMS
+      - name: Install the pinned Lean compiler and compiled mathlib3
+        env:
+          MATHLIB_REV: 65a1391a0106c9204fe45bc73a039f056558cb83
+        run: |
+          set -euo pipefail
+          install_dir="$RUNNER_TEMP/paper-iv-lean3"
+          mkdir -p "$install_dir"
+          cd "$install_dir"
+          curl --fail --location --retry 3 --silent --show-error -o lean.tar.gz \
+            https://github.com/leanprover-community/lean/releases/download/v3.51.1/lean-3.51.1-linux.tar.gz
+          curl --fail --location --retry 3 --silent --show-error -o mathlib.tar.xz \
+            "https://oleanstorage.blob.core.windows.net/mathlib/$MATHLIB_REV.tar.xz"
+          sha256sum -c <<'SUMS'
+          34c6e65d90f6b9161b2b5acdfb24baf8f3d59ec20d5090ba9688bf8a9b0765aa  lean.tar.gz
+          a12ac02e6d7748e5e38eb96d8182ac75f7332f578d8d6cb8a668a2ae578c586e  mathlib.tar.xz
+          SUMS
+          tar -xzf lean.tar.gz
+          tar -xJf mathlib.tar.xz
+          echo "LEAN_BIN=$install_dir/lean-3.51.1-linux/bin/lean" >> "$GITHUB_ENV"
+          echo "MATHLIB3_SRC=$install_dir/src" >> "$GITHUB_ENV"
+      - name: Replay all twelve declarations and compare the axiom report
+        working-directory: paper-iv/formal
+        run: |
+          set -euo pipefail
+          bash replay.sh | tee "$RUNNER_TEMP/paper-iv-lean.log"
+          diff -u replay.log "$RUNNER_TEMP/paper-iv-lean.log"

@@ -1,0 +1,123 @@
+Lean (version 3.51.1, commit cce7990ea86a, Release)
+Checking CovarianceGram.lean
+propext
+classical.choice
+quot.sound
+propext
+classical.choice
+quot.sound
+propext
+classical.choice
+quot.sound
+propext
+classical.choice
+quot.sound
+PASS CovarianceGram.lean
+Checking StrictProjection.lean
+integral_pos_of_witness :
+  integrable ?M_4 ?M_3 →
+  0 ≤ᵐ[?M_3] ?M_4 →
+  0 < ⇑?M_3 ?M_5 → (∀ (x : ?M_1), x ∈ ?M_5 → 0 < ?M_4 x) → 0 < ∫ (x : ?M_1), ?M_4 x ∂?M_3
+propext
+quot.sound
+classical.choice
+integral_lt_of_witness :
+  integrable ?M_4 ?M_3 →
+  integrable ?M_5 ?M_3 →
+  ?M_4 ≤ᵐ[?M_3] ?M_5 →
+  0 < ⇑?M_3 ?M_6 →
+  (∀ (x : ?M_1), x ∈ ?M_6 → ?M_4 x < ?M_5 x) → ∫ (x : ?M_1), ?M_4 x ∂?M_3 < ∫ (x : ?M_1), ?M_5 x ∂?M_3
+propext
+quot.sound
+classical.choice
+abs_integral_lt_integral_abs :
+  integrable ?M_4 ?M_3 →
+  0 < ⇑?M_3 {x : ?M_1 | 0 < ?M_4 x} →
+  0 < ⇑?M_3 {x : ?M_1 | ?M_4 x < 0} → |∫ (x : ?M_1), ?M_4 x ∂?M_3| < ∫ (x : ?M_1), |?M_4 x| ∂?M_3
+propext
+quot.sound
+classical.choice
+strict_projection_envelope :
+  ∀ (A : ?M_1 → ?M_2 → ℝ) {S : set ?M_1},
+    (∀ (r : ?M_1), integrable (A r) ?M_6) →
+    integrable (λ (r : ?M_1), |∫ (b : ?M_2), A r b ∂?M_6|) ?M_5 →
+    integrable (λ (r : ?M_1), ∫ (b : ?M_2), |A r b| ∂?M_6) ?M_5 →
+    0 < ⇑?M_5 S →
+    (∀ (r : ?M_1), r ∈ S → 0 < ⇑?M_6 {b : ?M_2 | 0 < A r b} ∧ 0 < ⇑?M_6 {b : ?M_2 | A r b < 0}) →
+    ∫ (r : ?M_1), |∫ (b : ?M_2), A r b ∂?M_6| ∂?M_5 < ∫ (r : ?M_1), ∫ (b : ?M_2), |A r b| ∂?M_6 ∂?M_5
+propext
+quot.sound
+classical.choice
+angular_both_signs :
+  ∀ (κ : measure ℝ),
+    (∀ (U : set ℝ), is_open U → U.nonempty → U ⊆ Ioo 0 1 → 0 < ⇑κ U) →
+    ∀ {Ω : ℝ → ℝ},
+      continuous Ω →
+      ∀ {p n z : ℝ},
+        0 < p →
+        0 < n →
+        p < z →
+        n < z →
+        0 < Ω p → Ω n < 0 → 0 < ⇑κ {b : ℝ | 0 < Ω (z * b)} ∧ 0 < ⇑κ {b : ℝ | Ω (z * b) < 0}
+quot.sound
+propext
+classical.choice
+strict_radial_projection :
+  ∀ (ν κ : measure ℝ),
+    (∀ (t : ℝ), 0 < ⇑ν (Ioi t)) →
+    (∀ (U : set ℝ), is_open U → U.nonempty → U ⊆ Ioo 0 1 → 0 < ⇑κ U) →
+    ∀ {Ω : ℝ → ℝ},
+      continuous Ω →
+      ∀ {p n : ℝ},
+        0 < p →
+        0 < n →
+        0 < Ω p →
+        Ω n < 0 →
+        ∀ {a : ℝ},
+          0 < a →
+          (∀ (r : ℝ), integrable (λ (b : ℝ), Ω (a * r * b)) κ) →
+          integrable (λ (r : ℝ), |∫ (b : ℝ), Ω (a * r * b) ∂κ|) ν →
+          integrable (λ (r : ℝ), ∫ (b : ℝ), |Ω (a * r * b)| ∂κ) ν →
+          ∫ (r : ℝ), |∫ (b : ℝ), Ω (a * r * b) ∂κ| ∂ν <
+            ∫ (r : ℝ), ∫ (b : ℝ), |Ω (a * r * b)| ∂κ ∂ν
+quot.sound
+propext
+classical.choice
+strict_bounded_radial_projection :
+  ∀ (ν κ : measure ℝ) [_inst_3 : is_finite_measure ν] [_inst_4 : is_finite_measure κ],
+    (∀ (t : ℝ), 0 < ⇑ν (Ioi t)) →
+    (∀ (U : set ℝ), is_open U → U.nonempty → U ⊆ Ioo 0 1 → 0 < ⇑κ U) →
+    ∀ {Ω : ℝ → ℝ},
+      continuous Ω →
+      (∀ (t : ℝ), |Ω t| ≤ 1) →
+      ∀ {p n : ℝ},
+        0 < p →
+        0 < n →
+        0 < Ω p →
+        Ω n < 0 →
+        ∀ {a : ℝ},
+          0 < a →
+          ∫ (r : ℝ), |∫ (b : ℝ), Ω (a * r * b) ∂κ| ∂ν <
+            ∫ (r : ℝ), ∫ (b : ℝ), |Ω (a * r * b)| ∂κ ∂ν
+quot.sound
+propext
+classical.choice
+adjacent_envelopes_of_projection :
+  ∀ (ν κ μ : measure ℝ) [_inst_3 : is_finite_measure ν] [_inst_4 : is_finite_measure κ],
+    (∀ (t : ℝ), 0 < ⇑ν (Ioi t)) →
+    (∀ (U : set ℝ), is_open U → U.nonempty → U ⊆ Ioo 0 1 → 0 < ⇑κ U) →
+    ∀ {Ω Ψ : ℝ → ℝ},
+      continuous Ω →
+      (∀ (t : ℝ), |Ω t| ≤ 1) →
+      ∀ {p n : ℝ},
+        0 < p →
+        0 < n →
+        0 < Ω p →
+        Ω n < 0 →
+        (∀ (z : ℝ), Ψ z = ∫ (b : ℝ), Ω (z * b) ∂κ) →
+        μ = measure.map (λ (v : ℝ × ℝ), v.fst * v.snd) (ν.prod κ) →
+        ∀ {a : ℝ}, 0 < a → ∫ (r : ℝ), |Ψ (a * r)| ∂ν < ∫ (s : ℝ), |Ω (a * s)| ∂μ
+quot.sound
+propext
+classical.choice
+PASS StrictProjection.lean
