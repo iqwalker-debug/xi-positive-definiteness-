@@ -26,6 +26,8 @@ python integer/sharp.py
 
 The Paper II GitHub Actions workflow reruns Arb, checks all 26 exported bounds at 768 bits, replays the integer verifier, and compares the regenerated bounds and sharpness files byte for byte. The logs report both precisions and every dimension.
 
+`check_export.py` also verifies the D5 origin inequality used with second-level log-concavity. In `heat-upper-bounds.json`, `lower` and `upper` are the exact rational endpoints. The legacy scalar `enclosure` is the lower endpoint converted to a float.
+
 ## Reproduce the Lean checks
 
 With the Lean toolchain manager installed, run:
