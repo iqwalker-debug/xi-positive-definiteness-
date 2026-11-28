@@ -38,6 +38,16 @@ def polynomial(a, m, x):
 def verify():
     ctx.prec, ctx.cap = 768, 27
     a = coefficients()
+    # H^(j)(0) = j! a_j. Evaluate y = p'/p - 2 sqrt(p), with p = -(log H)''.
+    first = a[1] / a[0]
+    second = 2 * a[2] / a[0]
+    third = 6 * a[3] / a[0]
+    p = first**2 - second
+    p_prime = -third + 3 * first * second - 2 * first**3
+    assert p > 0
+    y = p_prime / p - 2 * p.sqrt()
+    assert -8 < y < -7
+    print("OK: D5 origin sign certified at 768 bits: -8 < y(0) < -7.")
     blocks = json.loads(Path(__file__).with_name("heat-upper-bounds.json").read_text())
     assert [b["precision"] for b in blocks] == [256, 384]
     for block in blocks:

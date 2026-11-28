@@ -11,7 +11,7 @@
 \newcommand{\ee}{\mathrm{e}}
 \title{Positive-Definiteness Endpoints of\\ Heat-Deformed Riemann Xi Kernels}
 \author{Ian Walker}
-\date{Working draft, November 25, 2026. Revised after two rounds of AI review. Awaiting human review.}
+\date{Working draft, November 27, 2026. Awaiting human review.}
 \begin{document}
 \maketitle
 
@@ -23,6 +23,7 @@ the Csordas--Varga log-concavity theorem. In each odd dimension from five to twe
 an explicit upper bound for the admissible set: the smallest real root of a polynomial built from
 the even derivatives of the density at the origin. A computer-assisted proof shows that every one of these bounds is attained.
 The admissible set in each such dimension is the closed half-line ending at that root.
+In dimension five we also derive attainment from second-level log-concavity and one certified sign at the origin.
 The corresponding assertion in odd dimensions starting at twenty-nine remains conjectural.
 \end{abstract}
 
@@ -81,6 +82,33 @@ so $Q_1<0$ near zero and $\lambda\notin A_3$.
 \end{proof}
 An interval-arithmetic replay of the same inequality (500 cells, 128 and 192 bits) agrees and is
 kept as a cross-check; it is not needed for the proof.
+
+\subsection*{A second proof in dimension five}
+Let $u=\log H$, $p=-u''$ and $b=-u'-\sqrt p$. In Csordas's normalization
+$s(t)=\Phi_{\rm C}(\sqrt t)$ we have $H(x)=s(x/4)$, so
+$H'^2-HH''=(s'^2-ss'')(x/4)/16$. The second-level concavity theorem of
+Planat and Sol\'e \cite{PS}, also obtained by Sra \cite{Sra}, gives
+$H'^2-HH''>0$ and $(\log(H'^2-HH''))''<0$ for $x>0$.
+Since $H'^2-HH''=H^2p$, we have $p>0$ and $(\log p)''<2p$.
+For $y=(\log p)'-2\sqrt p$ this yields
+\[
+  y'+\sqrt p\,y=(\log p)''-2p<0,\qquad b'=-\tfrac12\sqrt p\,y.
+\]
+At zero, put $v=a_1/a_0$, $w=2a_2/a_0$, and $j=6a_3/a_0$.
+Then $p(0)=v^2-w$ and $p'(0)=-j+3vw-2v^3$.
+The \href{https://github.com/iqwalker-debug/xi-positive-definiteness-/blob/074c0c9cacd5085a778c4fd94edd46fcd68dd729/paper-ii/check_export.py}{768-bit origin check}
+encloses these quantities and verifies $p(0)>0$ and $-8<y(0)<-7$.
+Multiplying the differential inequality by
+$\exp(\int_0^x\sqrt{p(t)}\,dt)$ gives $y(x)<0$, hence $b$ is increasing.
+
+Now $Q_2/H=(\lambda+u')^2-p$. For $\lambda\le b(0)$ one has
+$\lambda\le b(x)$ for all $x>0$, giving $Q_2\ge0$ and D5 admissibility.
+At the origin the two roots are $b(0)$ and $-u'(0)+\sqrt{p(0)}$.
+Between them $Q_2(0;\lambda)<0$, and continuity gives failure at a positive
+radius. Downward closure (Lemma~\ref{lem:down}) then excludes every
+$\lambda>b(0)$: any admissible larger parameter would admit a parameter
+strictly between these two roots. Thus $A_5=(-\infty,b(0)]$, where
+$b(0)$ is the smaller root of $P_2$ and equals $5.91121963944\ldots$.
 
 \section{Upper bounds in odd dimensions five to twenty-seven}
 \begin{theorem}\label{thm:upper}
@@ -153,7 +181,15 @@ for $\lvert\operatorname{Im}r\rvert<\pi/4$, so $H$ is analytic on $\lvert x\rver
 $\lvert x\rvert\le3/5$ one has $\lvert\operatorname{Re}r\rvert,\lvert\operatorname{Im}r\rvert\le t=\sqrt{3/5}$,
 hence $\lvert X_n\rvert\le\pi n^2\ee^{2t}$ and $\operatorname{Re}X_n\ge\pi n^2\ee^{-2t}\cos2t>0$,
 which bounds $\lvert H\rvert$ by an explicit constant $M$. Cauchy's estimate
-$\lvert a_k\rvert\le M(3/5)^{-k}$ then bounds the omitted terms of each derivative.
+$\lvert a_k\rvert\le M(3/5)^{-k}$ gives the following explicit bound.
+With $R=3/5$, $D=1/4$, $0\le x\le D$, and $0\le j\le14$, the absolute
+remainder after differentiating the degree-120 Taylor polynomial is at most
+\[
+  2M D^{-j}121^j(D/R)^{121}.
+\]
+Indeed the $k$th omitted term is bounded by $MD^{-j}k^j(D/R)^k$,
+and from $k=121$ onward the successive ratio is at most
+$(122/121)^{14}D/R<1/2$. The order $j=14$ covers the derivative of $Q_{13}$.
 
 \emph{Tail, $r\ge1/2$.} With $E=-\tfrac{1}{2r}\partial_r-\lambda$ one has
 $Q_m=\sum_n E^m\bigl[\ee^{r/2-X_n}(2X_n^2-3X_n)\bigr]$ and
@@ -178,10 +214,15 @@ Csordas's convexity of $\Phi(\sqrt{t})$ \cite[Theorem 2.12]{Csordas98}. Csordas'
 \cite{Csordas13} treats positive definiteness of related kernels in one dimension. Its Open
 Problems 4.10 and 4.11 concern one-dimensional kernels built from the deformed density, and its
 Problem 4.14 is a log-concavity question that involves derivatives of $\Phi(\sqrt{t})$ up to order
-four. On two AI readings it contains no radial or dimension-dependent result. An AI referee's
-search by title, endpoint values and terminology found no paper containing
-Theorem~\ref{thm:upper} or~\ref{thm:sharp}. Neither is an exhaustive search, and novelty has
-not been established.
+four. Planat and Sol\'e \cite{PS} and Sra \cite{Sra} give proofs of the
+second-level concavity inequality in Problem 4.14. The D5 argument above
+uses that inequality together with the certified origin sign; the cited
+inequality concerns the theta density, while the endpoint statement also
+uses the radial criterion and downward closure. Csordas and Varga already
+studied heat-weighted theta moments \cite{CV88}. For odd dimensions seven
+through twenty-seven, Theorem~\ref{thm:sharp} gives a global sign
+certificate at each origin-polynomial endpoint. Priority for the explicit
+D5 endpoint and for the higher-dimensional classification remains open.
 \end{remark}
 
 \begin{remark}[The de Bruijn--Newman family]
@@ -224,7 +265,7 @@ proof of Theorem~\ref{thm:sharp} and a corrected entry in Table~\ref{tab:roots}.
 exported derivative bounds and checked the extension through dimension twenty-seven. No human
 mathematician has yet reviewed this draft.
 
-\begin{thebibliography}{9}
+\begin{thebibliography}{99}
 \bibitem{PaperI} I. Walker, \emph{The Exact Positive-Definiteness Dimension of the Riemann Xi
 Function}, referee draft, November 25, 2026.
 \url{https://github.com/iqwalker-debug/xi-positive-definiteness-}.
@@ -234,6 +275,10 @@ Ser. III 33 (1998), 37--50.
 hypothesis}, Constr. Approx. 4 (1988), 175--198.
 \bibitem{Csordas13} G. Csordas, \emph{Fourier transforms of positive definite kernels and the
 Riemann $\xi$-function}, \href{https://arxiv.org/abs/1309.0055}{arXiv:1309.0055}.
+\bibitem{PS} M. Planat and P. Sol\'e, \emph{Second-Level Concavity of the
+Riemann $\Xi$ Kernel}, \href{https://arxiv.org/abs/2608.19160}{arXiv:2608.19160} (2026).
+\bibitem{Sra} S. Sra, \emph{Sharp order-four sign regularity of a Jacobi theta kernel},
+\href{https://hexagonmath.org/pdf/2610.00721v1}{hexagon:2610.00721v1} (2026).
 \bibitem{GT} L. Grafakos and G. Teschl, \emph{On Fourier transforms of radial functions and
 distributions}, J. Fourier Anal. Appl. 19 (2013), 167--179.
 \bibitem{RT} B. Rodgers and T. Tao, \emph{The de Bruijn--Newman constant is non-negative},

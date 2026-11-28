@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "For an individual result, cite the corresponding Ian Walker manuscript listed in references. Paper-specific BibTeX entries are in papers.bib."
+message: "For an individual result, cite the corresponding manuscript listed in references. Paper-specific BibTeX entries are in papers.bib."
 title: "Riemann Xi and quadratic Dirichlet L-functions: manuscripts and verification materials"
 authors:
   - family-names: Walker
@@ -12,28 +12,30 @@ references:
         given-names: Ian
     title: "The Exact Positive-Definiteness Dimension of the Riemann Xi Function"
     year: 2026
-    notes: "Referee draft, November 25, 2026"
-    url: "https://github.com/iqwalker-debug/xi-positive-definiteness-/blob/2eff22a4ecd8889a6b344e7231e6a93b924d91fd/Paper-I.pdf"
+    doi: "10.5281/zenodo.24614006"
+    notes: "Referee draft, November 27, 2026"
+    url: "https://github.com/iqwalker-debug/xi-positive-definiteness-/blob/97364e0d5ff8e42a67c50aa72ec7cb3833d0d423/Paper-I.pdf"
   - type: unpublished
     authors:
       - family-names: Walker
         given-names: Ian
     title: "Positive-Definiteness Endpoints of Heat-Deformed Riemann Xi Kernels"
     year: 2026
-    notes: "Working draft, November 25, 2026"
-    url: "https://github.com/iqwalker-debug/xi-positive-definiteness-/blob/2eff22a4ecd8889a6b344e7231e6a93b924d91fd/paper-ii/Paper-II.pdf"
+    notes: "Working draft, November 27, 2026"
+    url: "https://github.com/iqwalker-debug/xi-positive-definiteness-/blob/1a314e7290b7dad728f767c1ffb29349094e730c/paper-ii/Paper-II.pdf"
   - type: unpublished
     authors:
       - family-names: Walker
         given-names: Ian
     title: "Finite witnesses for failure of positive definiteness in quadratic Dirichlet L-functions"
     year: 2026
-    notes: "Preprint v1, November 25, 2026"
-    url: "https://github.com/iqwalker-debug/xi-positive-definiteness-/blob/2eff22a4ecd8889a6b344e7231e6a93b924d91fd/paper-iii/Paper-III.pdf"
+    doi: "10.5281/zenodo.24614710"
+    notes: "Preprint v2, November 27, 2026"
+    url: "https://github.com/iqwalker-debug/xi-positive-definiteness-/blob/18daae521f62669e920c3a7b3ffd88a540ec5a0c/paper-iii/Paper-III.pdf"
   - type: unpublished
     authors:
       - name: "GENESIS research program"
     title: "Sharp space–time covariance bounds for the Riemann Xi profile"
     year: 2026
-    notes: "Revision 3, November 26, 2026. AI-assisted working manuscript prepared for Ian Walker."
-    url: "https://github.com/iqwalker-debug/xi-positive-definiteness-/blob/447a206b79915e11fda13952a012e58806f17839/paper-iv/Paper-IV.pdf"
+    notes: "Revision 4, November 27, 2026. AI-assisted working manuscript prepared for Ian Walker."
+    url: "https://github.com/iqwalker-debug/xi-positive-definiteness-/blob/858683e1baebf34a5bda9a160c6ae83227d86fd2/paper-iv/Paper-IV.pdf"
