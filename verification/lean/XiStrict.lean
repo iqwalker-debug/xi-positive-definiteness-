@@ -124,16 +124,19 @@ theorem StrictRadial.lower {d e : ℕ} {F : ℝ → ℝ} (hle : d ≤ e)
     simpa only [Function.comp_apply, hpad] using
       hs n (GenesisFormalV5.euclideanPad (d+k) ∘ x) (he.comp hx) c hc
 
+/-- Positivity of the dimension-nine numerator from the direct theta-series
+sign proofs. No Arb table is used. -/
+theorem numerator_positive_direct (r : ℝ) (hr : 0 < r) : 0 < N r := by
+  by_cases h : r ≤ 1/5
+  · exact GenesisD9Fourier.near_numerator_pos p (b := 1/5)
+      (fun j _ => continuous_iff_continuousAt.mpr fun t => (dp j t).continuousAt)
+      (fun j _ => dp j) (odd_jet 1 (by decide)) (odd_jet 3 (by decide))
+      (odd_jet 5 (by decide)) (odd_jet 7 (by decide))
+      (fun t ht => DirectSigns.near_eighth ht.1.le ht.2.le) r ⟨hr,h⟩
+  · exact DirectSigns.positive_middle (le_of_not_ge h)
+
 theorem strict_d9 : StrictRadial 9 GenesisTidal.criticalXiProfile := by
-  have hN (r : ℝ) (hr : 0 < r) : 0 < N r := by
-    by_cases h : r ≤ 1/5
-    · exact GenesisD9Fourier.near_numerator_pos p (b := 1/5)
-        (fun j _ => continuous_iff_continuousAt.mpr fun t => (dp j t).continuousAt)
-        (fun j _ => dp j) (odd_jet 1 (by decide)) (odd_jet 3 (by decide))
-        (odd_jet 5 (by decide)) (odd_jet 7 (by decide))
-        (fun t ht => DirectSigns.near_eighth ht.1.le ht.2.le) r ⟨hr,h⟩
-    · exact DirectSigns.positive_middle (le_of_not_ge h)
-  obtain ⟨f, hf, _, hp, hinv⟩ := d9_density_of_positive_numerator hN
+  obtain ⟨f, hf, _, hp, hinv⟩ := d9_density_of_positive_numerator numerator_positive_direct
   have ha : ∀ᵐ k ∂volume, 0 < f k := (volume.ae_ne (0 : E 9)).mono hp
   exact strict_of_density hf ha hinv
 
@@ -153,6 +156,25 @@ theorem strict_cutoff_of_arb
   ⟨strict_d9.lower, fun hd =>
     GenesisFormalV5.euclideanPSD_higher_failure _ hd (xi_not_radialPSD_d10_of_row_bounds hret hom)⟩
 
+open GenesisD10Table GenesisD10Witness in
+/-- The exact cutoff with only the D10 row enclosures as external inputs.
+Dimension nine comes from `numerator_positive_direct`, so the two D9 Arb
+tables required by `exact_cutoff_of_arb` are not hypotheses here. -/
+theorem exact_cutoff_of_row_bounds
+    (hret : List.Forall₂ (fun (x : ℝ) (u : ℤ) => x ≤ (u : ℝ) / 1000000000000000000)
+      (contributions GenesisTidal.criticalXiProfile
+        (witnessPolynomial.support.filter (fun k => k ≤ 293))) retainedUnits)
+    (hom : List.Forall₂ (fun (x : ℝ) (u : ℤ) => x ≤ (u : ℝ) / 1000000000000000000)
+      (contributions GenesisTidal.criticalXiProfile
+        (witnessPolynomial.support.filter (fun k => ¬ k ≤ 293))) omittedUnits)
+    (d : ℕ) :
+    GenesisFormalV4.RadialPSD (E d) GenesisTidal.criticalXiProfile ↔ d ≤ 9 := by
+  obtain ⟨f, hf, hn, _, hinv⟩ := d9_density_of_positive_numerator numerator_positive_direct
+  exact GenesisTidal.criticalXi_cutoff_of_boundary_dimensions
+    (GenesisTidal.radialPSD_of_cosine_density f hf hn hinv)
+    (xi_not_radialPSD_d10_of_row_bounds hret hom) d
+
 end GenesisTidalMellin
 #print axioms GenesisTidalMellin.strict_d9
 #print axioms GenesisTidalMellin.strict_cutoff_of_arb
+#print axioms GenesisTidalMellin.exact_cutoff_of_row_bounds

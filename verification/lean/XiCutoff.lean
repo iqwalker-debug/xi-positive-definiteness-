@@ -134,8 +134,10 @@ theorem d9_of_arb_cells
   obtain ⟨f, hf, hn, _, hinv⟩ := d9_density_of_positive_numerator (numerator_positive h8 hm)
   exact GenesisTidal.radialPSD_of_cosine_density f hf hn hinv
 
-/-- The only external inputs are the two D9 Arb tables and the two D10
-finite-witness bounds. No analytic representation or PSD assumption remains. -/
+/-- Earlier form of the cutoff, kept as a cross-check: its external inputs are
+the two D9 Arb tables and the two aggregate D10 bounds. The D9 tables are no
+longer needed; see `exact_cutoff_of_row_bounds` in `XiStrict.lean`, whose only
+external inputs are the D10 row enclosures. -/
 theorem exact_cutoff_of_arb
     (h8 : GenesisD9Coverage.Sound 320 (p 8) GenesisD9Coverage.near256)
     (hm : GenesisD9Coverage.Sound 320 N GenesisD9Coverage.middle256)
