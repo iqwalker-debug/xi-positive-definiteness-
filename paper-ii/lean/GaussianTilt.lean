@@ -1,11 +1,15 @@
-import Mathlib.Analysis.SpecialFunctions.Exponential
-import Mathlib.MeasureTheory.Integral.DominatedConvergence
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Mathlib.Tactic.Ring
-import Mathlib.Tactic.Positivity
+module
+
+public import Mathlib.Analysis.SpecialFunctions.Exponential
+public import Mathlib.MeasureTheory.Integral.DominatedConvergence
+public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+public import Mathlib.Tactic.Ring
+public import Mathlib.Tactic.Positivity
 
 open MeasureTheory
 open scoped BigOperators
+
+public section
 
 namespace GaussianTilt
 
@@ -148,6 +152,55 @@ theorem mixtureGram_nonneg {n : ℕ} (ν : Measure ℝ) (μ : ℝ → Measure �
   filter_upwards [support, moments, projected] with R hR hInt hGram
   exact shellGram_nonneg _ _ _ hc hR w K hInt hGram
 
+/-- Gaussian reweighting of a first marginal yields a radial PSD kernel
+on the same space under the two spectral representation identities.
+The first identity disintegrates the marginal over radii. The second is
+the unweighted first-coordinate formula on the raised-dimensional sphere.
+Neither hypothesis asserts positivity of any tilted kernel. -/
+theorem radialTiltPSD {E : Type*} [PseudoMetricSpace E] (c mass : ℝ)
+    (hc : 0 ≤ c) (hmass : 0 < mass) (ρ ν : Measure ℝ) (μ : ℝ → Measure ℝ)
+    (support : ∀ᵐ R ∂ν, ∀ᵐ u ∂(μ R), u^2 ≤ R^2)
+    (disintegrate : ∀ f : ℝ → ℝ, Integrable f ρ →
+      (∫ u, f u ∂ρ) = ∫ R, ∫ u, f u ∂(μ R) ∂ν)
+    (hInt : ∀ t : ℝ, Integrable (fun u => Real.exp (-c*u^2) * Real.cos (t*u)) ρ)
+    (moments : ∀ᵐ R ∂ν, ∀ (k : ℕ) (t : ℝ),
+      Integrable (fun u => (R^2-u^2)^k * Real.cos (t*u)) (μ R))
+    (spheres : ∀ (n : ℕ) (x : Fin n → E), ∀ᵐ R ∂ν, ∀ k : ℕ,
+      ∃ (σ : Measure (Fin n → ℝ)) (scale : ℝ), 0 ≤ scale ∧
+        (∀ i j, Integrable (fun z : Fin n → ℝ => Real.cos (z i - z j)) σ) ∧
+        ∀ i j, (∫ u, (R^2-u^2)^k * Real.cos (dist (x i) (x j)*u) ∂(μ R)) =
+          scale * ∫ z : Fin n → ℝ, Real.cos (z i - z j) ∂σ)
+    (n : ℕ) (x : Fin n → E) (w : Fin n → ℝ) :
+    0 ≤ gram w (fun i j =>
+      (∫ u, Real.exp (-c*u^2) * Real.cos (dist (x i) (x j)*u) ∂ρ) / mass) := by
+  let K (i j : Fin n) (u : ℝ) := Real.cos (dist (x i) (x j)*u)
+  let T (i j : Fin n) (u : ℝ) := Real.exp (-c*u^2) * K i j u
+  have factor (a : ℝ) (f : Fin n → Fin n → ℝ) :
+      gram w (fun i j => a * f i j) = a * gram w f := by
+    simp only [gram, Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro i _
+    apply Finset.sum_congr rfl
+    intro j _
+    ring
+  have hi (i j) : Integrable (T i j) ρ := hInt _
+  have htest : Integrable (fun u => gram w (fun i j => T i j u)) ρ :=
+    integrable_finsetSum _ fun i _ => integrable_finsetSum _ fun j _ => (hi i j).const_mul _
+  change 0 ≤ gram w (fun i j => (∫ u, T i j u ∂ρ) / mass)
+  simp only [div_eq_inv_mul, factor]
+  rw [← integralGram _ _ T hi, disintegrate _ htest]
+  have point (u : ℝ) : gram w (fun i j => T i j u) =
+      Real.exp (-c*u^2) * gram w (fun i j => K i j u) := factor _ _
+  simp_rw [point]
+  rw [← div_eq_inv_mul]
+  apply mixtureGram_nonneg ν μ c mass hc hmass w K support
+  · filter_upwards [moments] with R hR
+    exact fun k i j => hR k _
+  · filter_upwards [spheres n x] with R hR
+    intro k
+    obtain ⟨σ, scale, hs, hint, hentries⟩ := hR k
+    exact projectedMoment_nonneg σ w (fun i z => z i) _ scale hs hint hentries
+
 /-- Set-theoretic cutoff using exactly the D9 witness, D10 obstruction,
 D10 downward closure, dimension restriction, and nonnegative zero threshold. -/
 theorem coexistenceCutoff (A : ℕ → Set ℝ) (B : Set ℝ)
@@ -168,5 +221,6 @@ theorem coexistenceCutoff (A : ℕ → Set ℝ) (B : Set ℝ)
 #print axioms projectedMoment_nonneg
 #print axioms shellGram_nonneg
 #print axioms mixtureGram_nonneg
+#print axioms radialTiltPSD
 #print axioms coexistenceCutoff
 end GaussianTilt

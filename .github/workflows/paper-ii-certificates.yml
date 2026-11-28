@@ -67,6 +67,6 @@ jobs:
           export PATH="$HOME/.elan/bin:$PATH"
           lake exe cache get Mathlib.Analysis.SpecialFunctions.Exponential Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic Mathlib.MeasureTheory.Integral.DominatedConvergence Mathlib.Tactic.Ring Mathlib.Tactic.Positivity
           lake env lean GaussianTilt.lean | tee "$RUNNER_TEMP/tilt.log"
-          for theorem in shellTilt_nonneg projectedMoment_nonneg shellGram_nonneg mixtureGram_nonneg coexistenceCutoff; do
+          for theorem in shellTilt_nonneg projectedMoment_nonneg shellGram_nonneg mixtureGram_nonneg radialTiltPSD coexistenceCutoff; do
             grep -Fx "'GaussianTilt.$theorem' depends on axioms: [propext, Classical.choice, Quot.sound]" "$RUNNER_TEMP/tilt.log"
           done
