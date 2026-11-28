@@ -1,6 +1,6 @@
 # Sharp space–time covariance bounds for the Riemann Xi profile
 
-Paper IV is an AI-assisted working manuscript prepared for Ian Walker, revision 4, dated 27 November 2026. External specialist review is pending. [Read the paper](Paper-IV.pdf) or [inspect the manuscript](manuscript/manuscript.md).
+Paper IV is an AI-assisted working manuscript by Ian Walker, revision 4, dated 27 November 2026. External specialist review is pending. [Read the paper](Paper-IV.pdf) or [inspect the manuscript](manuscript/manuscript.md).
 
 Suppose a stationary, real scalar field has a prescribed equal-time spatial covariance and is spatially isotropic at each time lag. How large can the delayed correlation between two locations be? The paper shows that the sharp bound is the average absolute value of the spherical Fourier kernel against the fixed radial spectrum. It gives the exact criterion for strict improvement under dimension projection. For several distinct positive separations at the same nonzero time lag, it proves strict containment of the entire attainable region when the higher-dimensional radial frequency has unbounded support. Applying the result to Xi through dimension nine uses the spatial theorem in [Paper I](../Paper-I.pdf).
 

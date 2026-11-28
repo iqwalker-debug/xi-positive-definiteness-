@@ -2,7 +2,7 @@
 
 <div class="subtitle">Why two correlations of 0.50 can be impossible together</div>
 
-<div class="byline">GENESIS research program · Revision 4 · Prepared for Ian Walker · 27 November 2026</div>
+<div class="byline">Ian Walker · Revision 4 · 27 November 2026</div>
 
 ## Abstract
 
@@ -212,4 +212,4 @@ A second refinement uses the measured same-location correlation $c=C(0,b)$. Over
 15. H. Kobayashi (2016). *Some results on the ξ(s) and Ξ(t) functions associated with Riemann’s ζ(s) function*, §3.2, Eq. (57). [Preprint](https://arxiv.org/abs/1603.02954).
 16. C. E. Alonso-Malaver, E. Porcu and R. Giraldo (2015). *Multivariate and multiradial Schoenberg measures with their dimension walks.* [Journal of Multivariate Analysis](https://doi.org/10.1016/j.jmva.2014.09.001).
 
-<div class="smallnote">Revision 4 · 27 November 2026. AI-assisted working manuscript prepared for Ian Walker. Verification scripts, precision settings, data provenance and replay instructions accompany the GitHub manuscript in the paper-iv directory. Calculational cross-checks share the FLINT/Arb backend. External specialist review and publication priority remain open.</div>
+<div class="smallnote">Revision 4 · 27 November 2026. AI-assisted working manuscript. Verification scripts, precision settings, data provenance and replay instructions accompany the GitHub manuscript in the paper-iv directory. Calculational cross-checks share the FLINT/Arb backend. External specialist review and publication priority remain open.</div>

@@ -2,7 +2,7 @@
 
 ## How to cite these papers
 
-For Papers I–III, cite Ian Walker and the title of the manuscript containing the result. Paper IV is an AI-assisted GENESIS research program draft prepared for Ian Walker. The [paper-specific BibTeX entries](papers.bib) link to the exact manuscript versions. For the collection and its verification materials, use the [repository citation](CITATION.cff).
+For Papers I–IV, cite Ian Walker and the title of the manuscript containing the result. The [paper-specific BibTeX entries](papers.bib) link to the exact manuscript versions. For the collection and its verification materials, use the [repository citation](CITATION.cff).
 
 ## Paper I
 
@@ -47,6 +47,6 @@ Both meshes reproduce a strictly negative normalized Gram sum of approximately �
 
 ## Paper IV
 
-[Sharp space–time covariance bounds for the Riemann Xi profile](paper-iv/Paper-IV.pdf) is a revision 4 working draft prepared for Ian Walker. Two delayed correlations of 0.50 pass a ten-observation covariance test, yet the full Xi spatial profile limits their sum to approximately 0.9294554312. The paper derives this bound from the fixed radial spectrum and proves strict contraction of the joint region under dimension projection. Its Xi application uses Paper I. An acoustic control reports the intervening microphone windows, including a reversal under both frequency weightings. External specialist review and priority assessment remain open.
+[Sharp space–time covariance bounds for the Riemann Xi profile](paper-iv/Paper-IV.pdf) is a revision 4 working draft by Ian Walker. Two delayed correlations of 0.50 pass a ten-observation covariance test, yet the full Xi spatial profile limits their sum to approximately 0.9294554312. The paper derives this bound from the fixed radial spectrum and proves strict contraction of the joint region under dimension projection. Its Xi application uses Paper I. An acoustic control reports the intervening microphone windows, including a reversal under both frequency weightings. External specialist review and priority assessment remain open.
 
 [Manuscript source, figures, Lean and Arb checks](paper-iv/README.md)

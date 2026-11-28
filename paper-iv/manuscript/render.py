@@ -57,7 +57,7 @@ with fitz.open(pdf_path) as d:
     assert len(d)==len(pages)
     d.set_toc([[1,re.search(r'^# (.+)$',section,re.M).group(1),i] for i,section in enumerate(src,1)]+[])
     metadata=d.metadata
-    metadata.update(title=title,subject=section_name+', 27 November 2026',author='GENESIS research program; AI-assisted manuscript prepared for Ian Walker')
+    metadata.update(title=title,subject=section_name+', 27 November 2026',author='Ian Walker')
     from pdf_provenance import source_fingerprint
     metadata['keywords'] = 'paper-iv-source-sha256=' + source_fingerprint()
     d.set_metadata(metadata)
