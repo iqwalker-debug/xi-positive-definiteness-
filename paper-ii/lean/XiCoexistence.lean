@@ -1,7 +1,8 @@
 import XiCutoff
 
 noncomputable section
-open MeasureTheory Set
+open MeasureTheory Set Filter
+open scoped Topology ContDiff
 open GenesisTidalMellin
 open scoped ENNReal
 
@@ -46,7 +47,7 @@ theorem zeroThreshold (L : ℝ)
   · intro hs
     have h : L ≤ 4*s := (deBruijnNewman _).mp (by
       intro z hz
-      have hzero := hs (z/2) (by rw [heatScaling]; simpa [hz])
+      have hzero := hs (z/2) (by rw [heatScaling, show 2*(z/2) = z by ring, hz, mul_zero])
       simpa using hzero)
     linarith
   · intro hs z hz
@@ -75,14 +76,10 @@ theorem zero_profile : F 0 = GenesisTidal.criticalXiProfile := by
   rw [amplitude_ratio]
   simp [F, numerator, positiveWeight, amplitude]
 
-private theorem weight_int {s : ℝ} (hs : s ≤ 1) : IntegrableOn (positiveWeight s) (Ioi 0) := by
-  let C := 16 * ∑' n : ℕ, Real.exp (-(n:ℝ))
-  apply ((integrableOn_exp_neg_Ioi 0).const_mul C).mono'
-  · have hc : Continuous phi := continuous_iff_continuousAt.mpr fun x =>
-      (thetaSeries_derivative phiPoly x).continuousAt
-    exact ((by fun_prop : Continuous (fun r : ℝ => Real.exp (s*r^2))).mul hc).aestronglyMeasurable
-  filter_upwards [ae_restrict_mem (μ := volume) (measurableSet_Ioi (a := (0:ℝ)))] with r hr
-  change 0 < r at hr
+private def tailConstant : ℝ := 16 * ∑' n : ℕ, Real.exp (-(n:ℝ))
+
+private theorem weight_bound {s r : ℝ} (hs : s ≤ 1) (hr : 0 < r) :
+    ‖positiveWeight s r‖ ≤ tailConstant * Real.exp (-r) := by
   have he := Real.quadratic_le_exp_of_nonneg (show 0 ≤ 2*r by positivity)
   have bound (n : ℕ) :
       ‖Real.exp (s*r^2) * weightedTerm phiPoly n r‖ ≤
@@ -118,7 +115,15 @@ private theorem weight_int {s : ℝ} (hs : s ≤ 1) : IntegrableOn (positiveWeig
   change ‖Real.exp (s*r^2) * ∑' n, weightedTerm phiPoly n r‖ ≤ _
   rw [← tsum_mul_left]
   exact (tsum_of_norm_bounded (Real.summable_exp_neg_nat.mul_left _).hasSum bound).trans_eq
-    (by rw [tsum_mul_left]; dsimp [C]; ring)
+    (by rw [tsum_mul_left]; dsimp [tailConstant]; ring)
+
+private theorem weight_int {s : ℝ} (hs : s ≤ 1) : IntegrableOn (positiveWeight s) (Ioi 0) := by
+  apply ((integrableOn_exp_neg_Ioi 0).const_mul tailConstant).mono'
+  · have hc : Continuous phi := continuous_iff_continuousAt.mpr fun x =>
+      (thetaSeries_derivative phiPoly x).continuousAt
+    exact ((by fun_prop : Continuous (fun r : ℝ => Real.exp (s*r^2))).mul hc).aestronglyMeasurable
+  filter_upwards [ae_restrict_mem (μ := volume) (measurableSet_Ioi (a := (0:ℝ)))] with r hr
+  exact weight_bound hs hr
 
 private theorem mass_pos {s : ℝ} (hs : s ≤ 1) : 0 < numerator s 0 := by
   simp only [numerator, zero_mul, Real.cos_zero, mul_one]
@@ -171,16 +176,103 @@ def jet : ℕ → ℝ → ℝ
   | 0 => fun x => Real.exp (x/16) * profile 0 x
   | j+1 => fun x => -(deriv (jet j) x) / Real.pi
 
-structure WitnessBounds : Prop where
-  steps : ∀ j < 4, GenesisD9Fourier.OpenStep (jet j) (jet (j+1))
-  fourth : ∀ x > 0, 0 < jet 4 x
+private theorem jet_smooth (j : ℕ) : ContDiffOn ℝ ∞ (jet j) (Ioi 0) := by
+  induction j with
+  | zero =>
+    have hp : ContDiff ℝ ∞ phi := by
+      apply contDiff_of_differentiable_iteratedDeriv
+      intro k _
+      rw [p_iter]
+      exact fun x => (dp k x).differentiableAt
+    intro x hx
+    apply ContDiffAt.contDiffWithinAt
+    change ContDiffAt ℝ ∞ (fun r => Real.exp (r/16) * phi (Real.sqrt r)) x
+    exact (by fun_prop : ContDiffAt ℝ ∞ (fun r : ℝ => Real.exp (r/16)) x).mul
+      (hp.contDiffAt.comp x (Real.contDiffAt_sqrt (ne_of_gt hx)))
+  | succ j ih => exact (ih.deriv_of_isOpen isOpen_Ioi (by simp)).neg.div_const _
+
+theorem jet_iter (j : ℕ) : jet j = fun x =>
+    (-Real.pi⁻¹)^j * iteratedDeriv j (jet 0) x := by
+  induction j with
+  | zero => simp
+  | succ j ih =>
+    funext x
+    change -(deriv (jet j) x) / Real.pi = _
+    rw [ih, deriv_const_mul_field, iteratedDeriv_succ, pow_succ]
+    ring
+
+abbrev FourthPositive := ∀ x > 0, 0 < iteratedDeriv 4 (jet 0) x
+
+private theorem fourth_pos (h : FourthPositive) {x : ℝ} (hx : 0 < x) : 0 < jet 4 x := by
+  rw [jet_iter]
+  exact mul_pos (by positivity) (h x hx)
+
+private theorem jet_deriv (j : ℕ) {x : ℝ} (hx : 0 < x) :
+    HasDerivAt (jet j) (-Real.pi * jet (j+1) x) x := by
+  have hd := ((jet_smooth j).differentiableOn (by simp) x hx).differentiableAt (isOpen_Ioi.mem_nhds hx)
+  convert hd.hasDerivAt using 1
+  simp only [jet]
+  field_simp [Real.pi_ne_zero]
+
+private theorem base_decay : Tendsto (jet 0) atTop (𝓝 0) := by
+  apply squeeze_zero_norm' (a := fun x : ℝ => tailConstant * Real.exp (-Real.sqrt x))
+  · filter_upwards [eventually_gt_atTop (0:ℝ)] with x hx
+    simpa only [jet, profile,raw,p,Q, positiveWeight, Real.sq_sqrt hx.le, one_div_mul_eq_div] using
+      (weight_bound (s := 1/16) (by norm_num) (Real.sqrt_pos.mpr hx))
+  · simpa using (Real.tendsto_exp_neg_atTop_nhds_zero.comp Real.tendsto_sqrt_atTop).const_mul tailConstant
+
+/-- Every derivative has arbitrarily small values arbitrarily far out.
+Two distant small values of the previous derivative suffice by the MVT. -/
+private theorem jet_small (j : ℕ) (R ε : ℝ) (hε : 0 < ε) :
+    ∃ x > R, |jet j x| < ε := by
+  induction j generalizing R ε with
+  | zero =>
+    have h := (Metric.tendsto_nhds.mp base_decay ε hε).and (eventually_gt_atTop R)
+    obtain ⟨x,hx,hR⟩ := h.exists
+    exact ⟨x, hR, by simpa [Real.dist_eq] using hx⟩
+  | succ j ih =>
+    obtain ⟨a,ha,ha'⟩ := ih (max R 0) (ε/4) (by positivity)
+    obtain ⟨b,hb,hb'⟩ := ih (a+1) (ε/4) (by positivity)
+    have ha0 : 0 < a := (le_max_right _ _).trans_lt ha
+    have hab : a < b := by linarith
+    have inc : Icc a b ⊆ Ioi (0:ℝ) := fun x hx => ha0.trans_le hx.1
+    obtain ⟨x,hx,eq⟩ := exists_hasDerivAt_eq_slope (jet j) (fun x => -Real.pi * jet (j+1) x)
+      hab ((jet_smooth j).continuousOn.mono inc) (fun x hx => jet_deriv j (ha0.trans hx.1))
+    refine ⟨x, ((le_max_left _ _).trans_lt ha).trans hx.1, ?_⟩
+    have hgap : 1 ≤ b-a := by linarith
+    have hh := congrArg abs eq
+    rw [abs_mul, abs_neg, abs_of_pos Real.pi_pos, abs_div, abs_of_pos (sub_pos.mpr hab)] at hh
+    have hs : |jet j b - jet j a| < ε := (abs_sub _ _).trans_lt (by linarith)
+    have hq := (div_le_self (abs_nonneg _) hgap)
+    nlinarith [Real.pi_gt_three, mul_nonneg (sub_nonneg.mpr Real.pi_gt_three.le) (abs_nonneg (jet (j+1) x))]
+
+private theorem witnessStep {j : ℕ} (pos : ∀ x > 0, 0 < jet (j+1) x) :
+    GenesisD9Fourier.OpenStep (jet j) (jet (j+1)) := by
+  refine ⟨fun x hx => jet_deriv j hx, ?_⟩
+  have anti : StrictAntiOn (jet j) (Ioi 0) := strictAntiOn_of_deriv_neg (convex_Ioi _)
+    (jet_smooth j).continuousOn (by
+      rw [isOpen_Ioi.interior_eq]
+      intro x hx
+      rw [(jet_deriv j hx).deriv]
+      exact mul_neg_of_neg_of_pos (neg_lt_zero.mpr Real.pi_pos) (pos x hx))
+  have hn {x : ℝ} (hx : 0 < x) : 0 ≤ jet j x := by
+    by_contra! h
+    obtain ⟨y,hy,hy'⟩ := jet_small j x _ (neg_pos.mpr h)
+    have hlt := anti hx (hx.trans hy) hy
+    linarith [(abs_lt.mp hy').1]
+  apply Metric.tendsto_nhds.mpr
+  intro ε hε
+  obtain ⟨a,ha,ha'⟩ := jet_small j 0 ε hε
+  filter_upwards [eventually_gt_atTop a] with x hx
+  rw [Real.dist_eq, sub_zero, abs_of_nonneg (hn (ha.trans hx))]
+  exact (anti ha (ha.trans hx) hx).trans ((le_abs_self _).trans_lt ha')
 
 private theorem jet_meas (j : ℕ) : Measurable (jet j) := by
   cases j with
   | zero => exact (by fun_prop : Measurable (fun x : ℝ => Real.exp (x/16))).mul (profile_meas 0 (by decide))
   | succ j => exact (measurable_deriv (jet j)).neg.div_const _
 
-theorem rational_D9 (h : WitnessBounds) : (1/16 : ℝ) ∈ A 9 := by
+theorem rational_D9 (h : FourthPositive) : (1/16 : ℝ) ∈ A 9 := by
   have base := GenesisD9Fourier.base (G := jet 0) (F := numerator (1/16)) (by
     intro t _
     have point (r : ℝ) : jet 0 (r^2) * Real.cos (r*t) =
@@ -197,13 +289,17 @@ theorem rational_D9 (h : WitnessBounds) : (1/16 : ℝ) ∈ A 9 := by
     have hz := base (0 : E 1)
     simp [GenesisD9Fourier.transform, integral_undef hn] at hz
     linarith
-  have p3 := (h.steps 3 (by decide)).pos h.fourth
-  have p2 := (h.steps 2 (by decide)).pos p3
-  have p1 := (h.steps 1 (by decide)).pos p2
-  have t1 := GenesisD9Fourier.lift_positive hi (jet_meas 1) p1 (h.steps 0 (by decide)) base
-  have t2 := GenesisD9Fourier.lift_positive t1.1 (jet_meas 2) p2 (h.steps 1 (by decide)) t1.2
-  have t3 := GenesisD9Fourier.lift_positive t2.1 (jet_meas 3) p3 (h.steps 2 (by decide)) t2.2
-  have t4 := GenesisD9Fourier.lift_positive t3.1 (jet_meas 4) h.fourth (h.steps 3 (by decide)) t3.2
+  have s3 := witnessStep (j := 3) (fun _ hx => fourth_pos h hx)
+  have p3 := s3.pos (fun _ hx => fourth_pos h hx)
+  have s2 := witnessStep p3
+  have p2 := s2.pos p3
+  have s1 := witnessStep p2
+  have p1 := s1.pos p2
+  have s0 := witnessStep p1
+  have t1 := GenesisD9Fourier.lift_positive hi (jet_meas 1) p1 s0 base
+  have t2 := GenesisD9Fourier.lift_positive t1.1 (jet_meas 2) p2 s1 t1.2
+  have t3 := GenesisD9Fourier.lift_positive t2.1 (jet_meas 3) p3 s2 t2.2
+  have t4 := GenesisD9Fourier.lift_positive t3.1 (jet_meas 4) (fun _ hx => fourth_pos h hx) s3 t3.2
   let f := fun k : E 9 => if k = 0 then 0 else jet 4 (‖k‖^2) / numerator (1/16) 0
   have heq : f =ᵐ[volume] fun k => jet 4 (‖k‖^2) / numerator (1/16) 0 := by
     filter_upwards [volume.ae_ne (0 : E 9)] with k hk
@@ -212,7 +308,7 @@ theorem rational_D9 (h : WitnessBounds) : (1/16 : ℝ) ∈ A 9 := by
   · intro k
     by_cases hk : k = 0
     · simp [f, hk]
-    · simpa [f, hk] using (div_pos (h.fourth _ (sq_pos_of_pos (norm_pos_iff.mpr hk))) hzpos).le
+    · simpa [f, hk] using (div_pos (fourth_pos h (sq_pos_of_pos (norm_pos_iff.mpr hk))) hzpos).le
   · intro x
     rw [F, ← t4.2 x, GenesisD9Fourier.transform, ← integral_div]
     apply integral_congr_ae
@@ -224,7 +320,7 @@ theorem rational_D9 (h : WitnessBounds) : (1/16 : ℝ) ∈ A 9 := by
 exceeds 1/16, and the published threshold bound is below 1/16. -/
 theorem concreteCutoff {L : ℝ} (hL : 0 ≤ L) (hupper : L ≤ 0.22)
     (deBruijnNewman : ∀ t, (∀ z : ℂ, newmanH t z = 0 → z.im = 0) ↔ L ≤ t)
-    (witnessBounds : WitnessBounds)
+    (witnessBounds : FourthPositive)
     (upper9 : A 9 ⊆ Iic 1)
     (cert : ∀ s ∈ Icc (0:ℝ) 1, (∫ r in Ioi (0:ℝ), positiveWeight s r * test r) < 0)
     {d : ℕ} (hd : 1 ≤ d) : (A d ∩ B).Nonempty ↔ d ≤ 9 := by
