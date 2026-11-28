@@ -2,13 +2,13 @@
 
 <div class="subtitle">Why two correlations of {{claim:witness.value}} can be impossible together</div>
 
-<div class="byline">GENESIS research program · Revision 3 · Prepared for Ian Walker · 26 November 2026</div>
+<div class="byline">GENESIS research program · Revision 4 · Prepared for Ian Walker · 27 November 2026</div>
 
 ## Abstract
 
 Two delayed correlations of **{{claim:witness.value}}** at separations 8 and 16 pass a ten-observation covariance test. Each value is individually attainable. Yet when the entire equal-time line covariance is the normalized Riemann Xi profile, their greatest possible sum is **{{claim:xi.sum}}** (rounded). The proposed sum is {{claim:witness.sum}}. Thus no field in the stated class can realize the pair. A Gaussian with the same curvature at zero allows a larger sum and a smaller difference. Each attainable region therefore contains pairs outside the other.
 
-We consider a real stationary scalar field with continuous covariance, spatial isotropy at every time lag and an unrestricted temporal spectrum. At one nonzero lag, we characterize the joint region at finitely many separations. Keeping the same spatial covariance function in adjacent dimensions projects the higher-dimensional radius law onto the lower-dimensional one. We give an exact criterion for strict contraction of each single-separation bound and prove strict interior inclusion for the joint regions under an unbounded-support assumption. For Xi, the conclusions apply in the nine dimensions admitted by the companion theorem. A microphone recording illustrates how the all-lag symmetry assumption can fail: the measured sign reverses in one intervening window.
+We consider a real stationary scalar field with continuous covariance, spatial isotropy at every time lag and an unrestricted temporal spectrum. At one nonzero lag, we characterize the joint region at finitely many separations. Keeping the same spatial covariance function in adjacent dimensions projects the higher-dimensional radius law onto the lower-dimensional one. We give an exact criterion for strict contraction of each single-separation bound and prove strict interior inclusion for the joint regions under an unbounded-support assumption. For Xi, the conclusions apply in the nine dimensions admitted by the companion theorem. In one microphone recording, the estimated odd correlation reverses sign in a post hoc window.
 
 ## What one snapshot fixes
 
@@ -107,7 +107,7 @@ In one dimension compare the Xi spectrum with a centered Gaussian frequency law 
 | Sum $v_1+v_2$ | {{claim:xi.sum}} | **{{claim:gaussian.sum}}** |
 | Difference $v_1-v_2$ | **{{claim:xi.diff}}** | {{claim:gaussian.diff}} |
 
-Arb encloses all four supports. The ordering reverses between the two contrasts, so neither admissible region contains the other. For example, the Gaussian extremizer of the sum gives $({{claim:gaussian.axis8}},{{claim:gaussian.axis16}})$, which lies outside the Xi region. A measurement beyond either support could distinguish these two spatial marginals under the declared symmetry assumptions.
+Arb encloses all four supports. The ordering reverses between the two contrasts, so neither admissible region contains the other. For example, the Gaussian extremizer of the sum gives $({{claim:gaussian.axis8}},{{claim:gaussian.axis16}})$, which lies outside the Xi region. The pair $(0.50,0.50)$ exceeds both sum ceilings. To distinguish these two models, the measurement uncertainty region must miss one attainable region and intersect the other, allowing for uncertainty in the spatial marginals. Other marginals may also fit.
 
 ## The dimension effect at a fixed separation
 
@@ -138,7 +138,7 @@ isolates what this averaging removes. The spectral model predicts zero for this 
 
 *Table 2. Mean absolute errors in dimensionless normalized correlation. Both weightings use 200–1,600 Hz. “Equalized” uses the training spectrum; “native” weights the retained bins uniformly. The archived late protocol specifies the 64–96 s interval. Both holdouts come from one recording.*
 
-The equalized means at 6 and 12 cm were {{claim:audio.14-22.mean6}} and {{claim:audio.14-22.mean12}} in the short holdout and {{claim:audio.64-96.mean6}} and {{claim:audio.64-96.mean12}} in the later holdout. The frozen forward prediction underestimated the magnitude in the later interval. These measurements do not estimate the full Xi spatial spectrum.
+The equalized means at 6 and 12 cm were {{claim:audio.14-22.mean6}} and {{claim:audio.14-22.mean12}} in the short holdout and {{claim:audio.64-96.mean6}} and {{claim:audio.64-96.mean12}} in the later holdout. The frozen forward prediction underestimated the magnitude in the later interval. These measurements do not estimate the full Xi spatial spectrum or test population reflection symmetry against a calibrated null distribution.
 
 A second implementation synthesized band-limited, fractionally shifted waveforms from the original PCM and took time-domain inner products. It reproduced all {{claim:audio.replay_pairs}} pair readings across the two weightings and two holdouts to within ${{claim:audio.replay_bound}}$. Both implementations used the same recording.
 <!--page-->
@@ -191,7 +191,7 @@ A second refinement uses the measured same-location correlation $c=C(0,b)$. Over
 
 **Measurement error.** For $({{claim:witness.value}},{{claim:witness.value}})$, suppose each reading has absolute error at most $\epsilon$ and the line-radius law has total variation error $\tau=\sup_E|\nu'(E)-\nu(E)|$. Since $|\cos(8r)+\cos(16r)|\in[0,2]$, the support changes by at most $2\tau$. The exclusion survives if $2\epsilon+2\tau<{{claim:witness.margin_lower}}$. The ACE example supplies neither budget. A prospective test would calibrate sensor phase, reverse array orientation, and freeze the lag and statistic before measuring in an independent room.
 
-**Position relative to earlier work.** Schneider and Hartlap [13] compare finite covariance constraints with continuum bounds at two separations and illustrate dimension effects. They vary the spatial spectrum of an equal-time field. Here all its weights are prescribed and the conditional temporal law varies. Multiradial Schoenberg measures and their dimension walks are also established [16]. Earlier work identifies Xi as a one-dimensional characteristic function and as a possible stationary autocorrelation [14,15]. The numerical question here is the size of the attainable delayed region for that specified marginal and its difference from a curvature-matched Gaussian. The review located no earlier explicit match for the reported finite examples. Independent specialist priority assessment remains open.
+**Position relative to earlier work.** Schneider and Hartlap [13] compare finite covariance constraints with continuum bounds at two separations and illustrate dimension effects. They vary the spatial spectrum of an equal-time field. Here all its weights are prescribed and the conditional temporal law varies. Multiradial Schoenberg measures and their dimension walks are also established [16]. Earlier work identifies Xi as a one-dimensional characteristic function and as a possible stationary autocorrelation [14,15]. The numerical question here is the size of the attainable delayed region for that specified marginal and its difference from a curvature-matched Gaussian. These comparisons establish the difference in the optimization problems. Priority for the strict-interior theorem and the finite Xi examples remains open.
 <!--page-->
 # References and provenance
 
@@ -212,4 +212,4 @@ A second refinement uses the measured same-location correlation $c=C(0,b)$. Over
 15. H. Kobayashi (2016). *Some results on the ξ(s) and Ξ(t) functions associated with Riemann’s ζ(s) function*, §3.2, Eq. (57). [Preprint](https://arxiv.org/abs/1603.02954).
 16. C. E. Alonso-Malaver, E. Porcu and R. Giraldo (2015). *Multivariate and multiradial Schoenberg measures with their dimension walks.* [Journal of Multivariate Analysis](https://doi.org/10.1016/j.jmva.2014.09.001).
 
-<div class="smallnote">Revision 3 · 26 November 2026. AI-assisted working manuscript prepared for Ian Walker. Verification scripts, precision settings, data provenance and replay instructions accompany the GitHub manuscript in the paper-iv directory. Calculational cross-checks share the FLINT/Arb backend. External specialist review and publication priority remain open.</div>
+<div class="smallnote">Revision 4 · 27 November 2026. AI-assisted working manuscript prepared for Ian Walker. Verification scripts, precision settings, data provenance and replay instructions accompany the GitHub manuscript in the paper-iv directory. Calculational cross-checks share the FLINT/Arb backend. External specialist review and publication priority remain open.</div>

@@ -27,7 +27,7 @@ section.references ol{font:9.2pt/1.38 "DejaVu Sans",sans-serif}
 .proofphoto{width:97%;height:6.7in;object-fit:contain}.widehold{width:100%;max-height:4.15in;object-fit:contain}.milestone{width:6.94in;height:auto}
 """
 title = 'Sharp space–time covariance bounds for the Riemann Xi profile'
-section_name = 'MANUSCRIPT  /  REVISION 3'
+section_name = 'MANUSCRIPT  /  REVISION 4'
 src = (r/'manuscript.md').read_text().split('<!--page-->')
 pages=[]
 for i,s in enumerate(src,1):
@@ -57,7 +57,7 @@ with fitz.open(pdf_path) as d:
     assert len(d)==len(pages)
     d.set_toc([[1,re.search(r'^# (.+)$',section,re.M).group(1),i] for i,section in enumerate(src,1)]+[])
     metadata=d.metadata
-    metadata.update(title=title,subject=section_name+', 26 November 2026',author='GENESIS research program; AI-assisted manuscript prepared for Ian Walker')
+    metadata.update(title=title,subject=section_name+', 27 November 2026',author='GENESIS research program; AI-assisted manuscript prepared for Ian Walker')
     from pdf_provenance import source_fingerprint
     metadata['keywords'] = 'paper-iv-source-sha256=' + source_fingerprint()
     d.set_metadata(metadata)
