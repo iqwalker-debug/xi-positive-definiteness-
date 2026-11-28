@@ -41,6 +41,6 @@ Both meshes reproduce a strictly negative normalized Gram sum of approximately �
 
 ## Paper III
 
-[Finite witnesses for failure of positive definiteness in quadratic Dirichlet L-functions](paper-iii/Paper-III.pdf) by Ian Walker. Using the first 18 prime signs, truncation at 300, and individual upper bounds on unresolved terms, five common theta points are necessary and sufficient to certify a strict majority of the prime sign patterns.
+[Finite witnesses for failure of positive definiteness in quadratic Dirichlet L-functions](paper-iii/Paper-III.pdf) by Ian Walker. [Zenodo DOI](https://doi.org/10.5281/zenodo.24614710). Using the first 18 prime signs, truncation at 300, and individual upper bounds on unresolved terms, five common theta points are necessary and sufficient to certify a strict majority of the prime sign patterns.
 
 [LaTeX source](paper-iii/Paper-III.tex) · [Reproduction instructions and counts](paper-iii/README.md) · [Certificate code and witness tables](paper-iii/certificate)
